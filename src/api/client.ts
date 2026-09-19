@@ -8,6 +8,23 @@
 import axios, { AxiosInstance, AxiosError, AxiosRequestConfig } from 'axios';
 import { AttioAuth } from '../auth/api-key.js';
 
+/** Simplified request interface exposed to LLM-generated sandbox code. */
+export interface ApiWrapper {
+  request: (opts: { method: string; path: string; params?: Record<string, unknown>; body?: Record<string, unknown> }) => Promise<unknown>;
+}
+
+/** Create the thin API facade injected into the sandbox as the `api` global. */
+export function createApiWrapper(client: AttioClient): ApiWrapper {
+  return {
+    request: async (opts) => {
+      return client.request(opts.path, opts.body ?? opts.params, {
+        method: opts.method,
+        data: opts.body
+      });
+    }
+  };
+}
+
 export class AttioClient {
   private baseURL = 'https://api.attio.com';
   private auth: AttioAuth;

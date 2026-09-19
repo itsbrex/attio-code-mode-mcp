@@ -16,11 +16,14 @@ import {
 } from '@modelcontextprotocol/sdk/types.js';
 
 import { AttioAuth } from '../auth/api-key.js';
-import { AttioClient } from '../api/client.js';
+import { AttioClient, createApiWrapper } from '../api/client.js';
 import { loadSpec } from '../spec/loader.js';
 import { executeInSandbox } from '../executor/sandbox.js';
 import { searchDocs, getAllDocs, getCategories } from '../context/loader.js';
 import { ServerConfig } from '../types/config.js';
+import { truncate } from '../utils/truncate.js';
+import { formatError } from '../utils/format-error.js';
+import { safeJsonStringify } from '../utils/json.js';
 
 export class AttioMCPServer {
   private server: Server;
@@ -61,14 +64,14 @@ export class AttioMCPServer {
         return {
           content: [{
             type: 'text' as const,
-            text: typeof result === 'string' ? result : JSON.stringify(result, null, 2)
+            text: formatToolContent(result)
           }]
         };
       } catch (error) {
         return {
           content: [{
             type: 'text' as const,
-            text: `Error: ${error instanceof Error ? error.message : String(error)}`
+            text: `Error: ${formatError(error)}`
           }],
           isError: true
         };
@@ -216,14 +219,7 @@ Pass a topic keyword to search, or use "all" to list everything, or "categories"
       case 'execute': {
         if (!args.code) throw new Error('code is required');
 
-        const api = {
-          request: async (opts: { method: string; path: string; params?: any; body?: any }) => {
-            return this.client.request(opts.path, opts.body ?? opts.params, {
-              method: opts.method,
-              data: opts.body
-            });
-          }
-        };
+        const api = createApiWrapper(this.client);
 
         const result = await executeInSandbox(args.code, { api });
         if (result.error) {
@@ -277,4 +273,12 @@ Pass a topic keyword to search, or use "all" to list everything, or "categories"
     const transport = new StdioServerTransport();
     await this.server.connect(transport);
   }
+}
+
+function formatToolContent(value: unknown): string {
+  const text = typeof value === 'string'
+    ? value
+    : safeJsonStringify(value);
+
+  return truncate(text);
 }

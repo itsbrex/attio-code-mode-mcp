@@ -6,6 +6,7 @@
  */
 
 import { createContext, runInNewContext } from 'vm';
+import { truncate } from '../utils/truncate.js';
 
 export interface ExecuteResult {
   result: any;
@@ -13,7 +14,6 @@ export interface ExecuteResult {
   error?: string;
 }
 
-const MAX_OUTPUT_CHARS = 40_000;
 const DEFAULT_TIMEOUT_MS = 15_000;
 
 export async function executeInSandbox(
@@ -75,7 +75,7 @@ export async function executeInSandbox(
     });
 
     return {
-      result: truncate(formatValue(result)),
+      result,
       logs: logs.map(l => truncate(l)),
     };
   } catch (error: any) {
@@ -97,9 +97,4 @@ function formatValue(value: any): string {
   } catch {
     return String(value);
   }
-}
-
-function truncate(str: string): string {
-  if (str.length <= MAX_OUTPUT_CHARS) return str;
-  return str.slice(0, MAX_OUTPUT_CHARS) + `\n\n[TRUNCATED — ${str.length} chars total, showing first ${MAX_OUTPUT_CHARS}]`;
 }

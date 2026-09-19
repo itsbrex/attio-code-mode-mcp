@@ -19,6 +19,10 @@ const auth = new AttioAuth(apiKey);
 const client = new AttioClient(auth);
 const spec = loadSpec();
 
+function pretty(value: unknown): string {
+  return typeof value === 'string' ? value : JSON.stringify(value, null, 2);
+}
+
 async function test() {
   console.log('=== TEST 1: Connection ===');
   const connected = await client.testConnection();
@@ -30,7 +34,7 @@ async function test() {
     `const paths = Object.keys(spec.paths); return { total: paths.length, sample: paths.slice(0, 5) };`,
     { spec }
   );
-  console.log(`Spec paths: ${searchResult.result}`);
+  console.log(`Spec paths: ${pretty(searchResult.result)}`);
 
   console.log('\n=== TEST 3: Execute — Query Companies ===');
   const api = {
@@ -50,7 +54,7 @@ async function test() {
   if (execResult.error) {
     console.error(`Execute error: ${execResult.error}`);
   } else {
-    console.log(`Companies: ${execResult.result}`);
+    console.log(`Companies: ${pretty(execResult.result)}`);
   }
 
   console.log('\n=== TEST 4: Execute — Query Lists ===');
@@ -62,7 +66,7 @@ async function test() {
   if (listsResult.error) {
     console.error(`Lists error: ${listsResult.error}`);
   } else {
-    console.log(`Lists: ${listsResult.result}`);
+    console.log(`Lists: ${pretty(listsResult.result)}`);
   }
 
   console.log('\n=== TEST 5: Execute — Create & Read Note ===');
@@ -77,7 +81,7 @@ async function test() {
   if (noteResult.error) {
     console.error(`Notes error: ${noteResult.error}`);
   } else {
-    console.log(`Notes: ${noteResult.result}`);
+    console.log(`Notes: ${pretty(noteResult.result)}`);
   }
 
   console.log('\n=== TEST 6: Context — Doc Search ===');
