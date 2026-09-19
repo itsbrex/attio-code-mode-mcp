@@ -134,7 +134,7 @@ Verify your API key works and see server stats.
 
 ```
 src/
-├── auth/api-key.ts       # API key auth (15 lines)
+├── auth/api-key.ts       # API key auth (Bearer token from env)
 ├── api/client.ts         # HTTP client with rate limiting
 ├── spec/
 │   ├── openapi.json      # Attio's OpenAPI spec (embedded)
@@ -144,6 +144,8 @@ src/
 │   └── loader.ts         # Topic-based doc search
 ├── executor/sandbox.ts   # Node.js vm sandbox (proven pattern)
 ├── server/mcp-server.ts  # 4 tools: search, execute, context, test_connection
+├── types/config.ts       # ServerConfig interface
+├── test-connection.ts    # Manual integration smoke test
 └── index.ts              # Entry point
 ```
 

@@ -4,3 +4,9 @@ dist/
 *.js
 *.d.ts
 *.js.map
+
+# Claude Code session artifacts
+.claude/cache/
+.claude/logs/
+.claude/hooks/logs/
+.claude/HANDOFF.md
