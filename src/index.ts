@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 /**
  * Attio MCP Server — Code Mode
- * 130+ endpoints. 3 tools. Fixed token cost.
+ * 90+ endpoints. 3 tools. Fixed token cost.
  */
 
 import dotenv from 'dotenv';

@@ -1,192 +1,89 @@
 # Attio Docs
 
-## Docs
-
-- [Actors](https://docs.attio.com/docs/actors.md): Keeping track of who did what
-- [Archiving vs deleting](https://docs.attio.com/docs/archiving-vs-deleting.md)
-- [Overview](https://docs.attio.com/docs/attribute-types/attribute-types.md)
-- [Actor reference](https://docs.attio.com/docs/attribute-types/attribute-types-actor-reference.md): References to workspace members and others
-- [Checkbox](https://docs.attio.com/docs/attribute-types/attribute-types-checkbox.md): Modelling boolean values
-- [Currency](https://docs.attio.com/docs/attribute-types/attribute-types-currency.md): More than just numbers
-- [Date](https://docs.attio.com/docs/attribute-types/attribute-types-date.md): A timezone-less calendar date
-- [Domain](https://docs.attio.com/docs/attribute-types/attribute-types-domain.md): An internet domain
-- [Email address](https://docs.attio.com/docs/attribute-types/attribute-types-email-address.md): An email address
-- [Interaction](https://docs.attio.com/docs/attribute-types/attribute-types-interaction.md): Calendar events and emails
-- [Location](https://docs.attio.com/docs/attribute-types/attribute-types-location.md): A physical location in the world
-- [Number](https://docs.attio.com/docs/attribute-types/attribute-types-number.md): Quantities, sums and metrics
-- [(Personal) name](https://docs.attio.com/docs/attribute-types/attribute-types-personal-name.md): A person's name
-- [Phone number](https://docs.attio.com/docs/attribute-types/attribute-types-phone-number.md): International telephone numbers
-- [Rating](https://docs.attio.com/docs/attribute-types/attribute-types-rating.md): Star ratings from 0 to 5
-- [Record reference](https://docs.attio.com/docs/attribute-types/attribute-types-record-reference.md): Relationships and one-way links between records
-- [Select](https://docs.attio.com/docs/attribute-types/attribute-types-select.md): An option from a predefined list
-- [Status](https://docs.attio.com/docs/attribute-types/attribute-types-status.md): Similar to select attributes, originally designed for use in Lists
-- [Text](https://docs.attio.com/docs/attribute-types/attribute-types-text.md): Human-readable, unconstrained text inputs
-- [Timestamp](https://docs.attio.com/docs/attribute-types/attribute-types-timestamp.md): A calendar date including time information, stored in UTC
-- [Default values](https://docs.attio.com/docs/default-values.md)
-- [Authorize](https://docs.attio.com/docs/oauth/authorize.md)
-- [Introspect](https://docs.attio.com/docs/oauth/introspect.md)
-- [Token](https://docs.attio.com/docs/oauth/token.md)
-- [Objects and lists](https://docs.attio.com/docs/objects-and-lists.md)
 - [Overview](https://docs.attio.com/docs/overview.md): Start building Attio Apps
-- [Slugs and IDs](https://docs.attio.com/docs/slugs-and-ids.md)
+- [Objects and lists](https://docs.attio.com/docs/objects-and-lists.md)
+- [Users and workspaces](https://docs.attio.com/docs/users-and-workspaces.md)
 - [Overview](https://docs.attio.com/docs/standard-objects/standard-objects.md): Companies and people are available in all workspaces
 - [Companies](https://docs.attio.com/docs/standard-objects/standard-objects-companies.md): An object to represent businesses: customers, partners, peers...
-- [Deals](https://docs.attio.com/docs/standard-objects/standard-objects-deals.md): An object to represent deals involving people & companies
 - [People](https://docs.attio.com/docs/standard-objects/standard-objects-people.md): An object to represent human beings
+- [Deals](https://docs.attio.com/docs/standard-objects/standard-objects-deals.md): An object to represent deals involving people & companies
 - [Users](https://docs.attio.com/docs/standard-objects/standard-objects-users.md): An object to represent users of your product
 - [Workspaces](https://docs.attio.com/docs/standard-objects/standard-objects-workspaces.md): An object to group users of your product
-- [Users and workspaces](https://docs.attio.com/docs/users-and-workspaces.md)
-- [Attio MCP](https://docs.attio.com/mcp/overview.md)
-- [Create a select option](https://docs.attio.com/rest-api/endpoint-reference/attributes/create-a-select-option.md): Adds a select option to a select attribute on an object or a list.
-- [Create a status](https://docs.attio.com/rest-api/endpoint-reference/attributes/create-a-status.md): Add a new status to a status attribute on either an object or a list.
-- [Create an attribute](https://docs.attio.com/rest-api/endpoint-reference/attributes/create-an-attribute.md): Creates a new attribute on either an object or a list.
-- [Get an attribute](https://docs.attio.com/rest-api/endpoint-reference/attributes/get-an-attribute.md): Gets information about a single attribute on either an object or a list.
-- [List attributes](https://docs.attio.com/rest-api/endpoint-reference/attributes/list-attributes.md): Lists all attributes defined on a specific object or list. Attributes are returned in the order that they are sorted by in the UI.
-- [List select options](https://docs.attio.com/rest-api/endpoint-reference/attributes/list-select-options.md): Lists all select options for a particular attribute on either an object or a list.
-- [List statuses](https://docs.attio.com/rest-api/endpoint-reference/attributes/list-statuses.md): Lists all statuses for a particular status attribute on either an object or a list.
-- [Update a select option](https://docs.attio.com/rest-api/endpoint-reference/attributes/update-a-select-option.md): Updates a select option on an attribute on either an object or a list.
-- [Update a status](https://docs.attio.com/rest-api/endpoint-reference/attributes/update-a-status.md): Update a status on an status attribute on either an object or a list.
-- [Update an attribute](https://docs.attio.com/rest-api/endpoint-reference/attributes/update-an-attribute.md): Updates a single attribute on a given object or list.
-- [Get call recording](https://docs.attio.com/rest-api/endpoint-reference/call-recordings/get-call-recording.md): Get a single call recording by ID.
-- [List call recordings](https://docs.attio.com/rest-api/endpoint-reference/call-recordings/list-call-recordings.md): List all call recordings for a meeting.
-- [Create a comment](https://docs.attio.com/rest-api/endpoint-reference/comments/create-a-comment.md): Creates a new comment related to an existing thread, record or entry.
-- [Delete a comment](https://docs.attio.com/rest-api/endpoint-reference/comments/delete-a-comment.md): Deletes a comment by ID. If deleting a comment at the head of a thread, all messages in the thread are also deleted.
-- [Get a comment](https://docs.attio.com/rest-api/endpoint-reference/comments/get-a-comment.md): Get a single comment by ID.
-- [Assert a company record](https://docs.attio.com/rest-api/endpoint-reference/companies/assert-a-company-record.md): Use this endpoint to create or update company records, using a unique attribute to search for existing companies (for example, the `domains` attribute). If a company is found with the same value for the matching attribute, that company will be updated. If no company with the same value for the match…
-- [Create a company record](https://docs.attio.com/rest-api/endpoint-reference/companies/create-a-company-record.md): Creates a new company record. This endpoint will throw on conflicts of unique attributes, like `domains`. If you would prefer to update company records on conflicts, please use the Assert company record endpoint instead. Please note, the `logo_url` attribute cannot currently be set via the API.
-- [Delete a company record](https://docs.attio.com/rest-api/endpoint-reference/companies/delete-a-company-record.md): Deletes a single company record by ID.
-- [Get a company record](https://docs.attio.com/rest-api/endpoint-reference/companies/get-a-company-record.md): Gets a single company record by its `record_id`.
-- [List company record attribute values](https://docs.attio.com/rest-api/endpoint-reference/companies/list-company-record-attribute-values.md): Gets all values for a given attribute on a company record. Historic values can be queried using the `show_historic` query param. Historic values cannot be queried on COMINT (Communication Intelligence) or enriched attributes and the endpoint will return a 400 error if this is attempted. Historic val…
-- [List company record entries](https://docs.attio.com/rest-api/endpoint-reference/companies/list-company-record-entries.md): List all entries, across all lists, for which this company record is the parent.
-- [List company records](https://docs.attio.com/rest-api/endpoint-reference/companies/list-company-records.md): Lists company records, with the option to filter and sort results.
-- [Update a company record](https://docs.attio.com/rest-api/endpoint-reference/companies/update-a-company-record.md): Use this endpoint to update company records by `record_id`. If the update payload includes multiselect attributes, the values supplied will be created and prepended to the list of values that already exist (if any). Use the [Assert company endpoint](/rest-api/endpoint-reference/standard-objects/comp…
-- [Assert a deal record](https://docs.attio.com/rest-api/endpoint-reference/deals/assert-a-deal-record.md): Use this endpoint to create or update deal records, using a unique attribute to search for existing deals. By default, deals do not have a unique attribute, so you should add your own attribute with a unique constraint to use this API. If a deal is found with the same value for the matching attribut…
-- [Create a deal record](https://docs.attio.com/rest-api/endpoint-reference/deals/create-a-deal-record.md): Creates a new deal record. This endpoint will throw on conflicts of unique attributes, if defined. If you would prefer to update deal records on conflicts, please use the Assert deal record endpoint instead.
-- [Delete a deal record](https://docs.attio.com/rest-api/endpoint-reference/deals/delete-a-deal-record.md): Deletes a single deal record by ID.
-- [Get a deal record](https://docs.attio.com/rest-api/endpoint-reference/deals/get-a-deal-record.md): Gets a single deal record by its `record_id`.
-- [List deal record attribute values](https://docs.attio.com/rest-api/endpoint-reference/deals/list-deal-record-attribute-values.md): Gets all values for a given attribute on a deal record. Historic values can be queried using the `show_historic` query param. Historic values are sorted from oldest to newest (by `active_from`).
-- [List deal record entries](https://docs.attio.com/rest-api/endpoint-reference/deals/list-deal-record-entries.md): List all entries, across all lists, for which this deal record is the parent.
-- [List deal records](https://docs.attio.com/rest-api/endpoint-reference/deals/list-deal-records.md): Lists deal records, with the option to filter and sort results.
-- [Update a deal record](https://docs.attio.com/rest-api/endpoint-reference/deals/update-a-deal-record.md): Use this endpoint to update deal records by `record_id`. If the update payload includes multiselect attributes, the values supplied will be created and prepended to the list of values that already exist (if any). Use the [Assert deal endpoint](/rest-api/endpoint-reference/standard-objects/deals/asse…
-- [Assert a list entry by parent](https://docs.attio.com/rest-api/endpoint-reference/entries/assert-a-list-entry-by-parent.md): Use this endpoint to create or update a list entry for a given parent record. If an entry with the specified parent record is found, that entry will be updated. If no such entry is found, a new entry will be created instead. If there are multiple entries with the same parent record, this endpoint wi…
-- [Create an entry (add record to list)](https://docs.attio.com/rest-api/endpoint-reference/entries/create-an-entry-add-record-to-list.md): Adds a record to a list as a new list entry. This endpoint will throw on conflicts of unique attributes. Multiple list entries are allowed for the same parent record
-- [Delete a list entry](https://docs.attio.com/rest-api/endpoint-reference/entries/delete-a-list-entry.md): Deletes a single list entry by its `entry_id`.
-- [Get a list entry](https://docs.attio.com/rest-api/endpoint-reference/entries/get-a-list-entry.md): Gets a single list entry by its `entry_id`.
-- [List attribute values for a list entry](https://docs.attio.com/rest-api/endpoint-reference/entries/list-attribute-values-for-a-list-entry.md): Gets all values for a given attribute on a list entry. This endpoint has the ability to return all historic values using the `show_historic` query param. Historic values are sorted from oldest to newest (by `active_from`).
-- [List entries](https://docs.attio.com/rest-api/endpoint-reference/entries/list-entries.md): Lists entries in a given list, with the option to filter and sort results.
-- [Update a list entry (append multiselect values)](https://docs.attio.com/rest-api/endpoint-reference/entries/update-a-list-entry-append-multiselect-values.md): Use this endpoint to update list entries by `entry_id`. If the update payload includes multiselect attributes, the values supplied will be created and prepended to the list of values that already exist (if any). Use the `PUT` endpoint to overwrite or remove multiselect attribute values.
-- [Update a list entry (overwrite multiselect values)](https://docs.attio.com/rest-api/endpoint-reference/entries/update-a-list-entry-overwrite-multiselect-values.md): Use this endpoint to update list entries by `entry_id`. If the update payload includes multiselect attributes, the values supplied will overwrite/remove the list of values that already exist (if any). Use the `PATCH` endpoint to add multiselect attribute values without removing those value that alre…
-- [Create a folder](https://docs.attio.com/rest-api/endpoint-reference/files/create-a-folder.md): Creates a native folder entry or a connected file/folder entry on an object record.
-- [Delete a file](https://docs.attio.com/rest-api/endpoint-reference/files/delete-a-file.md): Delete a single file by ID. Deleting a folder will delete all of its descendants.
-- [Download a file](https://docs.attio.com/rest-api/endpoint-reference/files/download-a-file.md): Downloads a file by redirecting to a signed URL.
-- [Get a file](https://docs.attio.com/rest-api/endpoint-reference/files/get-a-file.md): Get a single file entry by ID.
-- [List files](https://docs.attio.com/rest-api/endpoint-reference/files/list-files.md): Lists internal files, externally connected files and folders across the workspace. Optional query parameters may be provided to filter results by object, record, storage provider or parent folder.
-- [Upload a file](https://docs.attio.com/rest-api/endpoint-reference/files/upload-a-file.md): Uploads a file to native Attio storage for a record. Send multipart/form-data with a single binary field named `file` together with the body fields `object`, `record_id`, and optional `parent_folder_id`. Maximum file size is 50 MB.
-- [Create a list](https://docs.attio.com/rest-api/endpoint-reference/lists/create-a-list.md): Creates a new list.
-- [Get a list](https://docs.attio.com/rest-api/endpoint-reference/lists/get-a-list.md): Gets a single list in your workspace that your access token has access to.
-- [List all lists](https://docs.attio.com/rest-api/endpoint-reference/lists/list-all-lists.md): List all lists that your access token has access to. lists are returned in the order that they are sorted in the sidebar.
-- [Update a list](https://docs.attio.com/rest-api/endpoint-reference/lists/update-a-list.md): Updates an existing list. Permissions for the list are controlled with the `workspace_access` and `workspace_member_access` parameters. Please note that lists must have either `workspace_access` set to `"full-access"` or one or more element of `workspace_member_access` with a `"full-access"` level.…
-- [Get a meeting](https://docs.attio.com/rest-api/endpoint-reference/meetings/get-a-meeting.md): Get a single meeting by ID.
-- [List meetings](https://docs.attio.com/rest-api/endpoint-reference/meetings/list-meetings.md): Lists all meetings in the workspace using a deterministic sort order.
-- [Identify](https://docs.attio.com/rest-api/endpoint-reference/meta/identify.md): Identify the current access token, the workspace it is linked to, and any permissions it has.
-- [Create a note](https://docs.attio.com/rest-api/endpoint-reference/notes/create-a-note.md): Creates a new note for a given record.
-- [Delete a note](https://docs.attio.com/rest-api/endpoint-reference/notes/delete-a-note.md): Delete a single note by ID.
-- [Get a note](https://docs.attio.com/rest-api/endpoint-reference/notes/get-a-note.md): Get a single note by ID.
-- [List notes](https://docs.attio.com/rest-api/endpoint-reference/notes/list-notes.md): List notes for all records or for a specific record.
-- [Create an object](https://docs.attio.com/rest-api/endpoint-reference/objects/create-an-object.md): Creates a new custom object in your workspace.
-- [Get an object](https://docs.attio.com/rest-api/endpoint-reference/objects/get-an-object.md): Gets a single object by its `object_id` or slug.
-- [List objects](https://docs.attio.com/rest-api/endpoint-reference/objects/list-objects.md): Lists all system-defined and user-defined objects in your workspace.
-- [Update an object](https://docs.attio.com/rest-api/endpoint-reference/objects/update-an-object.md): Updates a single object. The object to be updated is identified by its `object_id`.
-- [OpenAPI](https://docs.attio.com/rest-api/endpoint-reference/openapi.md): Access the OpenAPI specification for the Attio REST API
-- [Assert a person Record](https://docs.attio.com/rest-api/endpoint-reference/people/assert-a-person-record.md): Use this endpoint to create or update person records, using a unique attribute to search for existing People (for example the `email_addresses` attribute). If a person is found with the same value for the matching attribute, that person will be updated. If no person with the same value for the match…
-- [Create a person Record](https://docs.attio.com/rest-api/endpoint-reference/people/create-a-person-record.md): Creates a new person Record. This endpoint will throw on conflicts of unique attributes, like `email_addresses`. If you would prefer to update person records on conflicts, please use the Assert person record endpoint instead. Please note, the `avatar_url` attribute cannot currently be set via the AP…
-- [Delete a person Record](https://docs.attio.com/rest-api/endpoint-reference/people/delete-a-person-record.md): Deletes a single person record by ID.
-- [Get a person Record](https://docs.attio.com/rest-api/endpoint-reference/people/get-a-person-record.md): Gets a single person record by its `record_id`.
-- [List person record attribute values](https://docs.attio.com/rest-api/endpoint-reference/people/list-person-record-attribute-values.md): Gets all values for a given attribute on a person record. Historic values can be queried using the `show_historic` query param. Historic values cannot be queried on COMINT (Communication Intelligence) or enriched attributes and the endpoint will return a 400 error if this is attempted. Historic valu…
-- [List person record entries](https://docs.attio.com/rest-api/endpoint-reference/people/list-person-record-entries.md): List all entries, across all lists, for which this person record is the parent.
-- [List person records ](https://docs.attio.com/rest-api/endpoint-reference/people/list-person-records.md): Lists person records, with the option to filter and sort results.
-- [Update a person Record](https://docs.attio.com/rest-api/endpoint-reference/people/update-a-person-record.md): Use this endpoint to update person records by `record_id`. If the update payload includes multiselect attributes, the values supplied will be created and prepended to the list of values that already exist (if any). Use the [Assert person endpoint](/reference/put_v2-objects-people-records) to overwri…
-- [Assert a record](https://docs.attio.com/rest-api/endpoint-reference/records/assert-a-record.md): Use this endpoint to create or update people, companies and other records. A matching attribute is used to search for existing records. If a record is found with the same value for the matching attribute, that record will be updated. If no record with the same value for the matching attribute is fou…
-- [Create a record](https://docs.attio.com/rest-api/endpoint-reference/records/create-a-record.md): Creates a new person, company or other record. This endpoint will throw on conflicts of unique attributes. If you would prefer to update records on conflicts, please use the [Assert record endpoint](/rest-api/endpoint-reference/records/assert-a-record) instead.
-- [Delete a record](https://docs.attio.com/rest-api/endpoint-reference/records/delete-a-record.md): Deletes a single record (e.g. a company or person) by ID.
-- [Get a record](https://docs.attio.com/rest-api/endpoint-reference/records/get-a-record.md): Gets a single person, company or other record by its `record_id`.
-- [List record attribute values](https://docs.attio.com/rest-api/endpoint-reference/records/list-record-attribute-values.md): Gets all values for a given attribute on a record. Historic values can be queried using the `show_historic` query param. Historic values cannot be queried on COMINT (Communication Intelligence) or enriched attributes and the endpoint will return a 400 error if this is attempted. Historic values are…
-- [List record entries](https://docs.attio.com/rest-api/endpoint-reference/records/list-record-entries.md): List all entries, across all lists, for which this record is the parent.
-- [List records](https://docs.attio.com/rest-api/endpoint-reference/records/list-records.md): Lists people, company or other records, with the option to filter and sort results.
-- [Search records](https://docs.attio.com/rest-api/endpoint-reference/records/search-records.md): The search records endpoint provides a convenient way to fuzzy search for records across one or more objects. The matching strategy employed in this endpoint follows the in-product strategy and will match names, domains, emails, phone numbers and social handles on people and companies, and labels on…
-- [Update a record (append multiselect values)](https://docs.attio.com/rest-api/endpoint-reference/records/update-a-record-append-multiselect-values.md): Use this endpoint to update people, companies, and other records by `record_id`. If the update payload includes multiselect attributes, the values supplied will be created and prepended to the list of values that already exist (if any). Use the `PUT` endpoint to overwrite or remove multiselect attri…
-- [Update a record (overwrite multiselect values)](https://docs.attio.com/rest-api/endpoint-reference/records/update-a-record-overwrite-multiselect-values.md): Use this endpoint to update people, companies, and other records by `record_id`. If the update payload includes multiselect attributes, the values supplied will overwrite/remove the list of values that already exist (if any). Use the `PATCH` endpoint to append multiselect values without removing tho…
-- [Create a task](https://docs.attio.com/rest-api/endpoint-reference/tasks/create-a-task.md): Creates a new task.
-- [Delete a task](https://docs.attio.com/rest-api/endpoint-reference/tasks/delete-a-task.md): Delete a task by ID.
-- [Get a task](https://docs.attio.com/rest-api/endpoint-reference/tasks/get-a-task.md): Get a single task by ID.
-- [List tasks](https://docs.attio.com/rest-api/endpoint-reference/tasks/list-tasks.md): List all tasks. Results are sorted by creation date, from oldest to newest.
-- [Update a task](https://docs.attio.com/rest-api/endpoint-reference/tasks/update-a-task.md): Updates an existing task by `task_id`. At present, only the `deadline_at`, `is_completed`, `linked_records`, and `assignees` fields can be updated.
-- [Get a thread](https://docs.attio.com/rest-api/endpoint-reference/threads/get-a-thread.md): Get all comments in a thread.
-- [List threads](https://docs.attio.com/rest-api/endpoint-reference/threads/list-threads.md): List threads of comments on a record or list entry.
-- [Get call transcript](https://docs.attio.com/rest-api/endpoint-reference/transcripts/get-call-transcript.md): Get the transcript for a call recording.
-- [Assert a user record](https://docs.attio.com/rest-api/endpoint-reference/users/assert-a-user-record.md): Use this endpoint to create or update user records, using a unique attribute to search for existing users (for example the `primary_email_address` attribute). If a user is found with the same value for the matching attribute, that user will be updated, otherwise a new user will be created instead. I…
-- [Create a user record](https://docs.attio.com/rest-api/endpoint-reference/users/create-a-user-record.md): Creates a new user record. This endpoint will throw on conflicts of unique attributes, like `primary_email_address`. If you would prefer to update user records on conflicts, please use the Assert user record endpoint instead. Please note, the `avatar_url` attribute cannot currently be set via the AP…
-- [Delete a user record](https://docs.attio.com/rest-api/endpoint-reference/users/delete-a-user-record.md): Deletes a single user record by ID.
-- [Get a user record](https://docs.attio.com/rest-api/endpoint-reference/users/get-a-user-record.md): Gets a single user record by its `record_id`.
-- [List user record attribute values](https://docs.attio.com/rest-api/endpoint-reference/users/list-user-record-attribute-values.md): Gets all values for a given attribute on a user record. Historic values can be queried using the `show_historic` query param. Historic values are sorted from oldest to newest (by `active_from`).
-- [List user record entries](https://docs.attio.com/rest-api/endpoint-reference/users/list-user-record-entries.md): List all entries, across all lists, for which this user record is the parent.
-- [List user records](https://docs.attio.com/rest-api/endpoint-reference/users/list-user-records.md): Lists user records, with the option to filter and sort results.
-- [Update a user Record](https://docs.attio.com/rest-api/endpoint-reference/users/update-a-user-record.md): Use this endpoint to update user records by `record_id`. If the update payload includes multiselect attributes, the values supplied will be created and prepended to the list of values that already exist (if any). Use the [Assert user endpoint](/reference/put_v2-objects-users-records) to overwrite or…
-- [Create a webhook](https://docs.attio.com/rest-api/endpoint-reference/webhooks/create-a-webhook.md): Create a webhook and associated subscriptions.
-- [Delete a webhook](https://docs.attio.com/rest-api/endpoint-reference/webhooks/delete-a-webhook.md): Delete a webhook by ID.
-- [Get a webhook](https://docs.attio.com/rest-api/endpoint-reference/webhooks/get-a-webhook.md): Get a single webhook.
-- [List webhooks](https://docs.attio.com/rest-api/endpoint-reference/webhooks/list-webhooks.md): Get all of the webhooks in your workspace.
-- [Update a webhook](https://docs.attio.com/rest-api/endpoint-reference/webhooks/update-a-webhook.md): Update a webhook and associated subscriptions.
-- [Get a workspace member](https://docs.attio.com/rest-api/endpoint-reference/workspace-members/get-a-workspace-member.md): Gets a single workspace member by ID.
-- [List workspace members](https://docs.attio.com/rest-api/endpoint-reference/workspace-members/list-workspace-members.md): Lists all workspace members in the workspace.
-- [Assert a workspace record](https://docs.attio.com/rest-api/endpoint-reference/workspaces/assert-a-workspace-record.md): Use this endpoint to create or update workspace records, using a unique attribute to search for existing workspaces (for example the `workspace_id` attribute). If a workspace is found with the same value for the matching attribute, that workspace will be updated, otherwise a new workspace will be cr…
-- [Create a workspace record](https://docs.attio.com/rest-api/endpoint-reference/workspaces/create-a-workspace-record.md): Creates a new workspace record. This endpoint will throw on conflicts of unique attributes, like `workspace_id`. If you would prefer to update workspace records on conflicts, please use the Assert workspace record endpoint instead.
-- [Delete a workspace record](https://docs.attio.com/rest-api/endpoint-reference/workspaces/delete-a-workspace-record.md): Deletes a single workspace record by ID.
-- [Get a workspace record](https://docs.attio.com/rest-api/endpoint-reference/workspaces/get-a-workspace-record.md): Gets a single workspace record by its `record_id`.
-- [List workspace record attribute values](https://docs.attio.com/rest-api/endpoint-reference/workspaces/list-workspace-record-attribute-values.md): Gets all values for a given attribute on a workspace record. Historic values can be queried using the `show_historic` query param. Historic values are sorted from oldest to newest (by `active_from`).
-- [List workspace record entries](https://docs.attio.com/rest-api/endpoint-reference/workspaces/list-workspace-record-entries.md): List all entries, across all lists, for which this workspace record is the parent.
-- [List workspace records](https://docs.attio.com/rest-api/endpoint-reference/workspaces/list-workspace-records.md): Lists workspace records, with the option to filter and sort results.
-- [Update a workspace Record](https://docs.attio.com/rest-api/endpoint-reference/workspaces/update-a-workspace-record.md): Use this endpoint to update workspace records by `record_id`. If the update payload includes multiselect attributes, the values supplied will be created and prepended to the list of values that already exist (if any). Use the [Assert workspace endpoint](/rest-api/endpoint-reference/standard-objects/…
-- [Authenticating requests](https://docs.attio.com/rest-api/guides/authentication.md): How to generate access tokens and make requests
-- [Filtering and sorting](https://docs.attio.com/rest-api/guides/filtering-and-sorting.md): Searching for just the records you need
-- [Paginating API results](https://docs.attio.com/rest-api/guides/pagination.md): Retrieving particular ranges of data
-- [Handling rate limits](https://docs.attio.com/rest-api/guides/rate-limiting.md): How to ensure your app handles rate limits gracefully
-- [Configuring webhooks](https://docs.attio.com/rest-api/guides/webhooks.md): Responding to changes in real-time
-- [Overview](https://docs.attio.com/rest-api/overview.md): Learn about the REST API
-- [Connect an app to Attio through OAuth](https://docs.attio.com/rest-api/tutorials/connect-an-app-through-oauth.md): Learn how to create an OAuth 2.0 app to access Attio's REST API
-- [Call recording created](https://docs.attio.com/rest-api/webhook-reference/call-recording-events/call-recordingcreated.md): This event fires after a call recording has finished and its media upload is complete.
-- [Comment created](https://docs.attio.com/rest-api/webhook-reference/comment-events/commentcreated.md): This event is fired whenever a comment is created.
-- [Comment deleted](https://docs.attio.com/rest-api/webhook-reference/comment-events/commentdeleted.md): This event is fired whenever a comment is deleted.
-- [Comment resolved](https://docs.attio.com/rest-api/webhook-reference/comment-events/commentresolved.md): This event is fired whenever a comment is resolved.
-- [Comment unresolved](https://docs.attio.com/rest-api/webhook-reference/comment-events/commentunresolved.md): This event is fired whenever a comment is un-resolved.
-- [List attribute created](https://docs.attio.com/rest-api/webhook-reference/list-attribute-events/list-attributecreated.md): This event is fired whenever a list attribute is created (e.g. adding an "Owner" attribute).
-- [List attribute updated](https://docs.attio.com/rest-api/webhook-reference/list-attribute-events/list-attributeupdated.md): This event is fired whenever a list attribute is updated (e.g. when changing the name of the "Owner" attribute to "Proprietor").
-- [List entry created](https://docs.attio.com/rest-api/webhook-reference/list-entry-events/list-entrycreated.md): This event is fired whenever a list entry is created (i.e. when a record is added to a list).
-- [List entry deleted](https://docs.attio.com/rest-api/webhook-reference/list-entry-events/list-entrydeleted.md): This event is fired whenever a list entry is deleted (i.e. when a record is removed from a list).
-- [List entry updated](https://docs.attio.com/rest-api/webhook-reference/list-entry-events/list-entryupdated.md): This event is fired whenever an existing list entry is updated (i.e. when a list attribute is changed for a specific list entry, e.g. when setting "Owner").
-- [List created](https://docs.attio.com/rest-api/webhook-reference/list-events/listcreated.md): This event is fired whenever a list is created.
-- [List deleted](https://docs.attio.com/rest-api/webhook-reference/list-events/listdeleted.md): This event is fired whenever a list is deleted.
-- [List updated](https://docs.attio.com/rest-api/webhook-reference/list-events/listupdated.md): This event is fired whenever a list is updated (e.g. when changing the name or icon of the list).
-- [Note content updated](https://docs.attio.com/rest-api/webhook-reference/note-content-events/note-contentupdated.md): This event is fired whenever the content (body) of a note is updated. The `parent_object_id` refers to the object that the note references (e.g. the person object), and the `parent_record_id` refers to the record that the note references.
-- [Note created](https://docs.attio.com/rest-api/webhook-reference/note-events/notecreated.md): This event is fired whenever a note is created. The `parent_object_id` refers to the object that the note references (e.g. the person object), and the `parent_record_id` refers to the record that the note references.
-- [Note deleted](https://docs.attio.com/rest-api/webhook-reference/note-events/notedeleted.md): This event is fired whenever a note is deleted.
-- [Note updated](https://docs.attio.com/rest-api/webhook-reference/note-events/noteupdated.md): This event is fired whenever the title of a note is modified. Body updates do not currently trigger webhooks.
-- [Object attribute created](https://docs.attio.com/rest-api/webhook-reference/object-attribute-events/object-attributecreated.md): This event is fired whenever an object attribute is created (e.g. when defining a new attribute "Rating" on the company object).
-- [Object attribute updated](https://docs.attio.com/rest-api/webhook-reference/object-attribute-events/object-attributeupdated.md): This event is fired whenever an object attribute is updated (e.g. when renaming the "Rating" attribute to "Score" on the company object).
-- [Record created](https://docs.attio.com/rest-api/webhook-reference/record-events/recordcreated.md): This event is fired whenever a record is created.
-- [Record deleted](https://docs.attio.com/rest-api/webhook-reference/record-events/recorddeleted.md): This event is fired whenever a record is deleted.
-- [Record merged](https://docs.attio.com/rest-api/webhook-reference/record-events/recordmerged.md): This event is fired whenever two records are merged together. Merging copies properties from the "duplicate" record into the original record, so that the original record has the properties of both, and the duplicate record is deleted.
-- [Record updated](https://docs.attio.com/rest-api/webhook-reference/record-events/recordupdated.md): This event is fired whenever an attribute on a record is updated (e.g. changing the "name" field on a record).
-- [Task created](https://docs.attio.com/rest-api/webhook-reference/task-events/taskcreated.md): This event is fired whenever a task is created.
-- [Task deleted](https://docs.attio.com/rest-api/webhook-reference/task-events/taskdeleted.md): This event is fired whenever a task is deleted.
-- [Task updated](https://docs.attio.com/rest-api/webhook-reference/task-events/taskupdated.md): This event is fired whenever a task is updated (e.g. the assignees or deadline are changed).
-- [Workspace member created](https://docs.attio.com/rest-api/webhook-reference/workspace-member-events/workspace-membercreated.md): This event is fired whenever a workspace member is added to the workspace.
+- [Actors](https://docs.attio.com/docs/actors.md): Keeping track of who did what
+- [Slugs and IDs](https://docs.attio.com/docs/slugs-and-ids.md)
+- [Default values](https://docs.attio.com/docs/default-values.md)
+- [Archiving vs deleting](https://docs.attio.com/docs/archiving-vs-deleting.md)
+- [App SDK](https://docs.attio.com/sdk/overview.md): Build apps that extend Attio with custom UI, server logic, and workflow automation
+- [SDK concepts](https://docs.attio.com/sdk/deep-dives/overview.md): A walkthrough of building a complete Attio app using the App SDK
+- [Creating an app](https://docs.attio.com/sdk/guides/creating-an-app.md): Learn how to build your first app with the App SDK
+- [Querying Attio data](https://docs.attio.com/sdk/guides/querying-attio-data.md): How to query Attio data with GraphQL
+- [Making HTTP requests](https://docs.attio.com/sdk/guides/making-http-requests.md): How to make HTTP requests from your app with server functions
+- [Authenticating to external services](https://docs.attio.com/sdk/guides/authenticating-to-external-services.md): How to use connections to authenticate users to external services
+- [Building forms](https://docs.attio.com/sdk/guides/building-forms.md): How to build and validate forms
+- [Using charts](https://docs.attio.com/sdk/guides/using-charts.md): Pick a chart type and learn the props every chart shares
+- [Defining app settings](https://docs.attio.com/sdk/guides/adding-workspace-settings.md): How to define workspace-level settings for your app
+- [Building app pages](https://docs.attio.com/sdk/guides/building-app-pages.md): Give your app a dashboard page, a record tab, and the links between them
+- [Receiving HTTP requests](https://docs.attio.com/sdk/guides/receiving-http-requests.md): How to use webhook handlers to receive HTTP requests from external services
+- [Debugging your app](https://docs.attio.com/sdk/guides/debugging-your-app.md): How to debug your app using logging in frontend and server environments
+- [AI-assisted development](https://docs.attio.com/sdk/guides/ai.md): Learn how to build apps faster with AI
+- [Migration: Folder structure](https://docs.attio.com/sdk/guides/folder-structure-migration.md): Convert an existing app to the folder-based layout with attio migrate folder-structure
+- [Building workflow blocks](https://docs.attio.com/guides/building-workflow-blocks.md): How to add custom triggers and steps to Attio Workflows using the App SDK
+- [App structure](https://docs.attio.com/sdk/extensions/overview.md): How an app's extensions, settings, and handlers are laid out on disk
+- [Record action](https://docs.attio.com/sdk/extensions/record-action.md): Add an action to record pages in Attio
+- [Bulk record action](https://docs.attio.com/sdk/extensions/bulk-record-action.md): Add a bulk action for records selected in a list
+- [Record widget](https://docs.attio.com/sdk/extensions/record-widget.md): Add a React widget to record pages in Attio
+- [Record tab](https://docs.attio.com/sdk/extensions/record-tab.md): Add a tab to record pages in Attio
+- [Object action](https://docs.attio.com/sdk/extensions/object-action.md): Add an action that can be taken on an object
+- [Call recording transcript text action](https://docs.attio.com/sdk/extensions/call-recording-transcript-text-action.md): Perform an action based on a text selection on a call recording transcript
+- [Call recording insight text action](https://docs.attio.com/sdk/extensions/call-recording-insight-text-action.md): Perform an action based on a text selection on a call recording insight
+- [Call recording summary text action](https://docs.attio.com/sdk/extensions/call-recording-summary-text-action.md): Perform an action based on a text selection on a call recording summary
+- [Pages](https://docs.attio.com/sdk/pages/overview.md): Give your app full pages of its own inside Attio
+- [Extensions.definePage()](https://docs.attio.com/sdk/pages/define-page.md): Define a full page of your app
+- [Workflow blocks](https://docs.attio.com/sdk/workflow-blocks/overview.md): Build custom triggers and steps that show up inside Attio Workflows
+- [File structure](https://docs.attio.com/sdk/workflows/file-structure.md): The expected folder layout for a workflow block
+- [Block definition](https://docs.attio.com/sdk/workflows/define-workflow-block.md): Declare a workflow block's identity, copy, and config schema
+- [Config schema](https://docs.attio.com/sdk/workflows/config-schema.md): Node types for declaring configurable fields in a workflow block
+- [Outcome schema](https://docs.attio.com/sdk/workflows/outcome-schema.md): Node types for typing outcome data returned from workflow block handlers
+- [Configurator](https://docs.attio.com/sdk/workflows/configurator.md): Render config inputs and declare outcomes in the workflow editor
+- [Block lifecycle](https://docs.attio.com/sdk/workflows/block-lifecycle.md): How Attio calls your workflow block handlers across a run
+- [Executing a step](https://docs.attio.com/sdk/workflows/define-workflow-block-execute.md): Define the execute handler for a step block
+- [Finishing a deferred step](https://docs.attio.com/sdk/workflows/define-workflow-block-resume-callback.md): Define the finish handler for a deferred step block
+- [Registering a trigger](https://docs.attio.com/sdk/workflows/define-workflow-block-activate.md): Define the activate handler for a trigger block
+- [Receiving a trigger event](https://docs.attio.com/sdk/workflows/define-workflow-block-on-trigger-callback.md): Define the event handler for a trigger block
+- [Deactivating a trigger](https://docs.attio.com/sdk/workflows/define-workflow-block-deactivate.md): Define the deactivate handler for a trigger block
+- [Notifying the user](https://docs.attio.com/sdk/notifications/notifications.md): Methods to imperatively give feedback to the user
+- [alert()](https://docs.attio.com/sdk/notifications/alert.md): Shows an alert to the user
+- [confirm()](https://docs.attio.com/sdk/notifications/confirm.md): Shows a confirmation prompt to the user
+- [showToast()](https://docs.attio.com/sdk/notifications/show-toast.md): Shows a toast to the user
+- [showDialog()](https://docs.attio.com/sdk/dialogs/show-dialog.md): Show a dialog box
+- [<DialogList />](https://docs.attio.com/sdk/dialogs/dialog-list.md): A navigable and clickable list of items in a dialog.
+- [Navigation](https://docs.attio.com/sdk/navigation/overview.md): Send users to places inside Attio from your app
+- [<AttioLink />](https://docs.attio.com/sdk/navigation/attio-link.md): A link to a place inside Attio.
+- [navigate()](https://docs.attio.com/sdk/navigation/navigate.md): Send the user to a place inside Attio from an event handler.
 - [<Avatar />](https://docs.attio.com/sdk/components/avatar.md): An avatar component for displaying profile pictures or organization logos.
 - [<Badge />](https://docs.attio.com/sdk/components/badge.md): A colored badge of information.
 - [<Banner />](https://docs.attio.com/sdk/components/banner.md): A component displaying important information to the user.
 - [<Button />](https://docs.attio.com/sdk/components/button.md): A button component.
+- [<Card />](https://docs.attio.com/sdk/components/card.md): A bordered container that groups related content.
 - [<DescriptionList />](https://docs.attio.com/sdk/components/description-list.md): A component displaying label-value information.
 - [<Divider />](https://docs.attio.com/sdk/components/divider.md): A component for drawing a horizontal dividing line between UI elements.
+- [<EmptyState />](https://docs.attio.com/sdk/components/empty-state.md): A placeholder for a surface with nothing to show yet.
+- [<Grid />](https://docs.attio.com/sdk/components/grid.md): Lay children out in a responsive grid.
+- [<Json />](https://docs.attio.com/sdk/components/json.md): A component for displaying JSON data, primarily used for debugging.
+- [<Link />](https://docs.attio.com/sdk/components/link.md): A hyperlink to an external website.
+- [<LoadingState />](https://docs.attio.com/sdk/components/loading-state.md): A component for showing a loading spinner.
+- [<Section />](https://docs.attio.com/sdk/components/section.md): A section of UI with a title. It can be thought of like a `<div/>` in DOM.
+- [<Stack />](https://docs.attio.com/sdk/components/stack.md): Lay children out along one axis.
+- [<StatusBadge />](https://docs.attio.com/sdk/components/status-badge.md): A component for displaying a status badge with a color.
+- [<Table />](https://docs.attio.com/sdk/components/table.md): A component for displaying tabular data.
+- [<TextBlock />](https://docs.attio.com/sdk/components/text-block.md): A block of text whose content can be aligned.
+- [<Typography />](https://docs.attio.com/sdk/components/typography.md): A component to style text.
+- [<Chart.Bar />](https://docs.attio.com/sdk/components/charts/bar.md): Bars over a category axis, grouped side by side or stacked.
+- [<Chart.Line />](https://docs.attio.com/sdk/components/charts/line.md): A line over a category axis.
+- [<Chart.Pie />](https://docs.attio.com/sdk/components/charts/pie.md): Labeled slices of a whole.
+- [<Chart.Metric />](https://docs.attio.com/sdk/components/charts/metric.md): A single number, rendered large.
+- [<Chart.Funnel />](https://docs.attio.com/sdk/components/charts/funnel.md): Labeled steps narrowing from the first.
+- [<Chart.Loading />](https://docs.attio.com/sdk/components/charts/loading.md): A placeholder drawn while a chart's data is loading.
 - [<AttioRecordCombobox />](https://docs.attio.com/sdk/components/forms/attio-record-combobox.md): A combobox input for selecting Attio records.
 - [<AttioUserCombobox />](https://docs.attio.com/sdk/components/forms/attio-user-combobox.md): A combobox input for selecting Attio workspace users.
 - [<Checkbox />](https://docs.attio.com/sdk/components/forms/checkbox.md): A checkbox input field.
@@ -199,24 +96,10 @@
 - [<PlainDateInput />](https://docs.attio.com/sdk/components/forms/plain-date-input.md): A date input field for selecting ISO 8601 dates (YYYY-MM-DD).
 - [<RadioGroup />](https://docs.attio.com/sdk/components/forms/radio-group.md): A radio group input field for selecting a single option from a list.
 - [<SubmitButton />](https://docs.attio.com/sdk/components/forms/submit-button.md): A submit button for the form.
-- [<TextArea />](https://docs.attio.com/sdk/components/forms/text-area.md): A multi-line text input field for longer string values.
 - [<TextInput />](https://docs.attio.com/sdk/components/forms/text-input.md): A string input field.
+- [<TextArea />](https://docs.attio.com/sdk/components/forms/text-area.md): A multi-line text input field for longer string values.
 - [<Toggle />](https://docs.attio.com/sdk/components/forms/toggle.md): A toggle input field.
 - [<WithState />](https://docs.attio.com/sdk/components/forms/with-state.md): A non-visual component to get form state when rendering JSX
-- [<Json />](https://docs.attio.com/sdk/components/json.md): A component for displaying JSON data, primarily used for debugging.
-- [<Link />](https://docs.attio.com/sdk/components/link.md): A hyperlink to an external website.
-- [<LoadingState />](https://docs.attio.com/sdk/components/loading-state.md): A component for showing a loading spinner.
-- [<Section />](https://docs.attio.com/sdk/components/section.md): A section of UI with a title. It can be thought of like a `<div/>` in DOM.
-- [<StatusBadge />](https://docs.attio.com/sdk/components/status-badge.md): A component for displaying a status badge with a color.
-- [<Table />](https://docs.attio.com/sdk/components/table.md): A component for displaying tabular data.
-- [<TextBlock />](https://docs.attio.com/sdk/components/text-block.md): A block of text whose content can be aligned.
-- [<Typography />](https://docs.attio.com/sdk/components/typography.md): A component to style text.
-- [<Widget.Decoration />](https://docs.attio.com/sdk/components/widgets/decoration.md): A component to show decorations inside a widget.
-- [<Widget.Loading />](https://docs.attio.com/sdk/components/widgets/loading.md): A loading state for a widget.
-- [<Widget.Text.Primary />](https://docs.attio.com/sdk/components/widgets/text-primary.md): The primary text information in a widget.
-- [<Widget.Text.Secondary />](https://docs.attio.com/sdk/components/widgets/text-secondary.md): The secondary text information in a widget.
-- [<Widget.TextWidget />](https://docs.attio.com/sdk/components/widgets/text-widget.md): Text widget that can be shown on a record page.
-- [<Widget.Title />](https://docs.attio.com/sdk/components/widgets/title.md): The title of the widget
 - [<AttioUserCombobox />](https://docs.attio.com/sdk/components/workspace-settings/attio-user-combobox.md): A combobox input for selecting Attio workspace users.
 - [<Button />](https://docs.attio.com/sdk/components/workspace-settings/button.md): A button component.
 - [<Checkbox />](https://docs.attio.com/sdk/components/workspace-settings/checkbox.md): A checkbox input field.
@@ -226,81 +109,272 @@
 - [<InputGroup />](https://docs.attio.com/sdk/components/workspace-settings/input-group.md): A component for grouping inputs.
 - [<NumberInput />](https://docs.attio.com/sdk/components/workspace-settings/number-input.md): A numeric input field.
 - [<RadioGroup />](https://docs.attio.com/sdk/components/workspace-settings/radio-group.md): A radio group input field for selecting a single option from a list.
+- [<RichTextInput />](https://docs.attio.com/sdk/components/workspace-settings/rich-text-input.md): A rich text input field.
 - [<Section />](https://docs.attio.com/sdk/components/workspace-settings/section.md): A section of UI with a title and optional description. It can be thought of like a `<div/>` in DOM.
 - [<TextInput />](https://docs.attio.com/sdk/components/workspace-settings/text-input.md): A string input field.
 - [<Toggle />](https://docs.attio.com/sdk/components/workspace-settings/toggle.md): A toggle input field.
 - [<WithState />](https://docs.attio.com/sdk/components/workspace-settings/with-state.md): A non-visual component to get form state when rendering JSX
-- [React Query](https://docs.attio.com/sdk/data-fetching/react-query.md): How to use React Query with App SDK
-- [useAsyncCache()](https://docs.attio.com/sdk/data-fetching/use-async-cache.md): A suspenseful hook that returns, and caches, the results of calling one or more async functions, typically to load data from a third-party via server functions.
-- [Overview of the App SDK](https://docs.attio.com/sdk/deep-dives/overview.md): An overview of the functionality provided by the App SDK
-- [<DialogList />](https://docs.attio.com/sdk/dialogs/dialog-list.md): A navigatable and clickable list of items in a dialog.
-- [showDialog()](https://docs.attio.com/sdk/dialogs/show-dialog.md): Show a dialog box
-- [App configuration file](https://docs.attio.com/sdk/entry-points/app-ts.md): Register all your entry points in one place
-- [Bulk record action](https://docs.attio.com/sdk/entry-points/bulk-record-action.md): Registers a bulk action for records in Attio
-- [Call recording insight text selection action](https://docs.attio.com/sdk/entry-points/call-recording-insight-text-selection-action.md): Call recording insights text selection actions are a way to perform an action based on a text selection on a call recording insights.
-- [Call recording summary text selection action](https://docs.attio.com/sdk/entry-points/call-recording-summary-text-selection-action.md): Call recording summary text selection actions are a way to perform an action based on a text selection on a call recording summary.
-- [Call recording transcript text selection action](https://docs.attio.com/sdk/entry-points/call-recording-transcript-text-selection-action.md): Call recording transcript text selection actions are a way to perform an action based on a text selection on a call recording transcript.
-- [Record action](https://docs.attio.com/sdk/entry-points/record-action.md): Registers an action for records in Attio
-- [Record widget](https://docs.attio.com/sdk/entry-points/record-widget.md): Record Widgets are a way to show information on record pages.
-- [Workspace settings](https://docs.attio.com/sdk/entry-points/workspace-settings.md): Add configurable workspace-level settings to your app
+- [<Widget.TextWidget />](https://docs.attio.com/sdk/components/widgets/text-widget.md): Text widget that can be shown on a record page.
+- [<Widget.Title />](https://docs.attio.com/sdk/components/widgets/title.md): The title of the widget
+- [<Widget.Text.Primary />](https://docs.attio.com/sdk/components/widgets/text-primary.md): The primary text information in a widget.
+- [<Widget.Text.Secondary />](https://docs.attio.com/sdk/components/widgets/text-secondary.md): The secondary text information in a widget.
+- [<Widget.Loading />](https://docs.attio.com/sdk/components/widgets/loading.md): A loading state for a widget.
+- [<Widget.Decoration />](https://docs.attio.com/sdk/components/widgets/decoration.md): A component to show decorations inside a widget.
 - [Form schema](https://docs.attio.com/sdk/forms/form-schema.md): Defines the shape of your form data
 - [useForm()](https://docs.attio.com/sdk/forms/use-form.md): A hook for creating forms inside your Attio app.
-- [Using GraphQL](https://docs.attio.com/sdk/graphql/graphql.md): Querying Attio data on the client via GraphQL
-- [runQuery()](https://docs.attio.com/sdk/graphql/run-query.md): Imperatively run an asynchronous GraphQL query
-- [useQuery()](https://docs.attio.com/sdk/graphql/use-query.md): A suspensful hook to run a GraphQL query
-- [Defining app settings](https://docs.attio.com/sdk/guides/adding-workspace-settings.md): How to define workspace-level settings for your app
-- [AI-assisted development](https://docs.attio.com/sdk/guides/ai.md): Learn how to build apps faster with AI
-- [Migration: App namespace](https://docs.attio.com/sdk/guides/app-namespace-migration.md): Use types under the new App namespace
-- [Migration: app.ts](https://docs.attio.com/sdk/guides/app-ts-migration.md): Migrate your app to use the new app.ts definition file
-- [Authenticating to external services](https://docs.attio.com/sdk/guides/authenticating-to-external-services.md): How to use connections to authenticate users to external services
-- [Building forms](https://docs.attio.com/sdk/guides/building-forms.md): How to build and validate forms
-- [Creating an app](https://docs.attio.com/sdk/guides/creating-an-app.md): Learn how to build your first app with the App SDK
-- [Debugging your app](https://docs.attio.com/sdk/guides/debugging-your-app.md): How to debug your app using logging in frontend and server environments
-- [Design guidelines](https://docs.attio.com/sdk/guides/design-guidelines.md): Icon and screenshot guidelines
-- [Making HTTP requests](https://docs.attio.com/sdk/guides/making-http-requests.md): How to make HTTP requests from your app with server functions
-- [Querying Attio data](https://docs.attio.com/sdk/guides/querying-attio-data.md): How to query Attio data with GraphQL
-- [Receiving HTTP requests](https://docs.attio.com/sdk/guides/receiving-http-requests.md): How to use webhooks handlers to receive HTTP requests from external services
-- [Sharing your app](https://docs.attio.com/sdk/guides/sharing-your-app.md): How to share or publish your app
-- [Shipping updates](https://docs.attio.com/sdk/guides/shipping-updates.md): How to ship new versions of your app
 - [AttioIcon](https://docs.attio.com/sdk/icons.md): Built-in icons
-- [alert()](https://docs.attio.com/sdk/notifications/alert.md): Shows an alert to the user
-- [confirm()](https://docs.attio.com/sdk/notifications/confirm.md): Shows a confirmation prompt to the user
-- [Notifying the user](https://docs.attio.com/sdk/notifications/notifications.md): Methods to imperatively give feedback to the user
-- [showToast()](https://docs.attio.com/sdk/notifications/show-toast.md): Shows a toast to the user
+- [Workspace settings](https://docs.attio.com/sdk/settings/overview.md): Add configurable workspace-level settings to your app
+- [Settings.defineWorkspaceSchema()](https://docs.attio.com/sdk/settings/define-workspace-schema.md): Define the structure and types of your workspace settings
+- [Settings.defineWorkspacePage()](https://docs.attio.com/sdk/settings/define-workspace-page.md): Define the workspace settings page of your app
+- [Settings.useForm()](https://docs.attio.com/sdk/settings/use-form.md): A hook for creating workspace settings forms inside your Attio app
+- [Settings.useSettings()](https://docs.attio.com/sdk/settings/use-settings.md): A hook for accessing workspace settings values in your app
+- [Settings.getSettings()](https://docs.attio.com/sdk/settings/get-settings.md): Get workspace settings values from client or server code
+- [Settings.setSettings()](https://docs.attio.com/sdk/settings/set-settings.md): Set a workspace setting value from client or server code
+- [GraphQL](https://docs.attio.com/sdk/graphql/graphql.md): How the App SDK uses GraphQL to query Attio data
+- [runQuery()](https://docs.attio.com/sdk/graphql/run-query.md): Imperatively run an asynchronous GraphQL query
+- [useQuery()](https://docs.attio.com/sdk/graphql/use-query.md): A suspenseful hook to run a GraphQL query
+- [useAsyncCache()](https://docs.attio.com/sdk/data-fetching/use-async-cache.md): A suspenseful hook that returns, and caches, the results of calling one or more async functions, typically to load data from a third-party via server functions.
+- [React Query](https://docs.attio.com/sdk/data-fetching/react-query.md): How to use React Query with App SDK
+- [Server functions](https://docs.attio.com/sdk/server/server-functions.md): Running code on the server
 - [Attio API Token](https://docs.attio.com/sdk/server/attio-api-token.md): A token for your app to call the Attio REST API
+- [Environment Variables](https://docs.attio.com/sdk/server/environment-variables.md): App-level secrets and configuration for your server-side code
+- [Available Globals](https://docs.attio.com/sdk/server/available-globals.md): Global variables available to your app's code
 - [Connections](https://docs.attio.com/sdk/server/connections/connections.md): Authentication to third party services
 - [getUserConnection()](https://docs.attio.com/sdk/server/connections/get-user-connection.md): Using a user connection.
 - [getWorkspaceConnection()](https://docs.attio.com/sdk/server/connections/get-workspace-connection.md): Using a workspace connection.
+- [Events](https://docs.attio.com/sdk/server/events/events.md): App lifecycle events
 - [connection-added](https://docs.attio.com/sdk/server/events/connection-added.md): Fires when a connection is added to an app
 - [connection-removed](https://docs.attio.com/sdk/server/events/connection-removed.md): Fires when a connection is removed from an app
-- [Events](https://docs.attio.com/sdk/server/events/events.md): App lifecycle events
-- [KV Store](https://docs.attio.com/sdk/server/kv-store.md): A key-value store for your app
-- [Server functions](https://docs.attio.com/sdk/server/server-functions.md): Running code on the server
+- [Webhook Handlers](https://docs.attio.com/sdk/server/webhooks/webhook-handlers.md): Server code that can be executed when called via HTTP from a third party
 - [createWebhookHandler()](https://docs.attio.com/sdk/server/webhooks/create-webhook-handler.md): Creates a webhook handler
 - [deleteWebhookHandler()](https://docs.attio.com/sdk/server/webhooks/delete-webhook-handler.md): Deletes a webhook handler
 - [updateWebhookHandler()](https://docs.attio.com/sdk/server/webhooks/update-webhook-handler.md): Updates a webhook handler
-- [Webhook Handlers](https://docs.attio.com/sdk/server/webhooks/webhook-handlers.md): Server code that can be executed when called via HTTP from a third party
-- [Workspace settings schema](https://docs.attio.com/sdk/settings/app-settings-schema.md): Define the structure and types of your workspace settings.
-- [getWorkspaceSetting()](https://docs.attio.com/sdk/settings/get-workspace-setting.md): Get a single workspace setting value
-- [getWorkspaceSettings()](https://docs.attio.com/sdk/settings/get-workspace-settings.md): Get all workspace settings values
-- [setWorkspaceSetting()](https://docs.attio.com/sdk/settings/set-workspace-setting.md): Set a single workspace setting value
-- [useWorkspaceSettings()](https://docs.attio.com/sdk/settings/use-workspace-settings.md): A hook for accessing workspace settings values in your app
-- [useWorkspaceSettingsForm()](https://docs.attio.com/sdk/settings/use-workspace-settings-form.md): A hook for creating workspace settings forms inside your Attio app.
+- [KV Store](https://docs.attio.com/sdk/server/kv-store.md): A key-value store for your app
 - [platform](https://docs.attio.com/sdk/system/platform.md): Tells you which Attio platform your client code is running inside.
+- [App configuration file](https://docs.attio.com/sdk/entry-points/app-ts.md): Register all your entry points in one place (deprecated)
+- [Workspace settings schema](https://docs.attio.com/sdk/settings/app-settings-schema.md): Define the structure and types of your workspace settings (deprecated)
+- [useWorkspaceSettingsForm()](https://docs.attio.com/sdk/settings/use-workspace-settings-form.md): A hook for creating workspace settings forms inside your Attio app (deprecated)
+- [useWorkspaceSettings()](https://docs.attio.com/sdk/settings/use-workspace-settings.md): A hook for accessing workspace settings values in your app (deprecated)
+- [getWorkspaceSettings()](https://docs.attio.com/sdk/settings/get-workspace-settings.md): Get all workspace settings values (deprecated)
+- [getWorkspaceSetting()](https://docs.attio.com/sdk/settings/get-workspace-setting.md): Get a single workspace setting value (deprecated)
+- [setWorkspaceSetting()](https://docs.attio.com/sdk/settings/set-workspace-setting.md): Set a single workspace setting value (deprecated)
+- [Overview](https://docs.attio.com/rest-api/overview.md): Learn about the REST API
+- [Authenticating requests](https://docs.attio.com/rest-api/guides/authentication.md): How to generate access tokens and make requests
+- [Handling rate limits](https://docs.attio.com/rest-api/guides/rate-limiting.md): How to ensure your app handles rate limits gracefully
+- [Filtering and sorting](https://docs.attio.com/rest-api/guides/filtering-and-sorting.md): Searching for just the records you need
+- [Paginating API results](https://docs.attio.com/rest-api/guides/pagination.md): Retrieving particular ranges of data
+- [Configuring webhooks](https://docs.attio.com/rest-api/guides/webhooks.md): Responding to changes in real-time
+- [Connect an app to Attio through OAuth](https://docs.attio.com/rest-api/tutorials/connect-an-app-through-oauth.md): Learn how to create an OAuth 2.0 app to access Attio's REST API
+- [Overview](https://docs.attio.com/rest-api/attribute-types/attribute-types.md)
+- [Actor reference](https://docs.attio.com/rest-api/attribute-types/attribute-types-actor-reference.md): References to workspace members and others
+- [Checkbox](https://docs.attio.com/rest-api/attribute-types/attribute-types-checkbox.md): Modelling boolean values
+- [Currency](https://docs.attio.com/rest-api/attribute-types/attribute-types-currency.md): More than just numbers
+- [Date](https://docs.attio.com/rest-api/attribute-types/attribute-types-date.md): A timezone-less calendar date
+- [Domain](https://docs.attio.com/rest-api/attribute-types/attribute-types-domain.md): An internet domain
+- [Email address](https://docs.attio.com/rest-api/attribute-types/attribute-types-email-address.md): An email address
+- [Interaction](https://docs.attio.com/rest-api/attribute-types/attribute-types-interaction.md): Calendar events and emails
+- [Location](https://docs.attio.com/rest-api/attribute-types/attribute-types-location.md): A physical location in the world
+- [(Personal) name](https://docs.attio.com/rest-api/attribute-types/attribute-types-personal-name.md): A person's name
+- [Number](https://docs.attio.com/rest-api/attribute-types/attribute-types-number.md): Quantities, sums and metrics
+- [Phone number](https://docs.attio.com/rest-api/attribute-types/attribute-types-phone-number.md): International telephone numbers
+- [Rating](https://docs.attio.com/rest-api/attribute-types/attribute-types-rating.md): Star ratings from 0 to 5
+- [Record reference](https://docs.attio.com/rest-api/attribute-types/attribute-types-record-reference.md): Relationships and one-way links between records
+- [Select](https://docs.attio.com/rest-api/attribute-types/attribute-types-select.md): An option from a predefined list
+- [Status](https://docs.attio.com/rest-api/attribute-types/attribute-types-status.md): Similar to select attributes, originally designed for use in Lists
+- [Text](https://docs.attio.com/rest-api/attribute-types/attribute-types-text.md): Human-readable, unconstrained text inputs
+- [Timestamp](https://docs.attio.com/rest-api/attribute-types/attribute-types-timestamp.md): A calendar date including time information, stored in UTC
+- [OpenAPI](https://docs.attio.com/rest-api/endpoint-reference/openapi.md): Access the OpenAPI specification for the Attio REST API
+- [List objects](https://docs.attio.com/rest-api/endpoint-reference/objects/list-objects.md): Lists all system-defined and user-defined objects in your workspace.
+- [Create an object](https://docs.attio.com/rest-api/endpoint-reference/objects/create-an-object.md): Creates a new custom object in your workspace.
+- [Get an object](https://docs.attio.com/rest-api/endpoint-reference/objects/get-an-object.md): Gets a single object by its `object_id` or slug.
+- [Delete an object](https://docs.attio.com/rest-api/endpoint-reference/objects/delete-an-object.md): Deletes a single object by its `object_id` or slug, along with all of its records. Only custom objects can be deleted; system objects, such as people and companies, cannot.
+- [Update an object](https://docs.attio.com/rest-api/endpoint-reference/objects/update-an-object.md): Updates a single object. The object to be updated is identified by its `object_id`.
+- [List views for object](https://docs.attio.com/rest-api/endpoint-reference/objects/list-views-for-object.md): Lists saved views for an object. Results are ordered by view ID (`id.view_id` ascending).
+- [List attributes](https://docs.attio.com/rest-api/endpoint-reference/attributes/list-attributes.md): Lists all attributes defined on a specific object or list. Attributes are returned in the order that they are sorted by in the UI.
+- [Create an attribute](https://docs.attio.com/rest-api/endpoint-reference/attributes/create-an-attribute.md): Creates a new attribute on either an object or a list.
+- [Get an attribute](https://docs.attio.com/rest-api/endpoint-reference/attributes/get-an-attribute.md): Gets information about a single attribute on either an object or a list.
+- [Update an attribute](https://docs.attio.com/rest-api/endpoint-reference/attributes/update-an-attribute.md): Updates a single attribute on a given object or list.
+- [List select options](https://docs.attio.com/rest-api/endpoint-reference/attributes/list-select-options.md): Lists all select options for a particular attribute on either an object or a list.
+- [Create a select option](https://docs.attio.com/rest-api/endpoint-reference/attributes/create-a-select-option.md): Adds a select option to a select attribute on an object or a list.
+- [Update a select option](https://docs.attio.com/rest-api/endpoint-reference/attributes/update-a-select-option.md): Updates a select option on an attribute on either an object or a list.
+- [List statuses](https://docs.attio.com/rest-api/endpoint-reference/attributes/list-statuses.md): Lists all statuses for a particular status attribute on either an object or a list.
+- [Create a status](https://docs.attio.com/rest-api/endpoint-reference/attributes/create-a-status.md): Add a new status to a status attribute on either an object or a list.
+- [Update a status](https://docs.attio.com/rest-api/endpoint-reference/attributes/update-a-status.md): Update a status on an status attribute on either an object or a list.
+- [List records](https://docs.attio.com/rest-api/endpoint-reference/records/list-records.md): Lists people, company or other records, with the option to filter and sort results.
+- [Upsert a record](https://docs.attio.com/rest-api/endpoint-reference/records/upsert-a-record.md): Use this endpoint to create or update people, companies and other records. A matching attribute is used to search for existing records. If a record is found with the same value for the matching attribute, that record will be updated. If no record with the same value for the matching attribute is fou…
+- [Create a record](https://docs.attio.com/rest-api/endpoint-reference/records/create-a-record.md): Creates a new person, company or other record. This endpoint will throw on conflicts of unique attributes. If you would prefer to update records on conflicts, please use the [Upsert record endpoint](/rest-api/endpoint-reference/records/upsert-a-record) instead.
+- [Get a record](https://docs.attio.com/rest-api/endpoint-reference/records/get-a-record.md): Gets a single person, company or other record by its `record_id`.
+- [Update a record (overwrite multiselect values)](https://docs.attio.com/rest-api/endpoint-reference/records/update-a-record-overwrite-multiselect-values.md): Use this endpoint to update people, companies, and other records by `record_id`. If the update payload includes multiselect attributes, the values supplied will overwrite/remove the list of values that already exist (if any). Use the `PATCH` endpoint to append multiselect values without removing tho…
+- [Delete a record](https://docs.attio.com/rest-api/endpoint-reference/records/delete-a-record.md): Deletes a single record (e.g. a company or person) by ID.
+- [Update a record (append multiselect values)](https://docs.attio.com/rest-api/endpoint-reference/records/update-a-record-append-multiselect-values.md): Use this endpoint to update people, companies, and other records by `record_id`. If the update payload includes multiselect attributes, the values supplied will be created and prepended to the list of values that already exist (if any). Use the `PUT` endpoint to overwrite or remove multiselect attri…
+- [Merge two records](https://docs.attio.com/rest-api/endpoint-reference/records/merge-two-records.md): Merges two records of the same object together. Where both records have a value for the same attribute, the primary record's value takes precedence.
+- [List record attribute values](https://docs.attio.com/rest-api/endpoint-reference/records/list-record-attribute-values.md): Gets all values for a given attribute on a record. Historic values can be queried using the `show_historic` query param. Historic values cannot be queried on COMINT (Communication Intelligence) or enriched attributes and the endpoint will return a 400 error if this is attempted. Historic values are…
+- [Write record attribute values](https://docs.attio.com/rest-api/endpoint-reference/records/write-record-attribute-values.md): Replaces the entire value history of a single attribute on a record, primarily to migrate historic data from an external source. Every value the attribute currently has is destroyed, including values not present in the request, and the supplied values are written with the `active_from` and `active_u…
+- [List record entries](https://docs.attio.com/rest-api/endpoint-reference/records/list-record-entries.md): List all entries, across all lists, for which this record is the parent. The response includes metadata for each entry, including `entry_id`, `list_id`, and `created_at`, but does not include entry values. To retrieve the values, call [Get a list entry](/rest-api/endpoint-reference/entries/get-a-lis…
+- [Search records](https://docs.attio.com/rest-api/endpoint-reference/records/search-records.md): The search records endpoint provides a convenient way to fuzzy search for records across one or more objects. The matching strategy employed in this endpoint follows the in-product strategy and will match names, domains, emails, phone numbers and social handles on people and companies, and labels on…
+- [Query SQL](https://docs.attio.com/rest-api/endpoint-reference/sql/query-sql.md): Query records and lists with SQL. Your workspace must be on the Enterprise plan in order to access this endpoint.
+- [List all lists](https://docs.attio.com/rest-api/endpoint-reference/lists/list-all-lists.md): List all lists that your access token has access to. lists are returned in the order that they are sorted in the sidebar.
+- [Create a list](https://docs.attio.com/rest-api/endpoint-reference/lists/create-a-list.md): Creates a new list.
+- [Get a list](https://docs.attio.com/rest-api/endpoint-reference/lists/get-a-list.md): Gets a single list in your workspace that your access token has access to.
+- [Update a list](https://docs.attio.com/rest-api/endpoint-reference/lists/update-a-list.md): Updates an existing list. Permissions for the list are controlled with the `workspace_access` and `workspace_member_access` parameters. Please note that lists must have either `workspace_access` set to `"full-access"` or one or more element of `workspace_member_access` with a `"full-access"` level.…
+- [List views for list](https://docs.attio.com/rest-api/endpoint-reference/lists/list-views-for-list.md): Lists saved views for a list. Results are ordered by view ID (`id.view_id` ascending).
+- [List entries](https://docs.attio.com/rest-api/endpoint-reference/entries/list-entries.md): Lists entries in a given list, with the option to filter and sort results.
+- [Upsert a list entry by parent](https://docs.attio.com/rest-api/endpoint-reference/entries/upsert-a-list-entry-by-parent.md): Use this endpoint to create or update a list entry for a given parent record. If an entry with the specified parent record is found, that entry will be updated. If no such entry is found, a new entry will be created instead. If there are multiple entries with the same parent record, this endpoint wi…
+- [Create an entry (add record to list)](https://docs.attio.com/rest-api/endpoint-reference/entries/create-an-entry-add-record-to-list.md): Adds a record to a list as a new list entry. This endpoint will throw on conflicts of unique attributes. Multiple list entries are allowed for the same parent record
+- [Get a list entry](https://docs.attio.com/rest-api/endpoint-reference/entries/get-a-list-entry.md): Gets a single list entry by its `entry_id`.
+- [Update a list entry (overwrite multiselect values)](https://docs.attio.com/rest-api/endpoint-reference/entries/update-a-list-entry-overwrite-multiselect-values.md): Use this endpoint to update list entries by `entry_id`. If the update payload includes multiselect attributes, the values supplied will overwrite/remove the list of values that already exist (if any). Use the `PATCH` endpoint to add multiselect attribute values without removing those value that alre…
+- [Delete a list entry](https://docs.attio.com/rest-api/endpoint-reference/entries/delete-a-list-entry.md): Deletes a single list entry by its `entry_id`.
+- [Update a list entry (append multiselect values)](https://docs.attio.com/rest-api/endpoint-reference/entries/update-a-list-entry-append-multiselect-values.md): Use this endpoint to update list entries by `entry_id`. If the update payload includes multiselect attributes, the values supplied will be created and prepended to the list of values that already exist (if any). Use the `PUT` endpoint to overwrite or remove multiselect attribute values.
+- [List attribute values for a list entry](https://docs.attio.com/rest-api/endpoint-reference/entries/list-attribute-values-for-a-list-entry.md): Gets all values for a given attribute on a list entry. This endpoint has the ability to return all historic values using the `show_historic` query param. Historic values are sorted from oldest to newest (by `active_from`).
+- [Write list entry attribute values](https://docs.attio.com/rest-api/endpoint-reference/entries/write-list-entry-attribute-values.md): Replaces the entire value history of a single attribute on a list entry, primarily to migrate historic data from an external source. Every value the attribute currently has is destroyed, including values not present in the request, and the supplied values are written with the `active_from` and `acti…
+- [List workspace members](https://docs.attio.com/rest-api/endpoint-reference/workspace-members/list-workspace-members.md): Lists all workspace members in the workspace.
+- [Get a workspace member](https://docs.attio.com/rest-api/endpoint-reference/workspace-members/get-a-workspace-member.md): Gets a single workspace member by ID.
+- [List notes](https://docs.attio.com/rest-api/endpoint-reference/notes/list-notes.md): List notes for all records or for a specific record.
+- [Create a note](https://docs.attio.com/rest-api/endpoint-reference/notes/create-a-note.md): Creates a new note for a given record.
+- [Get a note](https://docs.attio.com/rest-api/endpoint-reference/notes/get-a-note.md): Get a single note by ID.
+- [Delete a note](https://docs.attio.com/rest-api/endpoint-reference/notes/delete-a-note.md): Delete a single note by ID.
+- [Update a note](https://docs.attio.com/rest-api/endpoint-reference/notes/update-a-note.md): Updates an existing note's title and/or content. Only the fields you provide are changed, and any field you omit is left untouched. Providing `content` replaces the note's entire content. A note's parent record cannot be changed.
+- [List tasks](https://docs.attio.com/rest-api/endpoint-reference/tasks/list-tasks.md): List all tasks. Results are sorted by creation date, from oldest to newest.
+- [Create a task](https://docs.attio.com/rest-api/endpoint-reference/tasks/create-a-task.md): Creates a new task.
+- [Get a task](https://docs.attio.com/rest-api/endpoint-reference/tasks/get-a-task.md): Get a single task by ID.
+- [Delete a task](https://docs.attio.com/rest-api/endpoint-reference/tasks/delete-a-task.md): Delete a task by ID.
+- [Update a task](https://docs.attio.com/rest-api/endpoint-reference/tasks/update-a-task.md): Updates an existing task by `task_id`. At present, only the `deadline_at`, `is_completed`, `linked_records`, and `assignees` fields can be updated.
+- [List threads](https://docs.attio.com/rest-api/endpoint-reference/threads/list-threads.md): List threads of comments on a record or list entry.
+- [Get a thread and its comments](https://docs.attio.com/rest-api/endpoint-reference/threads/get-a-thread-and-its-comments.md): Get a thread and page through its comments, oldest first, starting with the comment that opened it.
+- [Create a comment](https://docs.attio.com/rest-api/endpoint-reference/comments/create-a-comment.md): Creates a new comment related to an existing thread, record or entry.
+- [Get a comment](https://docs.attio.com/rest-api/endpoint-reference/comments/get-a-comment.md): Get a single comment by ID.
+- [Delete a comment](https://docs.attio.com/rest-api/endpoint-reference/comments/delete-a-comment.md): Deletes a comment by ID. If deleting a comment at the head of a thread, all messages in the thread are also deleted.
+- [List emails](https://docs.attio.com/rest-api/endpoint-reference/emails/list-emails.md): Lists email metadata from your workspace's connected mailboxes. Email content is never returned.
+- [Add emails to the unsubscribe list](https://docs.attio.com/rest-api/endpoint-reference/sequences/add-emails-to-the-unsubscribe-list.md): Adds email addresses to the workspace's sequence unsubscribe list. Email addresses on the unsubscribe list cannot be enrolled in any sequence, and any of their active sequence runs are exited. Email addresses that are already on the unsubscribe list are ignored, so this endpoint is safe to retry.
+- [List meetings](https://docs.attio.com/rest-api/endpoint-reference/meetings/list-meetings.md): Lists all meetings in the workspace using a deterministic sort order. When both the `participants` and `linked_record_id` filters are supplied, they are combined with OR: meetings that match either filter are returned.
+- [Create a meeting](https://docs.attio.com/rest-api/endpoint-reference/meetings/create-a-meeting.md): Creates a new meeting. [See here](/rest-api/guides/syncing-meetings) for guidance on avoiding duplicate meetings.
+- [Get a meeting](https://docs.attio.com/rest-api/endpoint-reference/meetings/get-a-meeting.md): Get a single meeting by ID.
+- [Delete a meeting](https://docs.attio.com/rest-api/endpoint-reference/meetings/delete-a-meeting.md): Deletes a single meeting by ID.
+- [List call recordings](https://docs.attio.com/rest-api/endpoint-reference/call-recordings/list-call-recordings.md): List all call recordings for a meeting.
+- [Create call recording](https://docs.attio.com/rest-api/endpoint-reference/call-recordings/create-call-recording.md): Create a call recording for a meeting. This endpoint is rate limited to 1 request per second.
+- [Get call recording](https://docs.attio.com/rest-api/endpoint-reference/call-recordings/get-call-recording.md): Get a single call recording by ID.
+- [Delete call recording](https://docs.attio.com/rest-api/endpoint-reference/call-recordings/delete-call-recording.md): Deletes the specified call recording. This will remove the call recording and all associated data.
+- [List files](https://docs.attio.com/rest-api/endpoint-reference/files/list-files.md): Lists internal files, externally connected files and folders for a specific record. Use the `object` and `record_id` query parameters to specify the record. Optional query parameters may be provided to filter results by storage provider or parent folder.
+- [Create a folder](https://docs.attio.com/rest-api/endpoint-reference/files/create-a-folder.md): Creates a native folder entry or a connected file/folder entry on an object record.
+- [Upload a file](https://docs.attio.com/rest-api/endpoint-reference/files/upload-a-file.md): Uploads a file to native Attio storage for a record. Send multipart/form-data with a single binary field named `file` together with the body fields `object`, `record_id`, and optional `parent_folder_id`. Maximum file size is 50 MB.
+- [Get a file](https://docs.attio.com/rest-api/endpoint-reference/files/get-a-file.md): Get a single file entry by ID.
+- [Delete a file](https://docs.attio.com/rest-api/endpoint-reference/files/delete-a-file.md): Delete a single file by ID. Deleting a folder will delete all of its descendants.
+- [Download a file](https://docs.attio.com/rest-api/endpoint-reference/files/download-a-file.md): Downloads a file by redirecting to a signed URL.
+- [List webhooks](https://docs.attio.com/rest-api/endpoint-reference/webhooks/list-webhooks.md): Get all of the webhooks in your workspace.
+- [Create a webhook](https://docs.attio.com/rest-api/endpoint-reference/webhooks/create-a-webhook.md): Create a webhook and associated subscriptions.
+- [Get a webhook](https://docs.attio.com/rest-api/endpoint-reference/webhooks/get-a-webhook.md): Get a single webhook.
+- [Delete a webhook](https://docs.attio.com/rest-api/endpoint-reference/webhooks/delete-a-webhook.md): Delete a webhook by ID.
+- [Update a webhook](https://docs.attio.com/rest-api/endpoint-reference/webhooks/update-a-webhook.md): Update a webhook and associated subscriptions.
+- [Identify](https://docs.attio.com/rest-api/endpoint-reference/meta/identify.md): Identify the current access token, the workspace it is linked to, and any permissions it has.
+- [List person records ](https://docs.attio.com/rest-api/endpoint-reference/people/list-person-records.md): Lists person records, with the option to filter and sort results.
+- [Upsert a person record](https://docs.attio.com/rest-api/endpoint-reference/people/upsert-a-person-record.md): Use this endpoint to create or update person records, using a unique attribute to search for existing People (for example the `email_addresses` attribute). If a person is found with the same value for the matching attribute, that person will be updated. If no person with the same value for the match…
+- [Create a person Record](https://docs.attio.com/rest-api/endpoint-reference/people/create-a-person-record.md): Creates a new person Record. This endpoint will throw on conflicts of unique attributes, like `email_addresses`. If you would prefer to update person records on conflicts, please use the Assert person record endpoint instead. Please note, the `avatar_url` attribute cannot currently be set via the AP…
+- [Get a person Record](https://docs.attio.com/rest-api/endpoint-reference/people/get-a-person-record.md): Gets a single person record by its `record_id`.
+- [Delete a person Record](https://docs.attio.com/rest-api/endpoint-reference/people/delete-a-person-record.md): Deletes a single person record by ID.
+- [Update a person Record](https://docs.attio.com/rest-api/endpoint-reference/people/update-a-person-record.md): Use this endpoint to update person records by `record_id`. If the update payload includes multiselect attributes, the values supplied will be created and prepended to the list of values that already exist (if any). Use the [Upsert person endpoint](/reference/put_v2-objects-people-records) to overwri…
+- [List person record attribute values](https://docs.attio.com/rest-api/endpoint-reference/people/list-person-record-attribute-values.md): Gets all values for a given attribute on a person record. Historic values can be queried using the `show_historic` query param. Historic values cannot be queried on COMINT (Communication Intelligence) or enriched attributes and the endpoint will return a 400 error if this is attempted. Historic valu…
+- [List person record entries](https://docs.attio.com/rest-api/endpoint-reference/people/list-person-record-entries.md): List all entries, across all lists, for which this person record is the parent.
+- [List company records](https://docs.attio.com/rest-api/endpoint-reference/companies/list-company-records.md): Lists company records, with the option to filter and sort results.
+- [Upsert a company record](https://docs.attio.com/rest-api/endpoint-reference/companies/upsert-a-company-record.md): Use this endpoint to create or update company records, using a unique attribute to search for existing companies (for example, the `domains` attribute). If a company is found with the same value for the matching attribute, that company will be updated. If no company with the same value for the match…
+- [Create a company record](https://docs.attio.com/rest-api/endpoint-reference/companies/create-a-company-record.md): Creates a new company record. This endpoint will throw on conflicts of unique attributes, like `domains`. If you would prefer to update company records on conflicts, please use the Assert company record endpoint instead. Please note, the `logo_url` attribute cannot currently be set via the API.
+- [Get a company record](https://docs.attio.com/rest-api/endpoint-reference/companies/get-a-company-record.md): Gets a single company record by its `record_id`.
+- [Delete a company record](https://docs.attio.com/rest-api/endpoint-reference/companies/delete-a-company-record.md): Deletes a single company record by ID.
+- [Update a company record](https://docs.attio.com/rest-api/endpoint-reference/companies/update-a-company-record.md): Use this endpoint to update company records by `record_id`. If the update payload includes multiselect attributes, the values supplied will be created and prepended to the list of values that already exist (if any). Use the [Upsert company endpoint](/rest-api/endpoint-reference/standard-objects/comp…
+- [List company record attribute values](https://docs.attio.com/rest-api/endpoint-reference/companies/list-company-record-attribute-values.md): Gets all values for a given attribute on a company record. Historic values can be queried using the `show_historic` query param. Historic values cannot be queried on COMINT (Communication Intelligence) or enriched attributes and the endpoint will return a 400 error if this is attempted. Historic val…
+- [List company record entries](https://docs.attio.com/rest-api/endpoint-reference/companies/list-company-record-entries.md): List all entries, across all lists, for which this company record is the parent.
+- [List user records](https://docs.attio.com/rest-api/endpoint-reference/users/list-user-records.md): Lists user records, with the option to filter and sort results.
+- [Upsert a user record](https://docs.attio.com/rest-api/endpoint-reference/users/upsert-a-user-record.md): Use this endpoint to create or update user records, using a unique attribute to search for existing users (for example the `primary_email_address` attribute). If a user is found with the same value for the matching attribute, that user will be updated, otherwise a new user will be created instead. I…
+- [Create a user record](https://docs.attio.com/rest-api/endpoint-reference/users/create-a-user-record.md): Creates a new user record. This endpoint will throw on conflicts of unique attributes, like `primary_email_address`. If you would prefer to update user records on conflicts, please use the Assert user record endpoint instead.
+- [Get a user record](https://docs.attio.com/rest-api/endpoint-reference/users/get-a-user-record.md): Gets a single user record by its `record_id`.
+- [Delete a user record](https://docs.attio.com/rest-api/endpoint-reference/users/delete-a-user-record.md): Deletes a single user record by ID.
+- [Update a user Record](https://docs.attio.com/rest-api/endpoint-reference/users/update-a-user-record.md): Use this endpoint to update user records by `record_id`. If the update payload includes multiselect attributes, the values supplied will be created and prepended to the list of values that already exist (if any). Use the [Upsert user endpoint](/rest-api/endpoint-reference/users/upsert-a-user-record)…
+- [List user record attribute values](https://docs.attio.com/rest-api/endpoint-reference/users/list-user-record-attribute-values.md): Gets all values for a given attribute on a user record. Historic values can be queried using the `show_historic` query param. Historic values are sorted from oldest to newest (by `active_from`).
+- [List user record entries](https://docs.attio.com/rest-api/endpoint-reference/users/list-user-record-entries.md): List all entries, across all lists, for which this user record is the parent.
+- [Upsert a deal record](https://docs.attio.com/rest-api/endpoint-reference/deals/upsert-a-deal-record.md): Use this endpoint to create or update deal records, using a unique attribute to search for existing deals. By default, deals do not have a unique attribute, so you should add your own attribute with a unique constraint to use this API. If a deal is found with the same value for the matching attribut…
+- [Create a deal record](https://docs.attio.com/rest-api/endpoint-reference/deals/create-a-deal-record.md): Creates a new deal record. This endpoint will throw on conflicts of unique attributes, if defined. If you would prefer to update deal records on conflicts, please use the Assert deal record endpoint instead.
+- [Get a deal record](https://docs.attio.com/rest-api/endpoint-reference/deals/get-a-deal-record.md): Gets a single deal record by its `record_id`.
+- [Delete a deal record](https://docs.attio.com/rest-api/endpoint-reference/deals/delete-a-deal-record.md): Deletes a single deal record by ID.
+- [Update a deal record](https://docs.attio.com/rest-api/endpoint-reference/deals/update-a-deal-record.md): Use this endpoint to update deal records by `record_id`. If the update payload includes multiselect attributes, the values supplied will be created and prepended to the list of values that already exist (if any). Use the [Upsert deal endpoint](/rest-api/endpoint-reference/standard-objects/deals/upse…
+- [List deal record attribute values](https://docs.attio.com/rest-api/endpoint-reference/deals/list-deal-record-attribute-values.md): Gets all values for a given attribute on a deal record. Historic values can be queried using the `show_historic` query param. Historic values are sorted from oldest to newest (by `active_from`).
+- [List deal record entries](https://docs.attio.com/rest-api/endpoint-reference/deals/list-deal-record-entries.md): List all entries, across all lists, for which this deal record is the parent.
+- [List deal records](https://docs.attio.com/rest-api/endpoint-reference/deals/list-deal-records.md): Lists deal records, with the option to filter and sort results.
+- [Upsert a workspace record](https://docs.attio.com/rest-api/endpoint-reference/workspaces/upsert-a-workspace-record.md): Use this endpoint to create or update workspace records, using a unique attribute to search for existing workspaces (for example the `workspace_id` attribute). If a workspace is found with the same value for the matching attribute, that workspace will be updated, otherwise a new workspace will be cr…
+- [Create a workspace record](https://docs.attio.com/rest-api/endpoint-reference/workspaces/create-a-workspace-record.md): Creates a new workspace record. This endpoint will throw on conflicts of unique attributes, like `workspace_id`. If you would prefer to update workspace records on conflicts, please use the Assert workspace record endpoint instead.
+- [Get a workspace record](https://docs.attio.com/rest-api/endpoint-reference/workspaces/get-a-workspace-record.md): Gets a single workspace record by its `record_id`.
+- [Delete a workspace record](https://docs.attio.com/rest-api/endpoint-reference/workspaces/delete-a-workspace-record.md): Deletes a single workspace record by ID.
+- [Update a workspace Record](https://docs.attio.com/rest-api/endpoint-reference/workspaces/update-a-workspace-record.md): Use this endpoint to update workspace records by `record_id`. If the update payload includes multiselect attributes, the values supplied will be created and prepended to the list of values that already exist (if any). Use the [Upsert workspace endpoint](/rest-api/endpoint-reference/standard-objects/…
+- [List workspace record attribute values](https://docs.attio.com/rest-api/endpoint-reference/workspaces/list-workspace-record-attribute-values.md): Gets all values for a given attribute on a workspace record. Historic values can be queried using the `show_historic` query param. Historic values are sorted from oldest to newest (by `active_from`).
+- [List workspace record entries](https://docs.attio.com/rest-api/endpoint-reference/workspaces/list-workspace-record-entries.md): List all entries, across all lists, for which this workspace record is the parent.
+- [List workspace records](https://docs.attio.com/rest-api/endpoint-reference/workspaces/list-workspace-records.md): Lists workspace records, with the option to filter and sort results.
+- [List SCIM schemas](https://docs.attio.com/rest-api/scim/list-schemas.md): Returns the SCIM 2.0 resource schemas supported by Attio (User and Group), allowing SCIM clients to discover supported attributes.
+- [Create a SCIM user](https://docs.attio.com/rest-api/scim/create-user.md): Creates a SCIM user in the workspace. For verified domains the user is added as an active member immediately. For unverified domains an invite is sent and the invite ID is returned as the SCIM user ID.
+- [Get a SCIM user](https://docs.attio.com/rest-api/scim/get-user-by-id.md): Gets a SCIM user by ID. Returns both active members and pending invites.
+- [List SCIM users](https://docs.attio.com/rest-api/scim/list-users.md): Lists all SCIM users in the workspace, including active members and pending invites, with optional filtering and pagination.
+- [Update a SCIM user](https://docs.attio.com/rest-api/scim/update-user.md): Fully replaces a SCIM user's attributes. Returns 200 with the updated user. Returns 204 when setting `active` to `false` on a pending invite.
+- [Patch a SCIM user](https://docs.attio.com/rest-api/scim/patch-user.md): Applies partial updates to a SCIM user using SCIM PatchOp operations. Returns 200 with the updated user. Returns 204 when setting `active` to `false` on a pending invite.
+- [Delete a SCIM user](https://docs.attio.com/rest-api/scim/delete-user.md): Deletes a SCIM user from the workspace, suspending active members and cancelling pending invites. Returns 204 No Content on success.
+- [Create a SCIM group](https://docs.attio.com/rest-api/scim/create-group.md): Creates a SCIM group (team) in the workspace.
+- [Get a SCIM group](https://docs.attio.com/rest-api/scim/get-group-by-id.md): Gets a SCIM group by ID.
+- [List SCIM groups](https://docs.attio.com/rest-api/scim/list-groups.md): Lists all SCIM groups in the workspace, with optional filtering and pagination.
+- [Update a SCIM group](https://docs.attio.com/rest-api/scim/update-group.md): Fully replaces a SCIM group's display name and member list.
+- [Patch a SCIM group](https://docs.attio.com/rest-api/scim/patch-group.md): Applies partial updates to a SCIM group using SCIM PatchOp operations. Supports updating the display name and adding, removing, or replacing members.
+- [Delete a SCIM group](https://docs.attio.com/rest-api/scim/delete-group.md): Deletes a SCIM group from the workspace. Returns 204 No Content on success.
+- [Authorize](https://docs.attio.com/docs/oauth/authorize.md)
+- [Token](https://docs.attio.com/docs/oauth/token.md)
+- [Introspect](https://docs.attio.com/docs/oauth/introspect.md)
+- [Revoke](https://docs.attio.com/docs/oauth/revoke.md)
+- [Call recording created](https://docs.attio.com/rest-api/webhook-reference/call-recording-events/call-recordingcreated.md): This event fires once a call recording has finished processing and its transcript and summary are available, or have permanently failed.
+- [Comment created](https://docs.attio.com/rest-api/webhook-reference/comment-events/commentcreated.md): This event is fired whenever a comment is created.
+- [Comment resolved](https://docs.attio.com/rest-api/webhook-reference/comment-events/commentresolved.md): This event is fired whenever a comment is resolved.
+- [Comment unresolved](https://docs.attio.com/rest-api/webhook-reference/comment-events/commentunresolved.md): This event is fired whenever a comment is un-resolved.
+- [Comment deleted](https://docs.attio.com/rest-api/webhook-reference/comment-events/commentdeleted.md): This event is fired whenever a comment is deleted.
+- [List created](https://docs.attio.com/rest-api/webhook-reference/list-events/listcreated.md): This event is fired whenever a list is created.
+- [List updated](https://docs.attio.com/rest-api/webhook-reference/list-events/listupdated.md): This event is fired whenever a list is updated (e.g. when changing the name or icon of the list).
+- [List deleted](https://docs.attio.com/rest-api/webhook-reference/list-events/listdeleted.md): This event is fired whenever a list is deleted.
+- [List attribute created](https://docs.attio.com/rest-api/webhook-reference/list-attribute-events/list-attributecreated.md): This event is fired whenever a list attribute is created (e.g. adding an "Owner" attribute).
+- [List attribute updated](https://docs.attio.com/rest-api/webhook-reference/list-attribute-events/list-attributeupdated.md): This event is fired whenever a list attribute is updated (e.g. when changing the name of the "Owner" attribute to "Proprietor").
+- [List entry created](https://docs.attio.com/rest-api/webhook-reference/list-entry-events/list-entrycreated.md): This event is fired whenever a list entry is created (i.e. when a record is added to a list).
+- [List entry updated](https://docs.attio.com/rest-api/webhook-reference/list-entry-events/list-entryupdated.md): This event is fired whenever an existing list entry is updated (i.e. when a list attribute is changed for a specific list entry, e.g. when setting "Owner").
+- [List entry deleted](https://docs.attio.com/rest-api/webhook-reference/list-entry-events/list-entrydeleted.md): This event is fired whenever a list entry is deleted (i.e. when a record is removed from a list).
+- [Object attribute created](https://docs.attio.com/rest-api/webhook-reference/object-attribute-events/object-attributecreated.md): This event is fired whenever an object attribute is created (e.g. when defining a new attribute "Rating" on the company object).
+- [Object attribute updated](https://docs.attio.com/rest-api/webhook-reference/object-attribute-events/object-attributeupdated.md): This event is fired whenever an object attribute is updated (e.g. when renaming the "Rating" attribute to "Score" on the company object).
+- [Note created](https://docs.attio.com/rest-api/webhook-reference/note-events/notecreated.md): This event is fired whenever a note is created. The `parent_object_id` refers to the object that the note references (e.g. the person object), and the `parent_record_id` refers to the record that the note references.
+- [Note updated](https://docs.attio.com/rest-api/webhook-reference/note-events/noteupdated.md): This event is fired whenever the title of a note is modified. Body updates do not currently trigger webhooks.
+- [Note deleted](https://docs.attio.com/rest-api/webhook-reference/note-events/notedeleted.md): This event is fired whenever a note is deleted.
+- [Note content updated](https://docs.attio.com/rest-api/webhook-reference/note-content-events/note-contentupdated.md): This event is fired whenever the content (body) of a note is updated. The `parent_object_id` refers to the object that the note references (e.g. the person object), and the `parent_record_id` refers to the record that the note references.
+- [Record created](https://docs.attio.com/rest-api/webhook-reference/record-events/recordcreated.md): This event is fired whenever a record is created.
+- [Record merged](https://docs.attio.com/rest-api/webhook-reference/record-events/recordmerged.md): This event is fired whenever two records are merged together. Merging produces a new record holding the values of both originals, which are themselves marked as merged. Each merge therefore fires two events: both carry the new record's ID in `id.record_id`, and each names one of the originals in `du…
+- [Record updated](https://docs.attio.com/rest-api/webhook-reference/record-events/recordupdated.md): This event is fired whenever an attribute on a record is updated (e.g. changing the "name" field on a record).
+- [Record deleted](https://docs.attio.com/rest-api/webhook-reference/record-events/recorddeleted.md): This event is fired whenever a record is deleted.
+- [Task created](https://docs.attio.com/rest-api/webhook-reference/task-events/taskcreated.md): This event is fired whenever a task is created.
+- [Task updated](https://docs.attio.com/rest-api/webhook-reference/task-events/taskupdated.md): This event is fired whenever a task is updated (e.g. the assignees or deadline are changed).
+- [Task deleted](https://docs.attio.com/rest-api/webhook-reference/task-events/taskdeleted.md): This event is fired whenever a task is deleted.
+- [Workspace member created](https://docs.attio.com/rest-api/webhook-reference/workspace-member-events/workspace-membercreated.md): This event is fired whenever a workspace member is added to the workspace.
+- [Attio MCP](https://docs.attio.com/mcp/overview.md)
+- [Overview](https://docs.attio.com/sql/overview.md): Query your workspace data with read-only SQL
+- [Available data](https://docs.attio.com/sql/available-data.md): Schemas, tables, and how to discover them
+- [Data connectors](https://docs.attio.com/sql/data-connectors.md): Query your workspace data from external tools over the PostgreSQL protocol
+- [Querying with SQL](https://docs.attio.com/sql/guides/querying-with-sql.md): Query your workspace data with read-only SQL
+- [The publication lifecycle](https://docs.attio.com/share/the-publication-lifecycle.md): Understand how to develop your app and share it with users
+- [Private invites](https://docs.attio.com/share/private-invites.md): How to share your app with specific workspaces using a private link
+- [Publishing to the App Store](https://docs.attio.com/share/publishing-to-the-app-store.md): When and how to publish to the Attio App Store
+- [Shipping updates](https://docs.attio.com/share/shipping-updates.md): How to ship new versions of your app
+- [App listings](https://docs.attio.com/share/app-listings.md): Requirements for your app listing content when publishing to the Attio App Store
+- [Code review](https://docs.attio.com/share/code-review.md): Code quality and security requirements for App SDK apps
+- [Logos](https://docs.attio.com/share/logos.md): Logo and icon requirements for your app and developer account
+- [Listing images](https://docs.attio.com/share/listing-images.md): Screenshot requirements for your App Store listing
+- [App SDK](https://docs.attio.com/changelog/app-sdk.md)
+- [REST API](https://docs.attio.com/changelog/rest-api.md)
+- [MCP](https://docs.attio.com/changelog/mcp.md)
 
 ## OpenAPI Specs
 
 - [api](https://api.attio.com/openapi/api)
 - [standard-objects](https://api.attio.com/openapi/standard-objects)
 - [webhooks](https://api.attio.com/openapi/webhooks)
-- [package](https://docs.attio.com/package.json)
-- [extensions](https://docs.attio.com/.vscode/extensions.json)
-- [openapi](https://docs.attio.com/api-reference/openapi.json)
+- [package](/package.json)
 
 ## Optional
 
-- [Developer dashboard](https://build.attio.com/)
+- [Developer console](https://build.attio.com/)
 - [Support](https://attio.com/help)
-
-
-Built with [Mintlify](https://mintlify.com).

@@ -1,7 +1,7 @@
 /**
  * Attio MCP Server — Code Mode
  *
- * Three tools. 130+ endpoints. Fixed token cost.
+ * Three tools. 90+ endpoints. Fixed token cost.
  *
  * search(code)  — Agent writes JS to query the API spec
  * execute(code) — Agent writes JS to call the authenticated API

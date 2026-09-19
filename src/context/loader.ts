@@ -71,10 +71,16 @@ export function getCategories(): string[] {
   const categories = new Set<string>();
 
   for (const doc of docs) {
-    // Extract category from URL path
-    const pathMatch = doc.url.match(/docs\.attio\.com\/(?:docs|rest-api)\/(?:endpoint-reference\/)?([^/]+)/);
+    // Extract category from URL path. REST docs live under /docs and /rest-api
+    // (optionally /endpoint-reference); other top-level areas (sdk, sql, share,
+    // changelog) are categorised by their top-level segment.
+    const pathMatch = doc.url.match(
+      /docs\.attio\.com\/(docs|rest-api|sdk|sql|share|changelog)\/(?:endpoint-reference\/)?([^/]+?)(?:\.md)?(?:\/|$)/
+    );
     if (pathMatch) {
-      categories.add(pathMatch[1].replace(/-/g, ' '));
+      const [, top, leaf] = pathMatch;
+      const category = top === 'docs' || top === 'rest-api' ? leaf : top;
+      categories.add(category.replace(/-/g, ' '));
     }
   }
 

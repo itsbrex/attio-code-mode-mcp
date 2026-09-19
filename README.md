@@ -1,6 +1,6 @@
 # attio-mcp
 
-Code Mode MCP server for [Attio CRM](https://attio.com). 130+ endpoints through 3 tools.
+Code Mode MCP server for [Attio CRM](https://attio.com). 90+ endpoints through 3 tools.
 
 > Built by [Trial and Error Inc](https://trialanderror.ai). Inspired by the [Code Mode pattern](https://blog.cloudflare.com/mcp-code-mode) from Cloudflare.
 
