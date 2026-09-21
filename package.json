@@ -1,15 +1,21 @@
 {
   "name": "attio-mcp",
   "version": "1.0.0",
-  "description": "Code Mode MCP server for Attio CRM — 130+ endpoints through 3 tools",
+  "description": "Code Mode MCP server for Attio CRM — 90+ operations through 3 core tools",
   "main": "dist/index.js",
   "scripts": {
     "dev": "tsx watch src/index.ts",
     "build": "tsc && node -e \"const fs=require('node:fs'); fs.mkdirSync('dist/spec',{recursive:true}); fs.copyFileSync('src/spec/openapi.json','dist/spec/openapi.json'); fs.mkdirSync('dist/context',{recursive:true}); fs.copyFileSync('src/context/llms.txt','dist/context/llms.txt');\"",
     "start": "node dist/index.js",
     "type-check": "tsc --noEmit",
+    "test": "node --import tsx --test tests/*.test.ts",
     "test:connection": "tsx src/test-connection.ts",
-    "spec:update": "curl -fsSL https://api.attio.com/openapi/api -o src/spec/openapi.json && curl -fsSL https://docs.attio.com/llms.txt -o src/context/llms.txt && npm run build"
+    "spec:update": "npm run spec:sync",
+    "spec:sync": "node scripts/spec-sync.mjs sync && npm run build",
+    "spec:validate": "openapi-sync validate --json",
+    "spec:generate": "node scripts/spec-sync.mjs generate",
+    "spec:check": "node scripts/spec-sync.mjs check",
+    "spec:upstream-check": "node scripts/spec-sync.mjs upstream-check"
   },
   "keywords": [
     "mcp",
@@ -31,6 +37,7 @@
   },
   "devDependencies": {
     "@types/node": "^24.3.0",
+    "openapi-sync": "6.4.2",
     "tsx": "^4.20.4",
     "typescript": "^5.9.2"
   }

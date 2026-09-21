@@ -83,7 +83,7 @@ export class AttioMCPServer {
     return [
       {
         name: 'search',
-        description: `Write JavaScript to explore the Attio CRM API specification (${this.spec.pathCount} endpoints, ${this.spec.schemaCount} schemas, API v${this.spec.info.version}).
+        description: `Write JavaScript to explore the Attio CRM API specification (${this.spec.pathCount} paths, ${this.spec.operationCount} operations, ${this.spec.schemaCount} schemas, API v${this.spec.info.version}).
 
 Available globals:
 - \`spec\` — Object with all API endpoints. Structure: spec.paths['/v2/endpoint'].method
@@ -95,6 +95,7 @@ How to use:
 - Check parameters: spec.paths['/v2/objects'].get.parameters
 - Check response schema: spec.paths['/v2/objects'].get.responses
 - Get tags: spec.paths['/v2/objects'].get.tags
+- Check required scopes: spec.paths['/v2/emails'].get.security
 - Search by tag: Object.entries(spec.paths).filter(([p, m]) => Object.values(m).some(op => op.tags?.includes('Records')))
 
 Return your findings as a value or use console.log().
@@ -259,6 +260,7 @@ Pass a topic keyword to search, or use "all" to list everything, or "categories"
           spec: {
             apiVersion: this.spec.info.version,
             endpoints: this.spec.pathCount,
+            operations: this.spec.operationCount,
             schemas: this.spec.schemaCount
           }
         };

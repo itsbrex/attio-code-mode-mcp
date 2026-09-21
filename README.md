@@ -65,6 +65,42 @@ Add to `~/Library/Application Support/Claude/claude_desktop_config.json`:
 }
 ```
 
+## OpenAPI sync and generation
+
+The MCP server bundles Attio's public [OpenAPI document](https://api.attio.com/openapi/api) and [documentation index](https://docs.attio.com/llms.txt). Refresh both, regenerate TypeScript, and rebuild with:
+
+```bash
+npm run spec:sync
+```
+
+`npm run spec:update` remains an alias. Sync fetches both documents, validates the spec with pinned `openapi-sync` 6.4.2, generates into a temporary directory, and type-checks generated code before publishing source changes. Failed fetches or generation preserve the previous snapshots and generated files. Restart the MCP server in your client after syncing to load the rebuilt package.
+
+```bash
+npm run spec:validate        # Validate the committed OpenAPI document and config
+npm run spec:generate        # Regenerate from committed input without network access
+npm run spec:check           # Compare staged generation with source; fail on drift
+npm run spec:upstream-check  # Compare public upstream documents without changing source
+npm run type-check
+npm test
+```
+
+[`openapi.sync.json`](openapi.sync.json) generates `src/generated/attio/endpoints.ts`, `types/index.ts`, and `types/shared.ts`. These compile with the package; runtime requests continue through the existing authenticated API client. Runtime validator generation is disabled. Custom code is preserved inside the marked `CUSTOM CODE` blocks.
+
+Attio uses valid OpenAPI schema names containing hyphens, which this generator version cannot emit as TypeScript identifiers. The sync wrapper normalizes schema names and references in its temporary generation input, rejects name collisions, and leaves the bundled upstream document unchanged. It normalizes generated whitespace outside custom-code blocks, including extra blank lines inserted after their footers, making regeneration deterministic. `.openapi-sync/` contains ignored staging/cache data.
+
+CI runs validation, generated drift checks, type-checking, build, and offline tests. Scheduled and manual runs also check public upstream drift; they require no Attio credentials and do not publish updates.
+
+### Email metadata access
+
+The spec verified on 2026-09-21 contains 53 paths and 94 operations, including `GET /v2/emails`. Required scopes are available through `search`:
+
+```javascript
+return spec.paths['/v2/emails'].get.security;
+// [{ oauth2: ['email:read', 'record_permission:read', 'object_configuration:read'] }]
+```
+
+Refreshing a spec cannot grant API permissions. Attio's [email metadata endpoint](https://docs.attio.com/rest-api/endpoint-reference/emails/list-emails) is an alpha feature enabled per workspace and per app; contact `support@attio.com` when access is unavailable. It returns metadata only, requires a supported record/participant/domain filter, and must be paginated until `next_cursor` is null, including empty pages. A `403` for `email:read` requires an access/scope change on Attio's side.
+
 ## Tools
 
 ### `search(code)`

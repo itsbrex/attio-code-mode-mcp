@@ -31,6 +31,11 @@ Requires `ATTIO_API_KEY` env var. Get one from [Attio Settings > Developers > AP
 | `build` | `tsc` + copy spec/context assets to `dist/` | Production build |
 | `start` | `node dist/index.js` | Run built server |
 | `type-check` | `tsc --noEmit` | Type checking only |
+| `test` | `node --import tsx --test tests/*.test.ts` | Offline regression and MCP stdio tests |
+| `spec:sync` / `spec:update` | Staged public fetch, generation, and build | Refresh OpenAPI and documentation assets |
+| `spec:validate` | `openapi-sync validate --json` | Validate committed spec/config |
+| `spec:generate` / `spec:check` | Staged generation or drift comparison | Keep generated TypeScript in sync |
+| `spec:upstream-check` | Public fetch and comparison | Detect upstream drift without source edits |
 | `test:connection` | `tsx src/test-connection.ts` | Manual integration smoke test (no assertions) |
 
 ## Architecture
@@ -65,7 +70,8 @@ src/
 - **Console suppression:** `index.ts` replaces all `console.*` methods because MCP uses stdout for JSON-RPC. Application logs go to stderr.
 - **Sandbox isolation:** LLM-generated code runs in Node.js `vm` with no filesystem, network, or env access. Only `spec` and `api` globals are injected.
 - **Output truncation:** Results capped at 40,000 characters (`MAX_TOOL_OUTPUT_CHARS`) to prevent context bloat.
-- **Embedded spec:** The full OpenAPI JSON is bundled in `src/spec/openapi.json` and copied to `dist/` at build time. No runtime fetching. Source of truth is `https://api.attio.com/openapi/api` (docs index: `https://docs.attio.com/llms.txt`); `npm run spec:update` pulls both. Last refreshed 2026-09-18 (94 operations, 22 schemas; adds Activities, SQL, record merge, attribute-value writes, views, emails, sequences).
+- **Embedded spec:** The full OpenAPI JSON is bundled in `src/spec/openapi.json` and copied to `dist/` at build time. No runtime fetching. Source of truth is `https://api.attio.com/openapi/api` (docs index: `https://docs.attio.com/llms.txt`); `npm run spec:sync` pulls both. Verified current 2026-09-21 (53 paths, 94 operations, 22 schemas, including emails). Search exposes per-operation security requirements; refreshing the spec does not grant scopes.
+- **Generated surface:** Pinned `openapi-sync` 6.4.2 generates types/endpoints under `src/generated/attio/`. The wrapper stages generation, normalizes hyphenated schema identifiers only in the generation copy, checks TypeScript, preserves custom-code blocks, and normalizes footer whitespace for deterministic drift checks. See `openapi.sync.json` and `scripts/spec-sync.mjs`. Generated runtime validators are disabled.
 
 ## Dependencies
 
@@ -80,8 +86,7 @@ src/
 
 ## Known Issues
 
-- **No automated tests.** Zero test files, no test framework. `test:connection` is a manual smoke script.
-- **No CI pipeline.** Build, type-check, and tests are never run automatically.
+- `test:connection` remains a manual live smoke script; `npm test` provides offline regression coverage and `.github/workflows/spec-check.yml` runs verification in CI.
 - **22 `any` annotations** across 5 files defeat TypeScript strict mode.
 - **Offset pagination** in `api/client.ts` contradicts `.claude/rules/antipatterns.md`. Should use cursor-based.
 - **Truncation logic duplicated** between `sandbox.ts` and `mcp-server.ts`.

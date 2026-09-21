@@ -11,6 +11,12 @@ Attio Code Mode MCP server. Keep changes scoped to the TypeScript MCP implementa
 - `npm run build` builds the TypeScript package.
 - `npm run start` starts the built server.
 - `npm run type-check` runs TypeScript checks.
+- `npm test` runs offline regression and MCP stdio tests.
+- `npm run spec:sync` refreshes public Attio OpenAPI/docs, regenerates TypeScript, and rebuilds.
+- `npm run spec:validate` validates committed OpenAPI/config without writing.
+- `npm run spec:generate` regenerates TypeScript from committed input.
+- `npm run spec:check` detects generated drift without changing source files.
+- `npm run spec:upstream-check` detects public upstream drift without changing source files.
 - `npm run test:connection` checks MCP/Attio connectivity.
 
 ## Secrets
@@ -23,4 +29,6 @@ Attio Code Mode MCP server. Keep changes scoped to the TypeScript MCP implementa
 
 - Run `npm run type-check` after TypeScript edits.
 - Run `npm run build` before claiming package-level changes complete.
+- Run `npm test` and `npm run spec:check` after changes to spec loading or generation.
+- Keep `src/spec/openapi.json` as the upstream document. Schema-name normalization belongs only in the temporary generation input in `scripts/spec-sync.mjs`.
 - Run `npm run test:connection` only when credentials and live connectivity are intentionally in scope.

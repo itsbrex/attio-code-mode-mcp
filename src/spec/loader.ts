@@ -16,6 +16,7 @@ interface ResolvedSpec {
   info: { title: string; version: string };
   paths: Record<string, any>;
   pathCount: number;
+  operationCount: number;
   schemaCount: number;
 }
 
@@ -26,17 +27,21 @@ export function loadSpec(): ResolvedSpec {
   const schemas = raw.components?.schemas || {};
 
   const paths: Record<string, any> = {};
+  const httpMethods = new Set(['get', 'post', 'put', 'patch', 'delete', 'options', 'head', 'trace']);
+  let operationCount = 0;
 
   for (const [path, methods] of Object.entries(raw.paths as Record<string, any>)) {
     paths[path] = {};
     for (const [method, operation] of Object.entries(methods as Record<string, any>)) {
-      if (method === 'parameters') continue;
+      if (!httpMethods.has(method)) continue;
+      operationCount++;
 
       paths[path][method] = {
         summary: operation.summary || '',
         description: operation.description || '',
         operationId: operation.operationId || '',
         tags: operation.tags || [],
+        security: operation.security ?? raw.security ?? [],
         parameters: (operation.parameters || []).map((p: any) => {
           if (p.$ref) {
             return resolveRef(p.$ref, raw);
@@ -61,6 +66,7 @@ export function loadSpec(): ResolvedSpec {
     info: raw.info,
     paths,
     pathCount: Object.keys(paths).length,
+    operationCount,
     schemaCount: Object.keys(schemas).length
   };
 }
