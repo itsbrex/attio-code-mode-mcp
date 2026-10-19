@@ -1,4 +1,5 @@
 import assert from 'node:assert/strict';
+import { readFile } from 'node:fs/promises';
 import { fileURLToPath } from 'node:url';
 import { test } from 'node:test';
 import { Client } from '@modelcontextprotocol/sdk/client/index.js';
@@ -14,6 +15,8 @@ test('stdio discovery exposes email scope requirements without contacting Attio'
   const client = new Client({ name: 'attio-offline-test', version: '1.0.0' });
   try {
     await client.connect(transport);
+    const pkg = JSON.parse(await readFile(new URL('../package.json', import.meta.url), 'utf8'));
+    assert.deepEqual(client.getServerVersion(), { name: 'attio-mcp', version: pkg.version });
     const { tools } = await client.listTools();
     assert.deepEqual(tools.map(tool => tool.name).sort(), ['context', 'execute', 'search', 'test_connection']);
     assert.match(tools.find(tool => tool.name === 'search')!.description!, /paths, \d+ operations/);

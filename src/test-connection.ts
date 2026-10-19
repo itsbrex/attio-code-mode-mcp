@@ -7,7 +7,7 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 import { AttioAuth } from './auth/api-key.js';
-import { AttioClient } from './api/client.js';
+import { AttioClient, createApiWrapper } from './api/client.js';
 import { loadSpec } from './spec/loader.js';
 import { executeInSandbox } from './executor/sandbox.js';
 import { searchDocs, getCategories } from './context/loader.js';
@@ -37,14 +37,7 @@ async function test() {
   console.log(`Spec paths: ${pretty(searchResult.result)}`);
 
   console.log('\n=== TEST 3: Execute — Query Companies ===');
-  const api = {
-    request: async (opts: { method: string; path: string; params?: any; body?: any }) => {
-      return client.request(opts.path, opts.body ?? opts.params, {
-        method: opts.method,
-        data: opts.body
-      });
-    }
-  };
+  const api = createApiWrapper(client);
 
   const execResult = await executeInSandbox(
     `const result = await api.request({ method: 'POST', path: '/v2/objects/companies/records/query', params: { limit: 3 } });

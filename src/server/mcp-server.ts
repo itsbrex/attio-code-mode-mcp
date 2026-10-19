@@ -18,12 +18,16 @@ import {
 import { AttioAuth } from '../auth/api-key.js';
 import { AttioClient, createApiWrapper } from '../api/client.js';
 import { loadSpec } from '../spec/loader.js';
-import { executeInSandbox } from '../executor/sandbox.js';
+import { executeInSandbox, DEFAULT_TOTAL_TIMEOUT_MS } from '../executor/sandbox.js';
 import { searchDocs, getAllDocs, getCategories } from '../context/loader.js';
 import { ServerConfig } from '../types/config.js';
 import { truncate } from '../utils/truncate.js';
 import { formatError } from '../utils/format-error.js';
 import { safeJsonStringify } from '../utils/json.js';
+import { createRequire } from 'node:module';
+
+const SERVER_NAME = 'attio-mcp';
+const { version: SERVER_VERSION } = createRequire(import.meta.url)('../../package.json') as { version: string };
 
 export class AttioMCPServer {
   private server: Server;
@@ -34,8 +38,8 @@ export class AttioMCPServer {
   constructor(config: ServerConfig) {
     this.server = new Server(
       {
-        name: 'attio-mcp',
-        version: '1.0.0'
+        name: SERVER_NAME,
+        version: SERVER_VERSION
       },
       {
         capabilities: {
@@ -131,17 +135,21 @@ Usage:
     method: 'GET',              // GET, POST, PATCH, DELETE, PUT
     path: '/v2/objects',        // API path (from search results)
     params: { limit: 10 },     // Query params for GET, body for POST/PATCH/PUT/DELETE
-    body: { ... }              // Request body (alternative to params for POST/PATCH)
+    body: { ... },             // Request body; when given, params become query params instead
+    query: { ... }             // Explicit query params for any method
   });
 
 The response is parsed JSON. You can chain multiple API calls in one execution.
-Use try/catch for error handling.
+Rate limits (100 reads/s, 25 writes/s) are enforced client-side and 429s are retried automatically.
+Failed calls throw an Error with status, code and type properties; use try/catch to handle them.
+A whole execution is stopped after ${DEFAULT_TOTAL_TIMEOUT_MS / 1000}s, so batch large jobs.
 
 Common patterns:
 - List companies: api.request({ method: 'POST', path: '/v2/objects/companies/records/query', params: { limit: 10 } })
 - Get a record: api.request({ method: 'GET', path: '/v2/objects/companies/records/' + recordId })
 - Create note: api.request({ method: 'POST', path: '/v2/notes', params: { data: { ... } } })
 - Query list entries: api.request({ method: 'POST', path: '/v2/lists/{listId}/entries/query', params: { limit: 50 } })
+- Upsert a person: api.request({ method: 'PUT', path: '/v2/objects/people/records', query: { matching_attribute: 'email_addresses' }, body: { data: { values: { ... } } } })
 
 Example — find a company and get its notes:
   const companies = await api.request({
@@ -220,9 +228,12 @@ Pass a topic keyword to search, or use "all" to list everything, or "categories"
       case 'execute': {
         if (!args.code) throw new Error('code is required');
 
-        const api = createApiWrapper(this.client);
+        const controller = new AbortController();
+        const api = createApiWrapper(this.client, controller.signal);
 
-        const result = await executeInSandbox(args.code, { api });
+        const result = await executeInSandbox(args.code, { api }, {
+          onTimeout: () => controller.abort()
+        });
         if (result.error) {
           return { error: result.error, logs: result.logs };
         }
@@ -254,8 +265,8 @@ Pass a topic keyword to search, or use "all" to list everything, or "categories"
         return {
           connected,
           message: connected ? 'Successfully connected to Attio CRM' : 'Connection failed — check ATTIO_API_KEY',
-          server: 'attio-mcp',
-          version: '1.0.0',
+          server: SERVER_NAME,
+          version: SERVER_VERSION,
           mode: 'code-mode',
           spec: {
             apiVersion: this.spec.info.version,

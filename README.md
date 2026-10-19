@@ -151,6 +151,19 @@ await api.request({
 return { success: true, company: companies.data[0].values.name };
 ```
 
+`params` is the query string for `GET` and the body for other methods. When `body` is also given, `params` becomes the query string, and `query` sets query parameters explicitly for any method. Upsert endpoints need both:
+
+```javascript
+await api.request({
+  method: 'PUT',
+  path: '/v2/objects/people/records',
+  query: { matching_attribute: 'email_addresses' },
+  body: { data: { values: { email_addresses: ['ada@example.com'] } } }
+});
+```
+
+The client paces requests to Attio's documented limits (100 reads/s, 25 writes/s), retries `429` responses after `Retry-After` up to three times, and throws errors with `status`, `code` and `type` properties. A single execution is stopped after 120 seconds; requests it has not sent yet are cancelled.
+
 ### `context(topic)`
 
 Look up Attio documentation by topic. Self-educate on the domain model before writing code.
@@ -171,7 +184,7 @@ Verify your API key works and see server stats.
 ```
 src/
 ├── auth/api-key.ts       # API key auth (Bearer token from env)
-├── api/client.ts         # HTTP client with rate limiting
+├── api/client.ts         # HTTP client: rate limiting, 429 retry, typed errors
 ├── spec/
 │   ├── openapi.json      # Attio's OpenAPI spec (embedded)
 │   └── loader.ts         # Pre-resolves $refs for agent traversal
@@ -188,7 +201,8 @@ src/
 ## Security
 
 - API key is injected via environment variables, never exposed to LLM-generated code
-- Code execution runs in Node.js `vm` sandbox — no filesystem, no network, no env access
+- Code execution runs in a Node.js `vm` context that holds no host objects: `spec` is copied in as JSON and `api.request` is bridged so only strings cross the boundary, which blocks the constructor-chain escapes to `process`, env vars and the filesystem
+- `vm` is not a hard security boundary; treat CRM content that reaches the model as untrusted input
 - Only injected globals (`spec`, `api`) are available inside the sandbox
 - Output truncated at 40,000 characters to prevent context bloat
 
