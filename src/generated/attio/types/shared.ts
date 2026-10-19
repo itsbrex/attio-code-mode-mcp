@@ -7,52 +7,6 @@
 // 🔒 CUSTOM CODE END
 // ============================================================
 
-export type IActivity = {
-  "id": {
-    /**
- *  A UUID to identify the workspace this activity belongs to.
- */
-  "workspace_id": string;
-/**
- *  A UUID to identify the activity.
- */
-  "activity_id": string;
-    };
-/**
- *  A unique, human-readable slug to access the activity through URLs and API calls. Formatted in snake case.
- */
-  "api_slug": string;
-/**
- *  The singular form of the activity's name.
- */
-  "singular_noun": string;
-/**
- *  The plural form of the activity's name.
- */
-  "plural_noun": string;
-/**
- *  The schemas this activity directly extends, which supply its inherited attributes.
- */
-  "extends": {
-/**
- *  A UUID to identify the schema.
- */
-  "schema_id": string;
-/**
- *  The human-readable slug of the schema.
- */
-  "schema_slug": string;
-}[];
-/**
- *  `true` when Attio defines the activity, `false` when it's a custom activity.
- */
-  "is_system_activity": boolean;
-/**
- *  When the activity was created.
- */
-  "created_at": string;
-};
-
 export type IStatus = {
   "id": {
     /**
@@ -176,7 +130,7 @@ export type IInputValue = ({
  */
   "target_object": string;
 /**
- *  In addition to referencing records directly by record ID, you may also reference by a matching attribute of your choice. For example, if you want to add a reference to the person record with email "alice@website.com", you should pass a value with `target_object` set to `"people"` and `email_addresses` set to `[{email_address:"alice@website.com"}]`. The key should be the slug or ID of the matching attribute you would like to use and the value should be an array containing a single value of the appropriate attribute type (as specified below). Matching on multiple values is not currently supported. Matching attributes must be unique. This process is similar to how you use the `matching_attribute` query param in Attio's [assert endpoints](/rest-api/endpoint-reference/records/assert-a-record).
+ *  In addition to referencing records directly by record ID, you may also reference by a matching attribute of your choice. For example, if you want to add a reference to the person record with email "alice@website.com", you should pass a value with `target_object` set to `"people"` and `email_addresses` set to `[{email_address:"alice@website.com"}]`. The key should be the slug or ID of the matching attribute you would like to use and the value should be an array containing a single value of the appropriate attribute type (as specified below). Matching on multiple values is not currently supported. The matching attribute does not have to be unique, but a value that matches no record or more than one record is rejected. We recommend a unique attribute, such as a domain, an email address or an ID from your own system. This process is similar to how you use the `matching_attribute` query param in Attio's [assert endpoints](/rest-api/endpoint-reference/records/assert-a-record).
  */
   "[slug_or_id_of_matching_attribute]": ({
 /**
@@ -571,6 +525,52 @@ export type IOutputValue = ({
  */
   "value": string;
 });
+
+export type IActivity = {
+  "id": {
+    /**
+ *  A UUID to identify the workspace this activity belongs to.
+ */
+  "workspace_id": string;
+/**
+ *  A UUID to identify the activity.
+ */
+  "activity_id": string;
+    };
+/**
+ *  A unique, human-readable slug to access the activity through URLs and API calls. Formatted in snake case.
+ */
+  "api_slug": string;
+/**
+ *  The singular form of the activity's name.
+ */
+  "singular_noun": string;
+/**
+ *  The plural form of the activity's name.
+ */
+  "plural_noun": string;
+/**
+ *  The schemas this activity directly extends, which supply its inherited attributes.
+ */
+  "extends": {
+/**
+ *  A UUID to identify the schema.
+ */
+  "schema_id": string;
+/**
+ *  The human-readable slug of the schema.
+ */
+  "schema_slug": string;
+}[];
+/**
+ *  `true` when Attio defines the activity, `false` when it's a custom activity.
+ */
+  "is_system_activity": boolean;
+/**
+ *  When the activity was created.
+ */
+  "created_at": string;
+};
 
 export type IAttribute = {
   "id": {

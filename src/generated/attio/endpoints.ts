@@ -11,6 +11,8 @@
 * Lists all system-defined and user-defined objects in your workspace.
 
 Required scopes: `object_configuration:read`.
+
+Supported token levels: `workspace`, `user`.
  * **Method**: `GET`
  * **Summary**: List objects
  * **Tags**: [Objects]
@@ -29,6 +31,8 @@ export const GetV2Objects = "/v2/objects";
 * Creates a new custom object in your workspace.
 
 Required scopes: `object_configuration:read-write`.
+
+Supported token levels: `workspace`, `user`.
  * **Method**: `POST`
  * **Summary**: Create an object
  * **Tags**: [Objects]
@@ -72,6 +76,8 @@ export const PostV2Objects = "/v2/objects";
 * Gets a single object by its `object_id` or slug.
 
 Required scopes: `object_configuration:read`.
+
+Supported token levels: `workspace`, `user`.
  * **Method**: `GET`
  * **Summary**: Get an object
  * **Tags**: [Objects]
@@ -100,6 +106,8 @@ export const GetV2Objects$object = (object:string)=> `/v2/objects/${object}`;
 * Updates a single object. The object to be updated is identified by its `object_id`.
 
 Required scopes: `object_configuration:read-write`.
+
+Supported token levels: `workspace`, `user`.
  * **Method**: `PATCH`
  * **Summary**: Update an object
  * **Tags**: [Objects]
@@ -155,6 +163,8 @@ export const PatchV2Objects$object = (object:string)=> `/v2/objects/${object}`;
 This endpoint should be used with caution as it has the potential to remove a large amount of potentially valuable data.
 
 Required scopes: `object_configuration:read-write`, `record_permission:read-write`.
+
+Supported token levels: `workspace`, `user`.
  * **Method**: `DELETE`
  * **Summary**: Delete an object
  * **Tags**: [Objects]
@@ -191,6 +201,8 @@ export const DeleteV2Objects$object = (object:string)=> `/v2/objects/${object}`;
 * Lists saved views for an object. Results are ordered by view ID (`id.view_id` ascending).
 
 Required scopes: `object_configuration:read`.
+
+Supported token levels: `workspace`, `user`.
  * **Method**: `GET`
  * **Summary**: List views for object
  * **Tags**: [Objects]
@@ -226,9 +238,11 @@ export const GetV2Objects$objectViews = (object:string)=> `/v2/objects/${object}
 /**
 * Lists all system-defined and user-defined activities in your workspace.
 
-This endpoint is in alpha and may be subject to breaking changes as we gather feedback.
+This endpoint is in beta. We will aim to avoid breaking changes, but small updates may be made as we roll out to more users.
 
 Required scopes: `activity_configuration:read`.
+
+Supported token levels: `workspace`, `user`.
  * **Method**: `GET`
  * **Summary**: List activities
  * **Tags**: [Activities]
@@ -253,9 +267,11 @@ export const GetV2Activities = "/v2/activities";
 /**
 * Creates a new custom activity in your workspace. Your workspace must have the custom activities billing feature enabled. Public apps may instead create activities with the integration activities billing feature.
 
-This endpoint is in alpha and may be subject to breaking changes as we gather feedback.
+This endpoint is in beta. We will aim to avoid breaking changes, but small updates may be made as we roll out to more users.
 
 Required scopes: `activity_configuration:read-write`.
+
+Supported token levels: `workspace`, `user`.
  * **Method**: `POST`
  * **Summary**: Create an activity
  * **Tags**: [Activities]
@@ -296,9 +312,11 @@ export const PostV2Activities = "/v2/activities";
 /**
 * Gets a single activity by its `activity_id` or slug.
 
-This endpoint is in alpha and may be subject to breaking changes as we gather feedback.
+This endpoint is in beta. We will aim to avoid breaking changes, but small updates may be made as we roll out to more users.
 
 Required scopes: `activity_configuration:read`.
+
+Supported token levels: `workspace`, `user`.
  * **Method**: `GET`
  * **Summary**: Get an activity
  * **Tags**: [Activities]
@@ -326,9 +344,11 @@ export const GetV2Activities$activity = (activity:string)=> `/v2/activities/${ac
 /**
 * Updates a single activity by its `activity_id` or slug. The schema an activity extends is fixed after creation, so `extends` cannot be changed.
 
-This endpoint is in alpha and may be subject to breaking changes as we gather feedback.
+This endpoint is in beta. We will aim to avoid breaking changes, but small updates may be made as we roll out to more users.
 
 Required scopes: `activity_configuration:read-write`.
+
+Supported token levels: `workspace`, `user`.
  * **Method**: `PATCH`
  * **Summary**: Update an activity
  * **Tags**: [Activities]
@@ -383,9 +403,11 @@ export const PatchV2Activities$activity = (activity:string)=> `/v2/activities/${
 
 This endpoint should be used with caution as it has the potential to remove a large amount of potentially valuable data.
 
-This endpoint is in alpha and may be subject to breaking changes as we gather feedback.
+This endpoint is in beta. We will aim to avoid breaking changes, but small updates may be made as we roll out to more users.
 
 Required scopes: `activity_configuration:read-write`, `activity_record:read-write`.
+
+Supported token levels: `workspace`, `user`.
  * **Method**: `DELETE`
  * **Summary**: Delete an activity
  * **Tags**: [Activities]
@@ -419,279 +441,11 @@ Required scopes: `activity_configuration:read-write`, `activity_record:read-writ
  */
 export const DeleteV2Activities$activity = (activity:string)=> `/v2/activities/${activity}`;
 /**
-* Lists activity records, with the option to filter and sort results.
+* Lists all attributes defined on a specific object, list or activity. Attributes are returned in the order that they are sorted by in the UI.
 
-This endpoint is in alpha and may be subject to breaking changes as we gather feedback.
+When `target` is `objects`, the required scopes are `object_configuration:read`. When `target` is `lists`, the required scopes are `list_configuration:read`. When `target` is `activities`, the required scopes are `activity_configuration:read`.
 
-Required scopes: `activity_record:read`, `activity_configuration:read`, `object_configuration:read`, `record_permission:read`.
- * **Method**: `POST`
- * **Summary**: List activity records
- * **Tags**: [Activity records]
- * **OperationId**:
- * **Path**:
-```typescript
-    {
-      "activity": string;
-    }
-```
- * **DTO**:
-```typescript
-    {
-    // An object used to filter results to a subset of results. Cannot be used together with `filter_view_id`. See the [full guide to filtering and sorting here](/rest-api/guides/filtering-and-sorting).
-      "filter"?: {[k: string]: any};
-    // An object used to sort results. See the [full guide to filtering and sorting here](/rest-api/guides/filtering-and-sorting).
-      "sorts"?: ({
-    // The direction to sort the results by.
-      "direction": ("asc"|"desc");
-    // A slug or ID to identify the attribute to sort by.
-      "attribute": string;
-    // Which field on the value to sort by e.g. "last_name" on a name value.
-      "field"?: string;
-    }|{
-    // The direction to sort the results by.
-      "direction": ("asc"|"desc");
-    // You may use the `path` property to traverse record reference attributes and parent records on list entries. `path` accepts an array of tuples where the first element of each tuple is the slug or ID of a list/object, and the second element is the slug or ID of an attribute on that list/object. The first element of the first tuple must correspond to the list or object that you are querying. For example, if you wanted to sort by the name of the parent record (a company) on a list with the slug "sales", you would pass the value `[['sales', 'parent_record'], ['companies', 'name']]`.
-      "path": (string|string)[][];
-    // Which field on the value to sort by e.g. "last_name" on a name value.
-      "field"?: string;
-    })[];
-    // The maximum number of results to return. Defaults to 500. See the [full guide to pagination here](/rest-api/guides/pagination).
-      "limit"?: number;
-    // The number of results to skip over before returning. Defaults to 0. See the [full guide to pagination here](/rest-api/guides/pagination).
-      "offset"?: number;
-    }
-```
- * **Response**:
-    - **200**:
-```typescript
-      IPostV2Activities$activityRecordsQuery200Response
-```
-    - **400**:
-```typescript
-      IPostV2Activities$activityRecordsQuery400Response
-```
-    - **404**:
-```typescript
-      IPostV2Activities$activityRecordsQuery404Response
-```
- * **Security**:
-    - **oauth2**: [activity_record:read, activity_configuration:read, object_configuration:read, record_permission:read]
-
- */
-export const PostV2Activities$activityRecordsQuery = (activity:string)=> `/v2/activities/${activity}/records/query`;
-/**
-* Creates a new activity record, for example one specific phone call.
-
-This endpoint is in alpha and may be subject to breaking changes as we gather feedback.
-
-Required scopes: `activity_record:read-write`, `activity_configuration:read`, `object_configuration:read`, `record_permission:read`.
- * **Method**: `POST`
- * **Summary**: Create an activity record
- * **Tags**: [Activity records]
- * **OperationId**:
- * **Path**:
-```typescript
-    {
-      "activity": string;
-    }
-```
- * **DTO**:
-```typescript
-    {
-      "data": {
-        // An object with an attribute `api_slug` or `attribute_id` as the key, and a single value (for single-select attributes), or an array of values (for single or multi-select attributes) as the values. For complete documentation on values for all attribute types, please see our [attribute type docs](/docs/attribute-types).
-      "values": {[k: string]: any[]};
-        };
-    }
-```
- * **Response**:
-    - **200**:
-```typescript
-      IPostV2Activities$activityRecords200Response
-```
-    - **400**:
-```typescript
-      IPostV2Activities$activityRecords400Response
-```
-    - **403**:
-```typescript
-      IPostV2Activities$activityRecords403Response
-```
-    - **404**:
-```typescript
-      IPostV2Activities$activityRecords404Response
-```
- * **Security**:
-    - **oauth2**: [activity_record:read-write, activity_configuration:read, object_configuration:read, record_permission:read]
-
- */
-export const PostV2Activities$activityRecords = (activity:string)=> `/v2/activities/${activity}/records`;
-/**
-* Gets a single activity record by its `record_id`.
-
-This endpoint is in alpha and may be subject to breaking changes as we gather feedback.
-
-Required scopes: `activity_record:read`, `activity_configuration:read`, `object_configuration:read`, `record_permission:read`.
- * **Method**: `GET`
- * **Summary**: Get an activity record
- * **Tags**: [Activity records]
- * **OperationId**:
- * **Path**:
-```typescript
-    {
-      "activity": string;
-      "record_id": string;
-    }
-```
- * **Response**:
-    - **200**:
-```typescript
-      IGetV2Activities$activityRecords$record_id200Response
-```
-    - **404**:
-```typescript
-      IGetV2Activities$activityRecords$record_id404Response
-```
- * **Security**:
-    - **oauth2**: [activity_record:read, activity_configuration:read, object_configuration:read, record_permission:read]
-
- */
-export const GetV2Activities$activityRecords$record_id = (activity:string,record_id:string)=> `/v2/activities/${activity}/records/${record_id}`;
-/**
-* Use this endpoint to update activity records by `record_id`. If the update payload includes multiselect attributes, the values supplied will be created and prepended to the list of values that already exist (if any). Use the `PUT` endpoint to overwrite or remove multiselect attribute values.
-
-This endpoint is in alpha and may be subject to breaking changes as we gather feedback.
-
-Required scopes: `activity_record:read-write`, `activity_configuration:read`, `object_configuration:read`, `record_permission:read`.
- * **Method**: `PATCH`
- * **Summary**: Update an activity record (append multiselect values)
- * **Tags**: [Activity records]
- * **OperationId**:
- * **Path**:
-```typescript
-    {
-      "activity": string;
-      "record_id": string;
-    }
-```
- * **DTO**:
-```typescript
-    {
-      "data": {
-        // An object with an attribute `api_slug` or `attribute_id` as the key, and a single value (for single-select attributes), or an array of values (for single or multi-select attributes) as the values. For complete documentation on values for all attribute types, please see our [attribute type docs](/docs/attribute-types).
-      "values": {[k: string]: any[]};
-        };
-    }
-```
- * **Response**:
-    - **200**:
-```typescript
-      IPatchV2Activities$activityRecords$record_id200Response
-```
-    - **400**:
-```typescript
-      IPatchV2Activities$activityRecords$record_id400Response
-```
-    - **403**:
-```typescript
-      IPatchV2Activities$activityRecords$record_id403Response
-```
-    - **404**:
-```typescript
-      IPatchV2Activities$activityRecords$record_id404Response
-```
- * **Security**:
-    - **oauth2**: [activity_record:read-write, activity_configuration:read, object_configuration:read, record_permission:read]
-
- */
-export const PatchV2Activities$activityRecords$record_id = (activity:string,record_id:string)=> `/v2/activities/${activity}/records/${record_id}`;
-/**
-* Use this endpoint to update activity records by `record_id`. If the update payload includes multiselect attributes, the values supplied will overwrite/remove the list of values that already exist (if any). Use the `PATCH` endpoint to append multiselect values without removing those that already exist.
-
-This endpoint is in alpha and may be subject to breaking changes as we gather feedback.
-
-Required scopes: `activity_record:read-write`, `activity_configuration:read`, `object_configuration:read`, `record_permission:read`.
- * **Method**: `PUT`
- * **Summary**: Update an activity record (overwrite multiselect values)
- * **Tags**: [Activity records]
- * **OperationId**:
- * **Path**:
-```typescript
-    {
-      "activity": string;
-      "record_id": string;
-    }
-```
- * **DTO**:
-```typescript
-    {
-      "data": {
-        // An object with an attribute `api_slug` or `attribute_id` as the key, and a single value (for single-select attributes), or an array of values (for single or multi-select attributes) as the values. For complete documentation on values for all attribute types, please see our [attribute type docs](/docs/attribute-types).
-      "values": {[k: string]: any[]};
-        };
-    }
-```
- * **Response**:
-    - **200**:
-```typescript
-      IPutV2Activities$activityRecords$record_id200Response
-```
-    - **400**:
-```typescript
-      IPutV2Activities$activityRecords$record_id400Response
-```
-    - **403**:
-```typescript
-      IPutV2Activities$activityRecords$record_id403Response
-```
-    - **404**:
-```typescript
-      IPutV2Activities$activityRecords$record_id404Response
-```
- * **Security**:
-    - **oauth2**: [activity_record:read-write, activity_configuration:read, object_configuration:read, record_permission:read]
-
- */
-export const PutV2Activities$activityRecords$record_id = (activity:string,record_id:string)=> `/v2/activities/${activity}/records/${record_id}`;
-/**
-* Deletes a single activity record by its `record_id`.
-
-This endpoint is in alpha and may be subject to breaking changes as we gather feedback.
-
-Required scopes: `activity_record:read-write`, `activity_configuration:read`, `object_configuration:read`, `record_permission:read`.
- * **Method**: `DELETE`
- * **Summary**: Delete an activity record
- * **Tags**: [Activity records]
- * **OperationId**:
- * **Path**:
-```typescript
-    {
-      "activity": string;
-      "record_id": string;
-    }
-```
- * **Response**:
-    - **200**:
-```typescript
-      IDeleteV2Activities$activityRecords$record_id200Response
-```
-    - **403**:
-```typescript
-      IDeleteV2Activities$activityRecords$record_id403Response
-```
-    - **404**:
-```typescript
-      IDeleteV2Activities$activityRecords$record_id404Response
-```
- * **Security**:
-    - **oauth2**: [activity_record:read-write, activity_configuration:read, object_configuration:read, record_permission:read]
-
- */
-export const DeleteV2Activities$activityRecords$record_id = (activity:string,record_id:string)=> `/v2/activities/${activity}/records/${record_id}`;
-/**
-* Lists all attributes defined on a specific object or list. Attributes are returned in the order that they are sorted by in the UI.
-
-When `target` is `objects`, the required scopes are `object_configuration:read`. When `target` is `lists`, the required scopes are `list_configuration:read`.
+Supported token levels: `workspace`, `user`.
  * **Method**: `GET`
  * **Summary**: List attributes
  * **Tags**: [Attributes]
@@ -699,7 +453,7 @@ When `target` is `objects`, the required scopes are `object_configuration:read`.
  * **Path**:
 ```typescript
     {
-      "target": ("objects"|"lists");
+      "target": ("objects"|"lists"|"activities");
       "identifier": string;
     }
 ```
@@ -722,13 +476,17 @@ When `target` is `objects`, the required scopes are `object_configuration:read`.
  */
 export const GetV2$target$identifierAttributes = (target:string,identifier:string)=> `/v2/${target}/${identifier}/attributes`;
 /**
-* Creates a new attribute on either an object or a list.
+* Creates a new attribute on either an object, a list or an activity.
 
 For record-reference attributes, you can optionally create a bidirectional relationship by providing a `relationship` object. This will create two entangled attributes: one on the specified object and a reverse attribute on the related object.
 
 To create an attribute on an object, you must also have the `object_configuration:read-write` scope.
 
 To create an attribute on a list, you must also have the `list_configuration:read-write` scope.
+
+To create an attribute on an activity, you must also have the `activity_configuration:read-write` scope.
+
+Supported token levels: `workspace`, `user`.
  * **Method**: `POST`
  * **Summary**: Create an attribute
  * **Tags**: [Attributes]
@@ -736,7 +494,7 @@ To create an attribute on a list, you must also have the `list_configuration:rea
  * **Path**:
 ```typescript
     {
-      "target": ("objects"|"lists");
+      "target": ("objects"|"lists"|"activities");
       "identifier": string;
     }
 ```
@@ -821,9 +579,11 @@ To create an attribute on a list, you must also have the `list_configuration:rea
  */
 export const PostV2$target$identifierAttributes = (target:string,identifier:string)=> `/v2/${target}/${identifier}/attributes`;
 /**
-* Gets information about a single attribute on either an object or a list.
+* Gets information about a single attribute on either an object, a list or an activity.
 
-When `target` is `objects`, the required scopes are `object_configuration:read`. When `target` is `lists`, the required scopes are `list_configuration:read`.
+When `target` is `objects`, the required scopes are `object_configuration:read`. When `target` is `lists`, the required scopes are `list_configuration:read`. When `target` is `activities`, the required scopes are `activity_configuration:read`.
+
+Supported token levels: `workspace`, `user`.
  * **Method**: `GET`
  * **Summary**: Get an attribute
  * **Tags**: [Attributes]
@@ -831,7 +591,7 @@ When `target` is `objects`, the required scopes are `object_configuration:read`.
  * **Path**:
 ```typescript
     {
-      "target": ("objects"|"lists");
+      "target": ("objects"|"lists"|"activities");
       "identifier": string;
       "attribute": string;
     }
@@ -851,9 +611,11 @@ When `target` is `objects`, the required scopes are `object_configuration:read`.
  */
 export const GetV2$target$identifierAttributes$attribute = (target:string,identifier:string,attribute:string)=> `/v2/${target}/${identifier}/attributes/${attribute}`;
 /**
-* Updates a single attribute on a given object or list.
+* Updates a single attribute on a given object, list or activity.
 
-When `target` is `objects`, the required scopes are `object_configuration:read-write`. When `target` is `lists`, the required scopes are `list_configuration:read-write`.
+When `target` is `objects`, the required scopes are `object_configuration:read-write`. When `target` is `lists`, the required scopes are `list_configuration:read-write`. When `target` is `activities`, the required scopes are `activity_configuration:read-write`.
+
+Supported token levels: `workspace`, `user`.
  * **Method**: `PATCH`
  * **Summary**: Update an attribute
  * **Tags**: [Attributes]
@@ -861,7 +623,7 @@ When `target` is `objects`, the required scopes are `object_configuration:read-w
  * **Path**:
 ```typescript
     {
-      "target": ("objects"|"lists");
+      "target": ("objects"|"lists"|"activities");
       "identifier": string;
       "attribute": string;
     }
@@ -931,9 +693,11 @@ When `target` is `objects`, the required scopes are `object_configuration:read-w
  */
 export const PatchV2$target$identifierAttributes$attribute = (target:string,identifier:string,attribute:string)=> `/v2/${target}/${identifier}/attributes/${attribute}`;
 /**
-* Lists all select options for a particular attribute on either an object or a list.
+* Lists all select options for a particular attribute on either an object, a list or an activity.
 
-When `target` is `objects`, the required scopes are `object_configuration:read`. When `target` is `lists`, the required scopes are `list_configuration:read`.
+When `target` is `objects`, the required scopes are `object_configuration:read`. When `target` is `lists`, the required scopes are `list_configuration:read`. When `target` is `activities`, the required scopes are `activity_configuration:read`.
+
+Supported token levels: `workspace`, `user`.
  * **Method**: `GET`
  * **Summary**: List select options
  * **Tags**: [Attributes]
@@ -941,7 +705,7 @@ When `target` is `objects`, the required scopes are `object_configuration:read`.
  * **Path**:
 ```typescript
     {
-      "target": ("objects"|"lists");
+      "target": ("objects"|"lists"|"activities");
       "identifier": string;
       "attribute": string;
     }
@@ -967,9 +731,11 @@ When `target` is `objects`, the required scopes are `object_configuration:read`.
  */
 export const GetV2$target$identifierAttributes$attributeOptions = (target:string,identifier:string,attribute:string)=> `/v2/${target}/${identifier}/attributes/${attribute}/options`;
 /**
-* Adds a select option to a select attribute on an object or a list.
+* Adds a select option to a select attribute on an object, a list or an activity.
 
-When `target` is `objects`, the required scopes are `object_configuration:read-write`. When `target` is `lists`, the required scopes are `list_configuration:read-write`.
+When `target` is `objects`, the required scopes are `object_configuration:read-write`. When `target` is `lists`, the required scopes are `list_configuration:read-write`. When `target` is `activities`, the required scopes are `activity_configuration:read-write`.
+
+Supported token levels: `workspace`, `user`.
  * **Method**: `POST`
  * **Summary**: Create a select option
  * **Tags**: [Attributes]
@@ -977,7 +743,7 @@ When `target` is `objects`, the required scopes are `object_configuration:read-w
  * **Path**:
 ```typescript
     {
-      "target": ("objects"|"lists");
+      "target": ("objects"|"lists"|"activities");
       "identifier": string;
       "attribute": string;
     }
@@ -1018,9 +784,11 @@ When `target` is `objects`, the required scopes are `object_configuration:read-w
  */
 export const PostV2$target$identifierAttributes$attributeOptions = (target:string,identifier:string,attribute:string)=> `/v2/${target}/${identifier}/attributes/${attribute}/options`;
 /**
-* Updates a select option on an attribute on either an object or a list.
+* Updates a select option on an attribute on either an object, a list or an activity.
 
-When `target` is `objects`, the required scopes are `object_configuration:read-write`. When `target` is `lists`, the required scopes are `list_configuration:read-write`.
+When `target` is `objects`, the required scopes are `object_configuration:read-write`. When `target` is `lists`, the required scopes are `list_configuration:read-write`. When `target` is `activities`, the required scopes are `activity_configuration:read-write`.
+
+Supported token levels: `workspace`, `user`.
  * **Method**: `PATCH`
  * **Summary**: Update a select option
  * **Tags**: [Attributes]
@@ -1028,7 +796,7 @@ When `target` is `objects`, the required scopes are `object_configuration:read-w
  * **Path**:
 ```typescript
     {
-      "target": ("objects"|"lists");
+      "target": ("objects"|"lists"|"activities");
       "identifier": string;
       "attribute": string;
       "option": string;
@@ -1075,6 +843,8 @@ export const PatchV2$target$identifierAttributes$attributeOptions$option = (targ
 * Lists all statuses for a particular status attribute on either an object or a list.
 
 When `target` is `objects`, the required scopes are `object_configuration:read`. When `target` is `lists`, the required scopes are `list_configuration:read`.
+
+Supported token levels: `workspace`, `user`.
  * **Method**: `GET`
  * **Summary**: List statuses
  * **Tags**: [Attributes]
@@ -1111,6 +881,8 @@ export const GetV2$target$identifierAttributes$attributeStatuses = (target:strin
 * Add a new status to a status attribute on either an object or a list.
 
 When `target` is `objects`, the required scopes are `object_configuration:read-write`. When `target` is `lists`, the required scopes are `list_configuration:read-write`.
+
+Supported token levels: `workspace`, `user`.
  * **Method**: `POST`
  * **Summary**: Create a status
  * **Tags**: [Attributes]
@@ -1166,6 +938,8 @@ export const PostV2$target$identifierAttributes$attributeStatuses = (target:stri
 * Update a status on an status attribute on either an object or a list.
 
 When `target` is `objects`, the required scopes are `object_configuration:read-write`. When `target` is `lists`, the required scopes are `list_configuration:read-write`.
+
+Supported token levels: `workspace`, `user`.
  * **Method**: `PATCH`
  * **Summary**: Update a status
  * **Tags**: [Attributes]
@@ -1224,6 +998,8 @@ export const PatchV2$target$identifierAttributes$attributeStatuses$status = (tar
 * Lists people, company or other records, with the option to filter and sort results.
 
 Required scopes: `record_permission:read`, `object_configuration:read`.
+
+Supported token levels: `workspace`, `user`.
  * **Method**: `POST`
  * **Summary**: List records
  * **Tags**: [Records]
@@ -1285,6 +1061,8 @@ export const PostV2Objects$objectRecordsQuery = (object:string)=> `/v2/objects/$
 * Creates a new person, company or other record. This endpoint will throw on conflicts of unique attributes. If you would prefer to update records on conflicts, please use the [Upsert record endpoint](/rest-api/endpoint-reference/records/upsert-a-record) instead.
 
 Required scopes: `record_permission:read-write`, `object_configuration:read`.
+
+Supported token levels: `workspace`, `user`.
  * **Method**: `POST`
  * **Summary**: Create a record
  * **Tags**: [Records]
@@ -1321,6 +1099,10 @@ Required scopes: `record_permission:read-write`, `object_configuration:read`.
 ```typescript
       IPostV2Objects$objectRecords404Response
 ```
+    - **409**:
+```typescript
+      IPostV2Objects$objectRecords409Response
+```
  * **Security**:
     - **oauth2**: [record_permission:read-write, object_configuration:read]
 
@@ -1332,6 +1114,8 @@ export const PostV2Objects$objectRecords = (object:string)=> `/v2/objects/${obje
 If the matching attribute is a multiselect attribute, new values will be added and existing values will not be deleted. For any other multiselect attribute, all values will be either created or deleted as necessary to match the list of supplied values.
 
 Required scopes: `record_permission:read-write`, `object_configuration:read`.
+
+Supported token levels: `workspace`, `user`.
  * **Method**: `PUT`
  * **Summary**: Upsert a record
  * **Tags**: [Records]
@@ -1374,6 +1158,10 @@ Required scopes: `record_permission:read-write`, `object_configuration:read`.
 ```typescript
       IPutV2Objects$objectRecords404Response
 ```
+    - **409**:
+```typescript
+      IPutV2Objects$objectRecords409Response
+```
  * **Security**:
     - **oauth2**: [record_permission:read-write, object_configuration:read]
 
@@ -1383,6 +1171,8 @@ export const PutV2Objects$objectRecords = (object:string)=> `/v2/objects/${objec
 * Gets a single person, company or other record by its `record_id`.
 
 Required scopes: `record_permission:read`, `object_configuration:read`.
+
+Supported token levels: `workspace`, `user`.
  * **Method**: `GET`
  * **Summary**: Get a record
  * **Tags**: [Records]
@@ -1412,6 +1202,8 @@ export const GetV2Objects$objectRecords$record_id = (object:string,record_id:str
 * Use this endpoint to update people, companies, and other records by `record_id`. If the update payload includes multiselect attributes, the values supplied will be created and prepended to the list of values that already exist (if any). Use the `PUT` endpoint to overwrite or remove multiselect attribute values.
 
 Required scopes: `record_permission:read-write`, `object_configuration:read`.
+
+Supported token levels: `workspace`, `user`.
  * **Method**: `PATCH`
  * **Summary**: Update a record (append multiselect values)
  * **Tags**: [Records]
@@ -1449,6 +1241,10 @@ Required scopes: `record_permission:read-write`, `object_configuration:read`.
 ```typescript
       IPatchV2Objects$objectRecords$record_id404Response
 ```
+    - **409**:
+```typescript
+      IPatchV2Objects$objectRecords$record_id409Response
+```
  * **Security**:
     - **oauth2**: [record_permission:read-write, object_configuration:read]
 
@@ -1458,6 +1254,8 @@ export const PatchV2Objects$objectRecords$record_id = (object:string,record_id:s
 * Use this endpoint to update people, companies, and other records by `record_id`. If the update payload includes multiselect attributes, the values supplied will overwrite/remove the list of values that already exist (if any). Use the `PATCH` endpoint to append multiselect values without removing those that already exist.
 
 Required scopes: `record_permission:read-write`, `object_configuration:read`.
+
+Supported token levels: `workspace`, `user`.
  * **Method**: `PUT`
  * **Summary**: Update a record (overwrite multiselect values)
  * **Tags**: [Records]
@@ -1495,6 +1293,10 @@ Required scopes: `record_permission:read-write`, `object_configuration:read`.
 ```typescript
       IPutV2Objects$objectRecords$record_id404Response
 ```
+    - **409**:
+```typescript
+      IPutV2Objects$objectRecords$record_id409Response
+```
  * **Security**:
     - **oauth2**: [record_permission:read-write, object_configuration:read]
 
@@ -1504,6 +1306,8 @@ export const PutV2Objects$objectRecords$record_id = (object:string,record_id:str
 * Deletes a single record (e.g. a company or person) by ID.
 
 Required scopes: `object_configuration:read`, `record_permission:read-write`.
+
+Supported token levels: `workspace`, `user`.
  * **Method**: `DELETE`
  * **Summary**: Delete a record
  * **Tags**: [Records]
@@ -1547,6 +1351,8 @@ This endpoint is rate limited to 5 requests per second.
 This endpoint is in beta. We will aim to avoid breaking changes, but small updates may be made as we roll out to more users.
 
 Required scopes: `record_permission:read-write`, `object_configuration:read`.
+
+Supported token levels: `workspace`, `user`.
  * **Method**: `POST`
  * **Summary**: Merge two records
  * **Tags**: [Records]
@@ -1598,6 +1404,8 @@ export const PostV2Objects$objectRecordsMerge = (object:string)=> `/v2/objects/$
 * Gets all values for a given attribute on a record. Historic values can be queried using the `show_historic` query param. Historic values cannot be queried on COMINT (Communication Intelligence) or enriched attributes and the endpoint will return a 400 error if this is attempted. Historic values are sorted from oldest to newest (by `active_from`). Some attributes are subject to billing status and will return an empty array of values if theworkspace being queried does not have the required billing flag enabled.
 
 Required scopes: `record_permission:read`, `object_configuration:read`.
+
+Supported token levels: `workspace`, `user`.
  * **Method**: `GET`
  * **Summary**: List record attribute values
  * **Tags**: [Records]
@@ -1648,6 +1456,8 @@ Value history cannot be written for relationship attributes, formula attributes,
 This endpoint is in beta. We will aim to avoid breaking changes, but small updates may be made as we roll out to more users.
 
 Required scopes: `record_permission:read-write`, `object_configuration:read`.
+
+Supported token levels: `workspace`, `user`.
  * **Method**: `PUT`
  * **Summary**: Write record attribute values
  * **Tags**: [Records]
@@ -1704,6 +1514,8 @@ export const PutV2Objects$objectRecords$record_idAttributes$attributeValues = (o
 * List all entries, across all lists, for which this record is the parent. The response includes metadata for each entry, including `entry_id`, `list_id`, and `created_at`, but does not include entry values. To retrieve the values, call [Get a list entry](/rest-api/endpoint-reference/entries/get-a-list-entry) separately for each entry.
 
 Required scopes: `record_permission:read`, `object_configuration:read`, `list_entry:read`.
+
+Supported token levels: `workspace`, `user`.
  * **Method**: `GET`
  * **Summary**: List record entries
  * **Tags**: [Records]
@@ -1740,6 +1552,8 @@ Please note, results returned from this endpoint are eventually consistent. For 
 This endpoint is in beta. We will aim to avoid breaking changes, but small updates may be made as we roll out to more users.
 
 Required scopes: `record_permission:read`, `object_configuration:read`.
+
+Supported token levels: `workspace`, `user`.
  * **Method**: `POST`
  * **Summary**: Search records
  * **Tags**: [Records]
@@ -1780,11 +1594,370 @@ Required scopes: `record_permission:read`, `object_configuration:read`.
  */
 export const PostV2ObjectsRecordsSearch = "/v2/objects/records/search";
 /**
+* Lists activity records, with the option to filter and sort results.
+
+This endpoint is in beta. We will aim to avoid breaking changes, but small updates may be made as we roll out to more users.
+
+Required scopes: `activity_record:read`, `activity_configuration:read`, `object_configuration:read`, `record_permission:read`.
+
+Supported token levels: `workspace`, `user`.
+ * **Method**: `POST`
+ * **Summary**: List activity records
+ * **Tags**: [Activity records]
+ * **OperationId**:
+ * **Path**:
+```typescript
+    {
+      "activity": string;
+    }
+```
+ * **DTO**:
+```typescript
+    {
+    // An object used to filter results to a subset of results. Cannot be used together with `filter_view_id`. See the [full guide to filtering and sorting here](/rest-api/guides/filtering-and-sorting).
+      "filter"?: {[k: string]: any};
+    // An object used to sort results. See the [full guide to filtering and sorting here](/rest-api/guides/filtering-and-sorting).
+      "sorts"?: ({
+    // The direction to sort the results by.
+      "direction": ("asc"|"desc");
+    // A slug or ID to identify the attribute to sort by.
+      "attribute": string;
+    // Which field on the value to sort by e.g. "last_name" on a name value.
+      "field"?: string;
+    }|{
+    // The direction to sort the results by.
+      "direction": ("asc"|"desc");
+    // You may use the `path` property to traverse record reference attributes and parent records on list entries. `path` accepts an array of tuples where the first element of each tuple is the slug or ID of a list/object, and the second element is the slug or ID of an attribute on that list/object. The first element of the first tuple must correspond to the list or object that you are querying. For example, if you wanted to sort by the name of the parent record (a company) on a list with the slug "sales", you would pass the value `[['sales', 'parent_record'], ['companies', 'name']]`.
+      "path": (string|string)[][];
+    // Which field on the value to sort by e.g. "last_name" on a name value.
+      "field"?: string;
+    })[];
+    // The maximum number of results to return. Defaults to 500. See the [full guide to pagination here](/rest-api/guides/pagination).
+      "limit"?: number;
+    // The number of results to skip over before returning. Defaults to 0. See the [full guide to pagination here](/rest-api/guides/pagination).
+      "offset"?: number;
+    }
+```
+ * **Response**:
+    - **200**:
+```typescript
+      IPostV2Activities$activityRecordsQuery200Response
+```
+    - **400**:
+```typescript
+      IPostV2Activities$activityRecordsQuery400Response
+```
+    - **404**:
+```typescript
+      IPostV2Activities$activityRecordsQuery404Response
+```
+ * **Security**:
+    - **oauth2**: [activity_record:read, activity_configuration:read, object_configuration:read, record_permission:read]
+
+ */
+export const PostV2Activities$activityRecordsQuery = (activity:string)=> `/v2/activities/${activity}/records/query`;
+/**
+* Creates a new activity record, for example one specific phone call.
+
+This endpoint is in beta. We will aim to avoid breaking changes, but small updates may be made as we roll out to more users.
+
+Required scopes: `activity_record:read-write`, `activity_configuration:read`, `object_configuration:read`, `record_permission:read`.
+
+Supported token levels: `workspace`, `user`.
+ * **Method**: `POST`
+ * **Summary**: Create an activity record
+ * **Tags**: [Activity records]
+ * **OperationId**:
+ * **Path**:
+```typescript
+    {
+      "activity": string;
+    }
+```
+ * **DTO**:
+```typescript
+    {
+      "data": {
+        // An object with an attribute `api_slug` or `attribute_id` as the key, and a single value (for single-select attributes), or an array of values (for single or multi-select attributes) as the values. For complete documentation on values for all attribute types, please see our [attribute type docs](/docs/attribute-types).
+      "values": {[k: string]: any[]};
+        };
+    }
+```
+ * **Response**:
+    - **200**:
+```typescript
+      IPostV2Activities$activityRecords200Response
+```
+    - **400**:
+```typescript
+      IPostV2Activities$activityRecords400Response
+```
+    - **403**:
+```typescript
+      IPostV2Activities$activityRecords403Response
+```
+    - **404**:
+```typescript
+      IPostV2Activities$activityRecords404Response
+```
+    - **409**:
+```typescript
+      IPostV2Activities$activityRecords409Response
+```
+ * **Security**:
+    - **oauth2**: [activity_record:read-write, activity_configuration:read, object_configuration:read, record_permission:read]
+
+ */
+export const PostV2Activities$activityRecords = (activity:string)=> `/v2/activities/${activity}/records`;
+/**
+* Use this endpoint to create or update an activity record. A matching attribute is used to search for existing activity records. If a record is found with the same value for the matching attribute, that record will be updated. If no record with the same value for the matching attribute is found, a new record will be created instead. If you would like to avoid matching, please use the [Create activity record endpoint](/rest-api/endpoint-reference/activity-records/create-an-activity-record).
+
+If the matching attribute is a multiselect attribute, new values will be added and existing values will not be deleted. For any other multiselect attribute, all values will be either created or deleted as necessary to match the list of supplied values.
+
+This endpoint is in beta. We will aim to avoid breaking changes, but small updates may be made as we roll out to more users.
+
+Required scopes: `activity_record:read-write`, `activity_configuration:read`, `object_configuration:read`, `record_permission:read`.
+
+Supported token levels: `workspace`, `user`.
+ * **Method**: `PUT`
+ * **Summary**: Upsert an activity record
+ * **Tags**: [Activity records]
+ * **OperationId**:
+ * **Path**:
+```typescript
+    {
+      "activity": string;
+    }
+```
+ * **Query**:
+```typescript
+    {
+      "matching_attribute": string;
+    }
+```
+ * **DTO**:
+```typescript
+    {
+      "data": {
+        // An object with an attribute `api_slug` or `attribute_id` as the key, and a single value (for single-select attributes), or an array of values (for single or multi-select attributes) as the values. For complete documentation on values for all attribute types, please see our [attribute type docs](/docs/attribute-types).
+      "values": {[k: string]: any[]};
+        };
+    }
+```
+ * **Response**:
+    - **200**:
+```typescript
+      IPutV2Activities$activityRecords200Response
+```
+    - **400**:
+```typescript
+      IPutV2Activities$activityRecords400Response
+```
+    - **403**:
+```typescript
+      IPutV2Activities$activityRecords403Response
+```
+    - **404**:
+```typescript
+      IPutV2Activities$activityRecords404Response
+```
+    - **409**:
+```typescript
+      IPutV2Activities$activityRecords409Response
+```
+ * **Security**:
+    - **oauth2**: [activity_record:read-write, activity_configuration:read, object_configuration:read, record_permission:read]
+
+ */
+export const PutV2Activities$activityRecords = (activity:string)=> `/v2/activities/${activity}/records`;
+/**
+* Gets a single activity record by its `record_id`.
+
+This endpoint is in beta. We will aim to avoid breaking changes, but small updates may be made as we roll out to more users.
+
+Required scopes: `activity_record:read`, `activity_configuration:read`, `object_configuration:read`, `record_permission:read`.
+
+Supported token levels: `workspace`, `user`.
+ * **Method**: `GET`
+ * **Summary**: Get an activity record
+ * **Tags**: [Activity records]
+ * **OperationId**:
+ * **Path**:
+```typescript
+    {
+      "activity": string;
+      "record_id": string;
+    }
+```
+ * **Response**:
+    - **200**:
+```typescript
+      IGetV2Activities$activityRecords$record_id200Response
+```
+    - **404**:
+```typescript
+      IGetV2Activities$activityRecords$record_id404Response
+```
+ * **Security**:
+    - **oauth2**: [activity_record:read, activity_configuration:read, object_configuration:read, record_permission:read]
+
+ */
+export const GetV2Activities$activityRecords$record_id = (activity:string,record_id:string)=> `/v2/activities/${activity}/records/${record_id}`;
+/**
+* Use this endpoint to update activity records by `record_id`. If the update payload includes multiselect attributes, the values supplied will be created and prepended to the list of values that already exist (if any). Use the `PUT` endpoint to overwrite or remove multiselect attribute values.
+
+This endpoint is in beta. We will aim to avoid breaking changes, but small updates may be made as we roll out to more users.
+
+Required scopes: `activity_record:read-write`, `activity_configuration:read`, `object_configuration:read`, `record_permission:read`.
+
+Supported token levels: `workspace`, `user`.
+ * **Method**: `PATCH`
+ * **Summary**: Update an activity record (append multiselect values)
+ * **Tags**: [Activity records]
+ * **OperationId**:
+ * **Path**:
+```typescript
+    {
+      "activity": string;
+      "record_id": string;
+    }
+```
+ * **DTO**:
+```typescript
+    {
+      "data": {
+        // An object with an attribute `api_slug` or `attribute_id` as the key, and a single value (for single-select attributes), or an array of values (for single or multi-select attributes) as the values. For complete documentation on values for all attribute types, please see our [attribute type docs](/docs/attribute-types).
+      "values": {[k: string]: any[]};
+        };
+    }
+```
+ * **Response**:
+    - **200**:
+```typescript
+      IPatchV2Activities$activityRecords$record_id200Response
+```
+    - **400**:
+```typescript
+      IPatchV2Activities$activityRecords$record_id400Response
+```
+    - **403**:
+```typescript
+      IPatchV2Activities$activityRecords$record_id403Response
+```
+    - **404**:
+```typescript
+      IPatchV2Activities$activityRecords$record_id404Response
+```
+    - **409**:
+```typescript
+      IPatchV2Activities$activityRecords$record_id409Response
+```
+ * **Security**:
+    - **oauth2**: [activity_record:read-write, activity_configuration:read, object_configuration:read, record_permission:read]
+
+ */
+export const PatchV2Activities$activityRecords$record_id = (activity:string,record_id:string)=> `/v2/activities/${activity}/records/${record_id}`;
+/**
+* Use this endpoint to update activity records by `record_id`. If the update payload includes multiselect attributes, the values supplied will overwrite/remove the list of values that already exist (if any). Use the `PATCH` endpoint to append multiselect values without removing those that already exist.
+
+This endpoint is in beta. We will aim to avoid breaking changes, but small updates may be made as we roll out to more users.
+
+Required scopes: `activity_record:read-write`, `activity_configuration:read`, `object_configuration:read`, `record_permission:read`.
+
+Supported token levels: `workspace`, `user`.
+ * **Method**: `PUT`
+ * **Summary**: Update an activity record (overwrite multiselect values)
+ * **Tags**: [Activity records]
+ * **OperationId**:
+ * **Path**:
+```typescript
+    {
+      "activity": string;
+      "record_id": string;
+    }
+```
+ * **DTO**:
+```typescript
+    {
+      "data": {
+        // An object with an attribute `api_slug` or `attribute_id` as the key, and a single value (for single-select attributes), or an array of values (for single or multi-select attributes) as the values. For complete documentation on values for all attribute types, please see our [attribute type docs](/docs/attribute-types).
+      "values": {[k: string]: any[]};
+        };
+    }
+```
+ * **Response**:
+    - **200**:
+```typescript
+      IPutV2Activities$activityRecords$record_id200Response
+```
+    - **400**:
+```typescript
+      IPutV2Activities$activityRecords$record_id400Response
+```
+    - **403**:
+```typescript
+      IPutV2Activities$activityRecords$record_id403Response
+```
+    - **404**:
+```typescript
+      IPutV2Activities$activityRecords$record_id404Response
+```
+    - **409**:
+```typescript
+      IPutV2Activities$activityRecords$record_id409Response
+```
+ * **Security**:
+    - **oauth2**: [activity_record:read-write, activity_configuration:read, object_configuration:read, record_permission:read]
+
+ */
+export const PutV2Activities$activityRecords$record_id = (activity:string,record_id:string)=> `/v2/activities/${activity}/records/${record_id}`;
+/**
+* Deletes a single activity record by its `record_id`.
+
+This endpoint is in beta. We will aim to avoid breaking changes, but small updates may be made as we roll out to more users.
+
+Required scopes: `activity_record:read-write`, `activity_configuration:read`, `object_configuration:read`, `record_permission:read`.
+
+Supported token levels: `workspace`, `user`.
+ * **Method**: `DELETE`
+ * **Summary**: Delete an activity record
+ * **Tags**: [Activity records]
+ * **OperationId**:
+ * **Path**:
+```typescript
+    {
+      "activity": string;
+      "record_id": string;
+    }
+```
+ * **Response**:
+    - **200**:
+```typescript
+      IDeleteV2Activities$activityRecords$record_id200Response
+```
+    - **403**:
+```typescript
+      IDeleteV2Activities$activityRecords$record_id403Response
+```
+    - **404**:
+```typescript
+      IDeleteV2Activities$activityRecords$record_id404Response
+```
+ * **Security**:
+    - **oauth2**: [activity_record:read-write, activity_configuration:read, object_configuration:read, record_permission:read]
+
+ */
+export const DeleteV2Activities$activityRecords$record_id = (activity:string,record_id:string)=> `/v2/activities/${activity}/records/${record_id}`;
+/**
 * Query records and lists with SQL. Your workspace must be on the Enterprise plan in order to access this endpoint.
+
+This endpoint is rate limited to 2 requests per second.
 
 This endpoint is in beta. We will aim to avoid breaking changes, but small updates may be made as we roll out to more users.
 
 Required scopes: `record_permission:read`, `object_configuration:read`.
+
+Supported token levels: `workspace`, `user`.
  * **Method**: `POST`
  * **Summary**: Query SQL
  * **Tags**: [SQL]
@@ -1814,6 +1987,8 @@ export const PostV2Sql = "/v2/sql";
 * List all lists that your access token has access to. lists are returned in the order that they are sorted in the sidebar.
 
 Required scopes: `list_configuration:read`.
+
+Supported token levels: `workspace`, `user`.
  * **Method**: `GET`
  * **Summary**: List all lists
  * **Tags**: [Lists]
@@ -1838,6 +2013,8 @@ New lists must specify which records can be added with the `parent_object` param
 Please note that new lists must have either `workspace_access` set to `"full-access"` or one or more element of `workspace_member_access` with a `"full-access"` level. It is also possible to receive a `403` billing error if your workspace is not on a plan that supports either advanced workspace or workspace member-level access for lists.
 
 Required scopes: `list_configuration:read-write`.
+
+Supported token levels: `workspace`, `user`.
  * **Method**: `POST`
  * **Summary**: Create a list
  * **Tags**: [Lists]
@@ -1894,6 +2071,8 @@ export const PostV2Lists = "/v2/lists";
 * Gets a single list in your workspace that your access token has access to.
 
 Required scopes: `list_configuration:read`.
+
+Supported token levels: `workspace`, `user`.
  * **Method**: `GET`
  * **Summary**: Get a list
  * **Tags**: [Lists]
@@ -1922,6 +2101,8 @@ export const GetV2Lists$list = (list:string)=> `/v2/lists/${list}`;
 * Updates an existing list. Permissions for the list are controlled with the `workspace_access` and `workspace_member_access` parameters. Please note that lists must have either `workspace_access` set to `"full-access"` or one or more element of `workspace_member_access` with a `"full-access"` level. It is also possible to receive a `403` billing error if your workspace is not on a plan that supports either advanced workspace or workspace member level access for lists. Changing the parent object of a list is not possible through the API as it can have unintended side-effects that should be considered carefully. If you wish to carry out a parent object change you should do so through the UI.
 
 Required scopes: `list_configuration:read-write`.
+
+Supported token levels: `workspace`, `user`.
  * **Method**: `PATCH`
  * **Summary**: Update a list
  * **Tags**: [Lists]
@@ -1974,6 +2155,8 @@ export const PatchV2Lists$list = (list:string)=> `/v2/lists/${list}`;
 * Lists saved views for a list. Results are ordered by view ID (`id.view_id` ascending).
 
 Required scopes: `list_configuration:read`.
+
+Supported token levels: `workspace`, `user`.
  * **Method**: `GET`
  * **Summary**: List views for list
  * **Tags**: [Lists]
@@ -2010,6 +2193,8 @@ export const GetV2Lists$listViews = (list:string)=> `/v2/lists/${list}/views`;
 * Lists entries in a given list, with the option to filter and sort results.
 
 Required scopes: `list_entry:read`, `list_configuration:read`.
+
+Supported token levels: `workspace`, `user`.
  * **Method**: `POST`
  * **Summary**: List entries
  * **Tags**: [Entries]
@@ -2067,6 +2252,8 @@ export const PostV2Lists$listEntriesQuery = (list:string)=> `/v2/lists/${list}/e
 * Adds a record to a list as a new list entry. This endpoint will throw on conflicts of unique attributes. Multiple list entries are allowed for the same parent record
 
 Required scopes: `list_entry:read-write`, `list_configuration:read`.
+
+Supported token levels: `workspace`, `user`.
  * **Method**: `POST`
  * **Summary**: Create an entry (add record to list)
  * **Tags**: [Entries]
@@ -2116,6 +2303,8 @@ export const PostV2Lists$listEntries = (list:string)=> `/v2/lists/${list}/entrie
 * Use this endpoint to create or update a list entry for a given parent record. If an entry with the specified parent record is found, that entry will be updated. If no such entry is found, a new entry will be created instead. If there are multiple entries with the same parent record, this endpoint with return the "MULTIPLE_MATCH_RESULTS" error. When writing to multi-select attributes, all values will be either created or deleted as necessary to match the list of values supplied in the request body.
 
 Required scopes: `list_entry:read-write`, `list_configuration:read`.
+
+Supported token levels: `workspace`, `user`.
  * **Method**: `PUT`
  * **Summary**: Upsert a list entry by parent
  * **Tags**: [Entries]
@@ -2165,6 +2354,8 @@ export const PutV2Lists$listEntries = (list:string)=> `/v2/lists/${list}/entries
 * Gets a single list entry by its `entry_id`.
 
 Required scopes: `list_entry:read`, `list_configuration:read`.
+
+Supported token levels: `workspace`, `user`.
  * **Method**: `GET`
  * **Summary**: Get a list entry
  * **Tags**: [Entries]
@@ -2194,6 +2385,8 @@ export const GetV2Lists$listEntries$entry_id = (list:string,entry_id:string)=> `
 * Use this endpoint to update list entries by `entry_id`. If the update payload includes multiselect attributes, the values supplied will be created and prepended to the list of values that already exist (if any). Use the `PUT` endpoint to overwrite or remove multiselect attribute values.
 
 Required scopes: `list_entry:read-write`, `list_configuration:read`.
+
+Supported token levels: `workspace`, `user`.
  * **Method**: `PATCH`
  * **Summary**: Update a list entry (append multiselect values)
  * **Tags**: [Entries]
@@ -2240,6 +2433,8 @@ export const PatchV2Lists$listEntries$entry_id = (list:string,entry_id:string)=>
 * Use this endpoint to update list entries by `entry_id`. If the update payload includes multiselect attributes, the values supplied will overwrite/remove the list of values that already exist (if any). Use the `PATCH` endpoint to add multiselect attribute values without removing those value that already exist.
 
 Required scopes: `list_entry:read-write`, `list_configuration:read`.
+
+Supported token levels: `workspace`, `user`.
  * **Method**: `PUT`
  * **Summary**: Update a list entry (overwrite multiselect values)
  * **Tags**: [Entries]
@@ -2286,6 +2481,8 @@ export const PutV2Lists$listEntries$entry_id = (list:string,entry_id:string)=> `
 * Deletes a single list entry by its `entry_id`.
 
 Required scopes: `list_entry:read-write`, `list_configuration:read`.
+
+Supported token levels: `workspace`, `user`.
  * **Method**: `DELETE`
  * **Summary**: Delete a list entry
  * **Tags**: [Entries]
@@ -2319,6 +2516,8 @@ export const DeleteV2Lists$listEntries$entry_id = (list:string,entry_id:string)=
 * Gets all values for a given attribute on a list entry. This endpoint has the ability to return all historic values using the `show_historic` query param. Historic values are sorted from oldest to newest (by `active_from`).
 
 Required scopes: `list_entry:read`, `list_configuration:read`.
+
+Supported token levels: `workspace`, `user`.
  * **Method**: `GET`
  * **Summary**: List attribute values for a list entry
  * **Tags**: [Entries]
@@ -2365,6 +2564,8 @@ Value history cannot be written for relationship attributes, formula attributes,
 This endpoint is in beta. We will aim to avoid breaking changes, but small updates may be made as we roll out to more users.
 
 Required scopes: `list_entry:read-write`, `list_configuration:read`.
+
+Supported token levels: `workspace`, `user`.
  * **Method**: `PUT`
  * **Summary**: Write list entry attribute values
  * **Tags**: [Entries]
@@ -2421,6 +2622,8 @@ export const PutV2Lists$listEntries$entry_idAttributes$attributeValues = (list:s
 * Lists all workspace members in the workspace.
 
 Required scopes: `user_management:read`.
+
+Supported token levels: `workspace`, `user`.
  * **Method**: `GET`
  * **Summary**: List workspace members
  * **Tags**: [Workspace members]
@@ -2439,6 +2642,8 @@ export const GetV2Workspace_members = "/v2/workspace_members";
 * Gets a single workspace member by ID.
 
 Required scopes: `user_management:read`.
+
+Supported token levels: `workspace`, `user`.
  * **Method**: `GET`
  * **Summary**: Get a workspace member
  * **Tags**: [Workspace members]
@@ -2469,6 +2674,8 @@ export const GetV2Workspace_members$workspace_member_id = (workspace_member_id:s
 This endpoint is temporarily rate limited to 10 requests per second.
 
 Required scopes: `note:read`, `object_configuration:read`, `record_permission:read`.
+
+Supported token levels: `workspace`, `user`.
  * **Method**: `GET`
  * **Summary**: List notes
  * **Tags**: [Notes]
@@ -2500,6 +2707,8 @@ export const GetV2Notes = "/v2/notes";
 * Creates a new note for a given record.
 
 Required scopes: `note:read-write`, `object_configuration:read`, `record_permission:read`.
+
+Supported token levels: `workspace`, `user`.
  * **Method**: `POST`
  * **Summary**: Create a note
  * **Tags**: [Notes]
@@ -2554,6 +2763,8 @@ export const PostV2Notes = "/v2/notes";
 * Get a single note by ID.
 
 Required scopes: `note:read`, `object_configuration:read`, `record_permission:read`.
+
+Supported token levels: `workspace`, `user`.
  * **Method**: `GET`
  * **Summary**: Get a note
  * **Tags**: [Notes]
@@ -2582,6 +2793,8 @@ export const GetV2Notes$note_id = (note_id:string)=> `/v2/notes/${note_id}`;
 * Updates an existing note's title and/or content. Only the fields you provide are changed, and any field you omit is left untouched. Providing `content` replaces the note's entire content. A note's parent record cannot be changed.
 
 Required scopes: `note:read-write`, `object_configuration:read`, `record_permission:read`.
+
+Supported token levels: `workspace`, `user`.
  * **Method**: `PATCH`
  * **Summary**: Update a note
  * **Tags**: [Notes]
@@ -2634,6 +2847,8 @@ export const PatchV2Notes$note_id = (note_id:string)=> `/v2/notes/${note_id}`;
 * Delete a single note by ID.
 
 Required scopes: `note:read-write`.
+
+Supported token levels: `workspace`, `user`.
  * **Method**: `DELETE`
  * **Summary**: Delete a note
  * **Tags**: [Notes]
@@ -2662,6 +2877,8 @@ export const DeleteV2Notes$note_id = (note_id:string)=> `/v2/notes/${note_id}`;
 * List all tasks. Results are sorted by creation date, from oldest to newest.
 
 Required scopes: `task:read`, `object_configuration:read`, `record_permission:read`, `user_management:read`.
+
+Supported token levels: `workspace`, `user`.
  * **Method**: `GET`
  * **Summary**: List tasks
  * **Tags**: [Tasks]
@@ -2694,6 +2911,8 @@ export const GetV2Tasks = "/v2/tasks";
 At present, tasks can only be created from plaintext without record reference formatting.
 
 Required scopes: `task:read-write`, `object_configuration:read`, `record_permission:read`, `user_management:read`.
+
+Supported token levels: `workspace`, `user`.
  * **Method**: `POST`
  * **Summary**: Create a task
  * **Tags**: [Tasks]
@@ -2719,7 +2938,7 @@ Required scopes: `task:read-write`, `object_configuration:read`, `record_permiss
     }|{
     // A UUID or slug to identify the object that the referenced record belongs to.
       "target_object": string;
-    // In addition to referencing records directly by record ID, you may also reference by a matching attribute of your choice. For example, if you want to add a reference to the person record with email "alice@website.com", you should pass a value with `target_object` set to `"people"` and `email_addresses` set to `[{email_address:"alice@website.com"}]`. The key should be the slug or ID of the matching attribute you would like to use and the value should be an array containing a single value of the appropriate attribute type (as specified below). Matching on multiple values is not currently supported. Matching attributes must be unique. This process is similar to how you use the `matching_attribute` query param in Attio's [assert endpoints](/rest-api/endpoint-reference/records/assert-a-record).
+    // In addition to referencing records directly by record ID, you may also reference by a matching attribute of your choice. For example, if you want to add a reference to the person record with email "alice@website.com", you should pass a value with `target_object` set to `"people"` and `email_addresses` set to `[{email_address:"alice@website.com"}]`. The key should be the slug or ID of the matching attribute you would like to use and the value should be an array containing a single value of the appropriate attribute type (as specified below). Matching on multiple values is not currently supported. The matching attribute does not have to be unique, but a value that matches no record or more than one record is rejected. We recommend a unique attribute, such as a domain, an email address or an ID from your own system. This process is similar to how you use the `matching_attribute` query param in Attio's [assert endpoints](/rest-api/endpoint-reference/records/assert-a-record).
       "[slug_or_id_of_matching_attribute]": ({
     // The full domain of the website.
       "domain"?: string;
@@ -2774,6 +2993,8 @@ export const PostV2Tasks = "/v2/tasks";
 * Get a single task by ID.
 
 Required scopes: `task:read`, `object_configuration:read`, `record_permission:read`, `user_management:read`.
+
+Supported token levels: `workspace`, `user`.
  * **Method**: `GET`
  * **Summary**: Get a task
  * **Tags**: [Tasks]
@@ -2802,6 +3023,8 @@ export const GetV2Tasks$task_id = (task_id:string)=> `/v2/tasks/${task_id}`;
 * Updates an existing task by `task_id`. At present, only the `deadline_at`, `is_completed`, `linked_records`, and `assignees` fields can be updated.
 
 Required scopes: `task:read-write`, `object_configuration:read`, `record_permission:read`, `user_management:read`.
+
+Supported token levels: `workspace`, `user`.
  * **Method**: `PATCH`
  * **Summary**: Update a task
  * **Tags**: [Tasks]
@@ -2829,7 +3052,7 @@ Required scopes: `task:read-write`, `object_configuration:read`, `record_permiss
     }|{
     // A UUID or slug to identify the object that the referenced record belongs to.
       "target_object": string;
-    // In addition to referencing records directly by record ID, you may also reference by a matching attribute of your choice. For example, if you want to add a reference to the person record with email "alice@website.com", you should pass a value with `target_object` set to `"people"` and `email_addresses` set to `[{email_address:"alice@website.com"}]`. The key should be the slug or ID of the matching attribute you would like to use and the value should be an array containing a single value of the appropriate attribute type (as specified below). Matching on multiple values is not currently supported. Matching attributes must be unique. This process is similar to how you use the `matching_attribute` query param in Attio's [assert endpoints](/rest-api/endpoint-reference/records/assert-a-record).
+    // In addition to referencing records directly by record ID, you may also reference by a matching attribute of your choice. For example, if you want to add a reference to the person record with email "alice@website.com", you should pass a value with `target_object` set to `"people"` and `email_addresses` set to `[{email_address:"alice@website.com"}]`. The key should be the slug or ID of the matching attribute you would like to use and the value should be an array containing a single value of the appropriate attribute type (as specified below). Matching on multiple values is not currently supported. The matching attribute does not have to be unique, but a value that matches no record or more than one record is rejected. We recommend a unique attribute, such as a domain, an email address or an ID from your own system. This process is similar to how you use the `matching_attribute` query param in Attio's [assert endpoints](/rest-api/endpoint-reference/records/assert-a-record).
       "[slug_or_id_of_matching_attribute]": ({
     // The full domain of the website.
       "domain"?: string;
@@ -2884,6 +3107,8 @@ export const PatchV2Tasks$task_id = (task_id:string)=> `/v2/tasks/${task_id}`;
 * Delete a task by ID.
 
 Required scopes: `task:read-write`.
+
+Supported token levels: `workspace`, `user`.
  * **Method**: `DELETE`
  * **Summary**: Delete a task
  * **Tags**: [Tasks]
@@ -2918,6 +3143,8 @@ To view threads on records, you will need the `object_configuration:read` and `r
 To view threads on list entries, you will need the `list_configuration:read` and `list_entry:read` scopes.
 
 Required scopes: `comment:read`.
+
+Supported token levels: `workspace`, `user`.
  * **Method**: `GET`
  * **Summary**: List threads
  * **Tags**: [Threads]
@@ -2955,6 +3182,8 @@ To view threads on records, you will need the `object_configuration:read` and `r
 To view threads on list entries, you will need the `list_configuration:read` and `list_entry:read` scopes.
 
 Required scopes: `comment:read`.
+
+Supported token levels: `workspace`, `user`.
  * **Method**: `GET`
  * **Summary**: Get a thread and its comments
  * **Tags**: [Threads]
@@ -2995,6 +3224,8 @@ To create comments on records, you will need the `object_configuration:read` and
 To create comments on list entries, you will need the `list_configuration:read` and `list_entry:read` scopes.
 
 Required scopes: `comment:read-write`.
+
+Supported token levels: `workspace`, `user`.
  * **Method**: `POST`
  * **Summary**: Create a comment
  * **Tags**: [Comments]
@@ -3077,6 +3308,8 @@ To view comments on records, you will need the `object_configuration:read` and `
 To view comments on list entries, you will need the `list_configuration:read` and `list_entry:read` scopes.
 
 Required scopes: `comment:read`.
+
+Supported token levels: `workspace`, `user`.
  * **Method**: `GET`
  * **Summary**: Get a comment
  * **Tags**: [Comments]
@@ -3107,6 +3340,8 @@ export const GetV2Comments$comment_id = (comment_id:string)=> `/v2/comments/${co
 A workspace-level access token may delete any comment. A user-level access token may only delete comments authored by the member it acts for.
 
 Required scopes: `comment:read-write`.
+
+Supported token levels: `workspace`, `user`.
  * **Method**: `DELETE`
  * **Summary**: Delete a comment
  * **Tags**: [Comments]
@@ -3154,6 +3389,8 @@ At least one of `linked_object` with `linked_record_ids`, `participants`, or `do
 This endpoint is in alpha and may be subject to breaking changes as we gather feedback.
 
 Required scopes: `email:read`, `record_permission:read`, `object_configuration:read`.
+
+Supported token levels: `workspace`.
  * **Method**: `GET`
  * **Summary**: List emails
  * **Tags**: [Emails]
@@ -3188,6 +3425,8 @@ export const GetV2Emails = "/v2/emails";
 This endpoint is in beta. We will aim to avoid breaking changes, but small updates may be made as we roll out to more users.
 
 Required scopes: `sequence_unsubscribe:read-write`.
+
+Supported token levels: `workspace`, `user`.
  * **Method**: `POST`
  * **Summary**: Add emails to the unsubscribe list
  * **Tags**: [Sequences]
@@ -3221,6 +3460,8 @@ export const PostV2SequencesUnsubscribed_emails = "/v2/sequences/unsubscribed_em
 This endpoint is in beta. We will aim to avoid breaking changes, but small updates may be made as we roll out to more users.
 
 Required scopes: `meeting:read`, `record_permission:read`.
+
+Supported token levels: `workspace`.
  * **Method**: `GET`
  * **Summary**: List meetings
  * **Tags**: [Meetings]
@@ -3255,6 +3496,8 @@ export const GetV2Meetings = "/v2/meetings";
 This endpoint is in beta. We will aim to avoid breaking changes, but small updates may be made as we roll out to more users.
 
 Required scopes: `meeting:read-write`, `record_permission:read`.
+
+Supported token levels: `workspace`, `user`.
  * **Method**: `POST`
  * **Summary**: Create a meeting
  * **Tags**: [Meetings]
@@ -3329,6 +3572,8 @@ export const PostV2Meetings = "/v2/meetings";
 This endpoint is in beta. We will aim to avoid breaking changes, but small updates may be made as we roll out to more users.
 
 Required scopes: `meeting:read`, `record_permission:read`.
+
+Supported token levels: `workspace`, `user`.
  * **Method**: `GET`
  * **Summary**: Get a meeting
  * **Tags**: [Meetings]
@@ -3354,6 +3599,108 @@ Required scopes: `meeting:read`, `record_permission:read`.
  */
 export const GetV2Meetings$meeting_id = (meeting_id:string)=> `/v2/meetings/${meeting_id}`;
 /**
+* Links records to a meeting. The records supplied are added to the meeting's existing linked records, and records which are already linked are ignored. Use the `PUT` endpoint to replace or remove linked records.
+
+No other meeting fields can be updated. Attio automatically links the meeting participants' companies to the meeting; this behavior is asynchronous.
+
+This endpoint is in beta. We will aim to avoid breaking changes, but small updates may be made as we roll out to more users.
+
+Required scopes: `meeting:read-write`, `record_permission:read`.
+
+Supported token levels: `workspace`, `user`.
+ * **Method**: `PATCH`
+ * **Summary**: Update a meeting (append linked records)
+ * **Tags**: [Meetings]
+ * **OperationId**:
+ * **Path**:
+```typescript
+    {
+      "meeting_id": string;
+    }
+```
+ * **DTO**:
+```typescript
+    {
+      "data": {
+          "linked_records": {
+    // The slug or UUID of the object that the record being linked belongs to.
+      "object": string;
+    // The UUID of the record being linked.
+      "record_id": string;
+    }[];
+        };
+    }
+```
+ * **Response**:
+    - **200**:
+```typescript
+      IPatchV2Meetings$meeting_id200Response
+```
+    - **400**:
+```typescript
+      IPatchV2Meetings$meeting_id400Response
+```
+    - **404**:
+```typescript
+      IPatchV2Meetings$meeting_id404Response
+```
+ * **Security**:
+    - **oauth2**: [meeting:read-write, record_permission:read]
+
+ */
+export const PatchV2Meetings$meeting_id = (meeting_id:string)=> `/v2/meetings/${meeting_id}`;
+/**
+* Replaces a meeting's linked records with the records supplied. Any record which is currently linked and is not in the request is unlinked, including records which Attio linked automatically from the meeting's participants. Passing an empty array unlinks every record. Use the `PATCH` endpoint to add linked records without removing the records which already exist.
+
+No other meeting fields can be updated. Attio automatically links the meeting participants' companies to the meeting; this behavior is asynchronous, so a company which is linked after this request completes is not removed by it.
+
+This endpoint is in beta. We will aim to avoid breaking changes, but small updates may be made as we roll out to more users.
+
+Required scopes: `meeting:read-write`, `record_permission:read`.
+
+Supported token levels: `workspace`, `user`.
+ * **Method**: `PUT`
+ * **Summary**: Update a meeting (overwrite linked records)
+ * **Tags**: [Meetings]
+ * **OperationId**:
+ * **Path**:
+```typescript
+    {
+      "meeting_id": string;
+    }
+```
+ * **DTO**:
+```typescript
+    {
+      "data": {
+          "linked_records": {
+    // The slug or UUID of the object that the record being linked belongs to.
+      "object": string;
+    // The UUID of the record being linked.
+      "record_id": string;
+    }[];
+        };
+    }
+```
+ * **Response**:
+    - **200**:
+```typescript
+      IPutV2Meetings$meeting_id200Response
+```
+    - **400**:
+```typescript
+      IPutV2Meetings$meeting_id400Response
+```
+    - **404**:
+```typescript
+      IPutV2Meetings$meeting_id404Response
+```
+ * **Security**:
+    - **oauth2**: [meeting:read-write, record_permission:read]
+
+ */
+export const PutV2Meetings$meeting_id = (meeting_id:string)=> `/v2/meetings/${meeting_id}`;
+/**
 * Deletes a single meeting by ID.
 
 Meetings created by calendar sync cannot be deleted through the API. Delete the underlying calendar event, or disconnect the calendar, instead.
@@ -3361,6 +3708,8 @@ Meetings created by calendar sync cannot be deleted through the API. Delete the 
 This endpoint is in beta. We will aim to avoid breaking changes, but small updates may be made as we roll out to more users.
 
 Required scopes: `meeting:read-write`.
+
+Supported token levels: `workspace`, `user`.
  * **Method**: `DELETE`
  * **Summary**: Delete a meeting
  * **Tags**: [Meetings]
@@ -3395,6 +3744,8 @@ export const DeleteV2Meetings$meeting_id = (meeting_id:string)=> `/v2/meetings/$
 This endpoint is in beta. We will aim to avoid breaking changes, but small updates may be made as we roll out to more users.
 
 Required scopes: `meeting:read`, `call_recording:read`.
+
+Supported token levels: `workspace`, `user`.
  * **Method**: `GET`
  * **Summary**: List call recordings
  * **Tags**: [Call recordings]
@@ -3430,6 +3781,8 @@ A `transcript` should always be provided — it is technically optional for back
 This endpoint is in beta. We will aim to avoid breaking changes, but small updates may be made as we roll out to more users.
 
 Required scopes: `meeting:read`, `call_recording:read-write`.
+
+Supported token levels: `workspace`, `user`.
  * **Method**: `POST`
  * **Summary**: Create call recording
  * **Tags**: [Call recordings]
@@ -3499,6 +3852,8 @@ export const PostV2Meetings$meeting_idCall_recordings = (meeting_id:string)=> `/
 This endpoint is in beta. We will aim to avoid breaking changes, but small updates may be made as we roll out to more users.
 
 Required scopes: `meeting:read`, `call_recording:read`.
+
+Supported token levels: `workspace`, `user`.
  * **Method**: `GET`
  * **Summary**: Get call recording
  * **Tags**: [Call recordings]
@@ -3530,6 +3885,8 @@ export const GetV2Meetings$meeting_idCall_recordings$call_recording_id = (meetin
 This endpoint is in beta. We will aim to avoid breaking changes, but small updates may be made as we roll out to more users.
 
 Required scopes: `meeting:read`, `call_recording:read-write`.
+
+Supported token levels: `workspace`, `user`.
  * **Method**: `DELETE`
  * **Summary**: Delete call recording
  * **Tags**: [Call recordings]
@@ -3561,6 +3918,8 @@ export const DeleteV2Meetings$meeting_idCall_recordings$call_recording_id = (mee
 This endpoint is in beta. We will aim to avoid breaking changes, but small updates may be made as we roll out to more users.
 
 Required scopes: `meeting:read`, `call_recording:read`.
+
+Supported token levels: `workspace`.
  * **Method**: `GET`
  * **Summary**: Deprecated: Get call transcript
  * **Tags**: [Transcripts]
@@ -3594,6 +3953,8 @@ export const GetV2Meetings$meeting_idCall_recordings$call_recording_idTranscript
 This endpoint is in beta. We will aim to avoid breaking changes, but small updates may be made as we roll out to more users.
 
 Required scopes: `object_configuration:read`, `record_permission:read`, `file:read`.
+
+Supported token levels: `workspace`, `user`.
  * **Method**: `GET`
  * **Summary**: List files
  * **Tags**: [Files]
@@ -3625,6 +3986,8 @@ export const GetV2Files = "/v2/files";
 This endpoint is in beta. We will aim to avoid breaking changes, but small updates may be made as we roll out to more users.
 
 Required scopes: `file:read-write`, `object_configuration:read`, `record_permission:read`.
+
+Supported token levels: `workspace`, `user`.
  * **Method**: `POST`
  * **Summary**: Create a folder
  * **Tags**: [Files]
@@ -3683,9 +4046,13 @@ export const PostV2Files = "/v2/files";
 /**
 * Uploads a file to native Attio storage for a record. Send multipart/form-data with a single binary field named `file` together with the body fields `object`, `record_id`, and optional `parent_folder_id`. Maximum file size is 50 MB.
 
+This endpoint is rate limited to 1 request per second.
+
 This endpoint is in beta. We will aim to avoid breaking changes, but small updates may be made as we roll out to more users.
 
 Required scopes: `file:read-write`, `object_configuration:read`, `record_permission:read`.
+
+Supported token levels: `workspace`, `user`.
  * **Method**: `POST`
  * **Summary**: Upload a file
  * **Tags**: [Files]
@@ -3723,6 +4090,8 @@ export const PostV2FilesUpload = "/v2/files/upload";
 This endpoint is in beta. We will aim to avoid breaking changes, but small updates may be made as we roll out to more users.
 
 Required scopes: `file:read`, `object_configuration:read`, `record_permission:read`.
+
+Supported token levels: `workspace`, `user`.
  * **Method**: `GET`
  * **Summary**: Get a file
  * **Tags**: [Files]
@@ -3753,6 +4122,8 @@ export const GetV2Files$file_id = (file_id:string)=> `/v2/files/${file_id}`;
 This endpoint is in beta. We will aim to avoid breaking changes, but small updates may be made as we roll out to more users.
 
 Required scopes: `file:read-write`, `object_configuration:read`, `record_permission:read`.
+
+Supported token levels: `workspace`, `user`.
  * **Method**: `DELETE`
  * **Summary**: Delete a file
  * **Tags**: [Files]
@@ -3783,6 +4154,8 @@ export const DeleteV2Files$file_id = (file_id:string)=> `/v2/files/${file_id}`;
 This endpoint is in beta. We will aim to avoid breaking changes, but small updates may be made as we roll out to more users.
 
 Required scopes: `object_configuration:read`, `record_permission:read`, `file:read`.
+
+Supported token levels: `workspace`, `user`.
  * **Method**: `GET`
  * **Summary**: Download a file
  * **Tags**: [Files]
@@ -3807,6 +4180,8 @@ export const GetV2Files$file_idDownload = (file_id:string)=> `/v2/files/${file_i
 * Get all of the webhooks in your workspace.
 
 Required scopes: `webhook:read`.
+
+Supported token levels: `workspace`.
  * **Method**: `GET`
  * **Summary**: List webhooks
  * **Tags**: [Webhooks]
@@ -3834,6 +4209,8 @@ export const GetV2Webhooks = "/v2/webhooks";
 Each combination of target URL, event type and filter must be unique within your workspace; duplicates are rejected with a 409.
 
 Required scopes: `webhook:read-write`.
+
+Supported token levels: `workspace`.
  * **Method**: `POST`
  * **Summary**: Create a webhook
  * **Tags**: [Webhooks]
@@ -3898,6 +4275,8 @@ export const PostV2Webhooks = "/v2/webhooks";
 * Get a single webhook.
 
 Required scopes: `webhook:read`.
+
+Supported token levels: `workspace`.
  * **Method**: `GET`
  * **Summary**: Get a webhook
  * **Tags**: [Webhooks]
@@ -3928,6 +4307,8 @@ export const GetV2Webhooks$webhook_id = (webhook_id:string)=> `/v2/webhooks/${we
 Each combination of target URL, event type and filter must be unique within your workspace; duplicates are rejected with a 409. Changing the target URL re-checks the webhook's existing subscriptions against the new URL.
 
 Required scopes: `webhook:read-write`.
+
+Supported token levels: `workspace`.
  * **Method**: `PATCH`
  * **Summary**: Update a webhook
  * **Tags**: [Webhooks]
@@ -3998,6 +4379,8 @@ export const PatchV2Webhooks$webhook_id = (webhook_id:string)=> `/v2/webhooks/${
 * Delete a webhook by ID.
 
 Required scopes: `webhook:read-write`.
+
+Supported token levels: `workspace`.
  * **Method**: `DELETE`
  * **Summary**: Delete a webhook
  * **Tags**: [Webhooks]
