@@ -4,3 +4,11 @@ dist/
 *.js
 *.d.ts
 *.js.map
+.openapi-sync/
+
+# Claude Code session artifacts
+.claude/cache/
+.claude/logs/
+.claude/hooks/logs/
+.claude/HANDOFF.md
+.handoff/

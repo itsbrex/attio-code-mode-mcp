@@ -1,0 +1,31 @@
+{
+  "$schema": "https://openapi-sync.com/schema/openapi.sync.schema.json",
+  "folder": "./src/generated",
+  "api": {
+    "attio": "./src/spec/openapi.json"
+  },
+  "language": "typescript",
+  "types": {
+    "name": {
+      "prefix": "I",
+      "useOperationId": true
+    }
+  },
+  "endpoints": {
+    "name": {
+      "useOperationId": true
+    },
+    "doc": {
+      "showCurl": false
+    }
+  },
+  "validations": {
+    "disable": true
+  },
+  "customCode": {
+    "enabled": true,
+    "position": "top",
+    "markerText": "CUSTOM CODE",
+    "includeInstructions": true
+  }
+}

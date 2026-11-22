@@ -1,0 +1,12 @@
+{
+  "schemaVersion": 1,
+  "sourceVersion": 45,
+  "sourceHash": "aa98f58d14f1de2cb92e732ff88805673aec64ff456ff69a96ec7cc0babbca11",
+  "variant": "",
+  "files": {
+    "scripts/plans.mjs": "9d2c8d1326764ec2a3461ab37957d8d8e8970e450c87d4dd076b9cd8a03a1bdc",
+    "docs/plans/.plan-template.html": "41266fd42bc5bdd18783ea35182c0a1ed5b9878cc3365b166c64fb01b7d69aab",
+    "docs/plans/DESIGN.md": "a116a35e29930e774e15c9f67a104e1573065afbd4580d29f82075e396f7aaa8",
+    "docs/plans/README.md": "4231aa541b9f148bda1fc30ad28cc5fbaa371bfa646620685fa56ab7f85b14ef"
+  }
+}
