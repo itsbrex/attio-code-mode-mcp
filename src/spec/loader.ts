@@ -1,73 +1,89 @@
 /**
  * OpenAPI Spec Loader for Code Mode
  *
- * Loads Attio's OpenAPI spec and pre-resolves $refs
- * so agent-generated code can traverse it without following references.
+ * Loads Attio's OpenAPI spec into the compact shape agent-generated code searches.
+ * Top-level `$ref`s are resolved one level deep. Nested `$ref` strings stay as written and
+ * point into `components.schemas`, which is included so they can be followed.
  */
 
 import { readFileSync } from 'fs';
-import { fileURLToPath } from 'url';
-import { dirname, join } from 'path';
+import { join } from 'path';
+import { esmDirname } from '../utils/esm-dirname.js';
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
-
-interface ResolvedSpec {
+export interface ResolvedSpec {
   info: { title: string; version: string };
-  paths: Record<string, any>;
+  paths: Record<string, Record<string, ResolvedOperation>>;
+  components: { schemas: Record<string, any> };
   pathCount: number;
   operationCount: number;
   schemaCount: number;
 }
 
+export interface ResolvedOperation {
+  summary: string;
+  description: string;
+  operationId: string;
+  tags: string[];
+  deprecated?: true;
+  security: unknown[];
+  parameters: any[];
+  requestBody?: any;
+  responses: Record<string, any>;
+}
+
+const HTTP_METHODS = new Set(['get', 'post', 'put', 'patch', 'delete', 'options', 'head', 'trace']);
+
 export function loadSpec(): ResolvedSpec {
-  const rawPath = join(__dirname, 'openapi.json');
+  const rawPath = join(esmDirname(import.meta.url), 'openapi.json');
   const raw = JSON.parse(readFileSync(rawPath, 'utf-8'));
 
-  const schemas = raw.components?.schemas || {};
-
-  const paths: Record<string, any> = {};
-  const httpMethods = new Set(['get', 'post', 'put', 'patch', 'delete', 'options', 'head', 'trace']);
+  const schemas: Record<string, any> = raw.components?.schemas || {};
+  const paths: ResolvedSpec['paths'] = {};
   let operationCount = 0;
 
   for (const [path, methods] of Object.entries(raw.paths as Record<string, any>)) {
     paths[path] = {};
     for (const [method, operation] of Object.entries(methods as Record<string, any>)) {
-      if (!httpMethods.has(method)) continue;
+      if (!HTTP_METHODS.has(method)) continue;
       operationCount++;
-
-      paths[path][method] = {
-        summary: operation.summary || '',
-        description: operation.description || '',
-        operationId: operation.operationId || '',
-        tags: operation.tags || [],
-        security: operation.security ?? raw.security ?? [],
-        parameters: (operation.parameters || []).map((p: any) => {
-          if (p.$ref) {
-            return resolveRef(p.$ref, raw);
-          }
-          return {
-            name: p.name,
-            in: p.in,
-            required: p.required || false,
-            description: p.description || '',
-            schema: resolveSchemaShallow(p.schema, schemas)
-          };
-        }),
-        requestBody: operation.requestBody
-          ? summarizeRequestBody(operation.requestBody, schemas)
-          : undefined,
-        responses: summarizeResponses(operation.responses || {}, schemas)
-      };
+      paths[path][method] = summarizeOperation(operation, raw, schemas);
     }
   }
 
   return {
     info: raw.info,
     paths,
+    components: { schemas },
     pathCount: Object.keys(paths).length,
     operationCount,
     schemaCount: Object.keys(schemas).length
+  };
+}
+
+function summarizeOperation(operation: any, raw: any, schemas: Record<string, any>): ResolvedOperation {
+  return {
+    summary: operation.summary || '',
+    description: operation.description || '',
+    operationId: operation.operationId || '',
+    tags: operation.tags || [],
+    ...(operation.deprecated ? { deprecated: true as const } : {}),
+    security: operation.security ?? raw.security ?? [],
+    parameters: (operation.parameters || []).map((p: any) => {
+      if (p.$ref) {
+        return resolveRef(p.$ref, raw);
+      }
+      return {
+        name: p.name,
+        in: p.in,
+        required: p.required || false,
+        description: p.description || '',
+        schema: resolveSchemaShallow(p.schema, schemas)
+      };
+    }),
+    requestBody: operation.requestBody
+      ? summarizeRequestBody(operation.requestBody, schemas)
+      : undefined,
+    responses: summarizeResponses(operation.responses || {}, schemas)
   };
 }
 
@@ -114,12 +130,16 @@ function resolveSchemaShallow(schema: any, schemas: Record<string, any>): any {
 }
 
 function summarizeRequestBody(body: any, schemas: Record<string, any>): any {
-  const content = body.content?.['application/json'];
-  if (!content?.schema) return { description: body.description || '' };
+  // JSON when offered; otherwise the first media type (the file upload is multipart only).
+  const content = body.content || {};
+  const contentType = 'application/json' in content ? 'application/json' : Object.keys(content)[0];
+  const schema = contentType ? content[contentType]?.schema : undefined;
+  if (!schema) return { description: body.description || '' };
 
   return {
     required: body.required || false,
-    schema: resolveSchemaShallow(content.schema, schemas)
+    ...(contentType === 'application/json' ? {} : { contentType }),
+    schema: resolveSchemaShallow(schema, schemas)
   };
 }
 
