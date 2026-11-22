@@ -15,7 +15,8 @@
     "spec:validate": "openapi-sync validate --json",
     "spec:generate": "node scripts/spec-sync.mjs generate",
     "spec:check": "node scripts/spec-sync.mjs check",
-    "spec:upstream-check": "node scripts/spec-sync.mjs upstream-check"
+    "spec:upstream-check": "node scripts/spec-sync.mjs upstream-check",
+    "plans": "bun scripts/plans.mjs"
   },
   "keywords": [
     "mcp",
