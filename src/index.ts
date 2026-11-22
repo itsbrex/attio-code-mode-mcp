@@ -1,23 +1,32 @@
 #!/usr/bin/env node
 /**
  * Attio MCP Server — Code Mode
- * 90+ endpoints. 3 tools. Fixed token cost.
+ * 90+ operations. 4 tools. Fixed token cost.
  */
 
+import { join } from 'node:path';
 import dotenv from 'dotenv';
-import { AttioMCPServer } from './server/mcp-server.js';
-import { ServerConfig } from './types/config.js';
+import { serveStdio } from '@modelcontextprotocol/server/stdio';
 
-// Suppress ALL console output for MCP server (only JSON-RPC on stdout)
-console.log = () => {};
+import { AttioClient } from './api/client.js';
+import { AttioAuth } from './auth/api-key.js';
+import { createAttioServer } from './server/mcp-server.js';
+import { loadSpec } from './spec/loader.js';
+import { esmDirname } from './utils/esm-dirname.js';
+import { formatError } from './utils/format-error.js';
+
+// stdout carries only JSON-RPC. Silence every console method (not just log: dir, table,
+// trace and the rest write to stdout too), and send errors to stderr.
+for (const [name, value] of Object.entries(console)) {
+  if (typeof value === 'function' && name !== 'Console') (console as unknown as Record<string, unknown>)[name] = () => {};
+}
 console.error = (...args: unknown[]) => { process.stderr.write(args.map(String).join(' ') + '\n'); };
-console.warn = () => {};
-console.info = () => {};
-console.debug = () => {};
 
-dotenv.config();
+// A host starts this server from its own working directory, so also read the .env that
+// sits next to the package. Values already in the environment win; then the first file.
+dotenv.config({ path: ['.env', join(esmDirname(import.meta.url), '..', '.env')], quiet: true });
 
-async function main() {
+function main(): void {
   const apiKey = process.env.ATTIO_API_KEY;
   const debug = process.env.DEBUG === 'true';
 
@@ -27,35 +36,45 @@ async function main() {
     process.exit(1);
   }
 
-  const config: ServerConfig = { apiKey, debug };
+  // A secret reference that was never resolved (for example a 1Password op:// value read
+  // straight from .env) is not a key. Say so here instead of failing every call with a 401.
+  if (/^[a-z][a-z0-9+.-]*:\/\//i.test(apiKey)) {
+    process.stderr.write('ATTIO_API_KEY holds a secret reference, not an API key.\n');
+    process.stderr.write('Start the server through the tool that resolves it (for example: op run --env-file=.env -- node dist/index.js).\n');
+    process.exit(1);
+  }
 
   if (debug) {
     process.stderr.write(`Debug: API key starts with ${apiKey.substring(0, 8)}***\n`);
   }
 
-  try {
-    const server = new AttioMCPServer(config);
-    await server.start();
+  const deps = { client: new AttioClient(new AttioAuth(apiKey)), spec: loadSpec(), debug };
+  const handle = serveStdio(() => createAttioServer(deps), {
+    onerror: error => {
+      if (debug) process.stderr.write(`Transport error: ${formatError(error)}\n`);
+    }
+  });
 
-    process.on('SIGINT', () => process.exit(0));
-    process.on('SIGTERM', () => process.exit(0));
-  } catch (error) {
-    process.stderr.write(`Failed to start server: ${error instanceof Error ? error.message : String(error)}\n`);
-    process.exit(1);
-  }
+  const shutdown = (): void => {
+    void handle.close().finally(() => process.exit(0));
+  };
+  process.on('SIGINT', shutdown);
+  process.on('SIGTERM', shutdown);
 }
 
 process.on('uncaughtException', (error) => {
-  process.stderr.write(`Uncaught exception: ${error instanceof Error ? error.message : String(error)}\n`);
+  process.stderr.write(`Uncaught exception: ${formatError(error)}\n`);
   process.exit(1);
 });
 
 process.on('unhandledRejection', (reason) => {
-  process.stderr.write(`Unhandled rejection: ${reason}\n`);
+  process.stderr.write(`Unhandled rejection: ${formatError(reason)}\n`);
   process.exit(1);
 });
 
-main().catch((error) => {
-  process.stderr.write(`Fatal error: ${error instanceof Error ? error.message : String(error)}\n`);
+try {
+  main();
+} catch (error) {
+  process.stderr.write(`Failed to start server: ${formatError(error)}\n`);
   process.exit(1);
-});
+}

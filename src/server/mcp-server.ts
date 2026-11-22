@@ -1,297 +1,64 @@
 /**
  * Attio MCP Server — Code Mode
  *
- * Three tools. 90+ endpoints. Fixed token cost.
+ * Four tools. 90+ operations. Fixed token cost.
  *
- * search(code)  — Agent writes JS to query the API spec
- * execute(code) — Agent writes JS to call the authenticated API
- * context(topic) — Agent looks up Attio documentation by topic
+ * search(code)       — Agent writes JS to query the API spec
+ * execute(code)      — Agent writes JS to call the authenticated API
+ * context(topic)     — Agent looks up Attio documentation by topic
+ * test_connection()  — Checks the API key and reports the workspace
+ *
+ * Plus resources (docs index, operation index) and prompts for people to pick.
  */
 
-import { Server } from '@modelcontextprotocol/sdk/server/index.js';
-import { StdioServerTransport } from '@modelcontextprotocol/sdk/server/stdio.js';
-import {
-  CallToolRequestSchema,
-  ListToolsRequestSchema
-} from '@modelcontextprotocol/sdk/types.js';
+import { McpServer, type CacheHint } from '@modelcontextprotocol/server';
 
-import { AttioAuth } from '../auth/api-key.js';
-import { AttioClient, createApiWrapper } from '../api/client.js';
-import { loadSpec } from '../spec/loader.js';
-import { executeInSandbox, DEFAULT_TOTAL_TIMEOUT_MS } from '../executor/sandbox.js';
-import { searchDocs, getAllDocs, getCategories } from '../context/loader.js';
-import { ServerConfig } from '../types/config.js';
-import { truncate } from '../utils/truncate.js';
-import { formatError } from '../utils/format-error.js';
-import { safeJsonStringify } from '../utils/json.js';
-import { createRequire } from 'node:module';
+import { SERVER_NAME, SERVER_VERSION, type ServerDeps } from './deps.js';
+import { registerPrompts } from './prompts.js';
+import { registerResources } from './resources.js';
+import { registerTools } from './tools.js';
 
-const SERVER_NAME = 'attio-mcp';
-const { version: SERVER_VERSION } = createRequire(import.meta.url)('../../package.json') as { version: string };
+const INSTRUCTIONS = `Attio CRM through Code Mode: you write short JavaScript instead of picking one tool per endpoint.
 
-export class AttioMCPServer {
-  private server: Server;
-  private auth: AttioAuth;
-  private client: AttioClient;
-  private spec: any;
+Workflow:
+1. context — look up Attio concepts (objects, records, lists, attributes) when the data model is unclear.
+2. search — run JavaScript over the bundled OpenAPI spec (spec.paths, spec.components.schemas) to find the endpoint, its parameters and the scopes it needs. It never calls Attio.
+3. execute — run JavaScript with the authenticated api global (api.request, api.paginate). Batch related calls in one script and return only the fields you need; output is capped at 40,000 characters.
 
-  constructor(config: ServerConfig) {
-    this.server = new Server(
-      {
-        name: SERVER_NAME,
-        version: SERVER_VERSION
-      },
-      {
-        capabilities: {
-          tools: {}
-        }
+A failed script comes back as an error result with the message and any console output: fix the script and retry.
+Writes in execute are real and immediate. Confirm with the user before deleting records or changing many at once.
+test_connection shows which workspace the API key belongs to and its scopes; a 403 means the key lacks a scope.`;
+
+/** Tool, prompt and resource lists are fixed for a release and the same for every caller. */
+const STATIC_LIST: CacheHint = { ttlMs: 5 * 60 * 1000, cacheScope: 'public' };
+
+/**
+ * Builds one server instance. The stdio entry calls this per connection, and serves both
+ * protocol eras (2026-07-28 and the 2025 handshake) from the same registrations.
+ */
+export function createAttioServer(deps: ServerDeps): McpServer {
+  const server = new McpServer(
+    {
+      name: SERVER_NAME,
+      title: 'Attio CRM (Code Mode)',
+      version: SERVER_VERSION,
+      description: 'Search the Attio API spec and call the Attio CRM API by writing JavaScript.',
+      websiteUrl: 'https://github.com/itsbrex/attio-code-mode-mcp'
+    },
+    {
+      instructions: INSTRUCTIONS,
+      cacheHints: {
+        'server/discover': STATIC_LIST,
+        'tools/list': STATIC_LIST,
+        'prompts/list': STATIC_LIST,
+        'resources/list': STATIC_LIST,
+        'resources/templates/list': STATIC_LIST
       }
-    );
-
-    this.auth = new AttioAuth(config.apiKey);
-    this.client = new AttioClient(this.auth);
-    this.spec = loadSpec();
-
-    this.registerHandlers();
-  }
-
-  private registerHandlers() {
-    this.server.setRequestHandler(ListToolsRequestSchema, async () => ({
-      tools: this.getToolDefinitions()
-    }));
-
-    this.server.setRequestHandler(CallToolRequestSchema, async (request) => {
-      const { name, arguments: args } = request.params;
-
-      try {
-        const result = await this.executeTool(name, args || {});
-        return {
-          content: [{
-            type: 'text' as const,
-            text: formatToolContent(result)
-          }]
-        };
-      } catch (error) {
-        return {
-          content: [{
-            type: 'text' as const,
-            text: `Error: ${formatError(error)}`
-          }],
-          isError: true
-        };
-      }
-    });
-  }
-
-  private getToolDefinitions(): any[] {
-    return [
-      {
-        name: 'search',
-        description: `Write JavaScript to explore the Attio CRM API specification (${this.spec.pathCount} paths, ${this.spec.operationCount} operations, ${this.spec.schemaCount} schemas, API v${this.spec.info.version}).
-
-Available globals:
-- \`spec\` — Object with all API endpoints. Structure: spec.paths['/v2/endpoint'].method
-
-How to use:
-- List all paths: Object.keys(spec.paths)
-- Filter by keyword: Object.entries(spec.paths).filter(([p]) => p.includes('notes'))
-- Get endpoint details: spec.paths['/v2/objects'].get
-- Check parameters: spec.paths['/v2/objects'].get.parameters
-- Check response schema: spec.paths['/v2/objects'].get.responses
-- Get tags: spec.paths['/v2/objects'].get.tags
-- Check required scopes: spec.paths['/v2/emails'].get.security
-- Search by tag: Object.entries(spec.paths).filter(([p, m]) => Object.values(m).some(op => op.tags?.includes('Records')))
-
-Return your findings as a value or use console.log().
-
-Example — find all list-related endpoints:
-  const lists = Object.entries(spec.paths)
-    .filter(([p]) => p.toLowerCase().includes('list'))
-    .map(([path, methods]) => ({
-      path,
-      methods: Object.entries(methods).map(([m, op]) => ({ method: m.toUpperCase(), summary: op.summary }))
-    }));
-  return lists;`,
-        inputSchema: {
-          type: 'object',
-          properties: {
-            code: {
-              type: 'string',
-              description: 'JavaScript code to execute. Has access to the `spec` object containing the full Attio OpenAPI specification.'
-            }
-          },
-          required: ['code']
-        }
-      },
-      {
-        name: 'execute',
-        description: `Write JavaScript to call the Attio CRM API. Authentication is automatic (API key injected).
-
-Available globals:
-- \`api\` — Authenticated client for Attio CRM.
-
-Usage:
-  const result = await api.request({
-    method: 'GET',              // GET, POST, PATCH, DELETE, PUT
-    path: '/v2/objects',        // API path (from search results)
-    params: { limit: 10 },     // Query params for GET, body for POST/PATCH/PUT/DELETE
-    body: { ... },             // Request body; when given, params become query params instead
-    query: { ... }             // Explicit query params for any method
-  });
-
-The response is parsed JSON. You can chain multiple API calls in one execution.
-Rate limits (100 reads/s, 25 writes/s) are enforced client-side and 429s are retried automatically.
-Failed calls throw an Error with status, code and type properties; use try/catch to handle them.
-A whole execution is stopped after ${DEFAULT_TOTAL_TIMEOUT_MS / 1000}s, so batch large jobs.
-
-Common patterns:
-- List companies: api.request({ method: 'POST', path: '/v2/objects/companies/records/query', params: { limit: 10 } })
-- Get a record: api.request({ method: 'GET', path: '/v2/objects/companies/records/' + recordId })
-- Create note: api.request({ method: 'POST', path: '/v2/notes', params: { data: { ... } } })
-- Query list entries: api.request({ method: 'POST', path: '/v2/lists/{listId}/entries/query', params: { limit: 50 } })
-- Upsert a person: api.request({ method: 'PUT', path: '/v2/objects/people/records', query: { matching_attribute: 'email_addresses' }, body: { data: { values: { ... } } } })
-
-Example — find a company and get its notes:
-  const companies = await api.request({
-    method: 'POST',
-    path: '/v2/objects/companies/records/query',
-    params: { filter: { name: { $contains: 'Acme' } }, limit: 5 }
-  });
-  const companyId = companies.data[0].id.record_id;
-  const notes = await api.request({
-    method: 'GET',
-    path: '/v2/notes',
-    params: { parent_object: 'companies', parent_record_id: companyId }
-  });
-  return { company: companies.data[0], notes: notes.data };`,
-        inputSchema: {
-          type: 'object',
-          properties: {
-            code: {
-              type: 'string',
-              description: 'JavaScript code to execute. Has access to the authenticated `api` client for Attio CRM.'
-            }
-          },
-          required: ['code']
-        }
-      },
-      {
-        name: 'context',
-        description: `Look up Attio CRM documentation by topic. Returns relevant doc pages with titles and URLs.
-
-Use this to understand Attio's domain model before writing code:
-- Objects (companies, people, deals, custom objects)
-- Records (CRUD, querying, filtering)
-- Lists and entries (pipeline stages, kanban boards)
-- Attributes (types: select, status, text, number, etc.)
-- Notes, tasks, comments, threads
-- Webhooks
-- OAuth and authentication
-
-Pass a topic keyword to search, or use "all" to list everything, or "categories" for top-level groupings.`,
-        inputSchema: {
-          type: 'object',
-          properties: {
-            topic: {
-              type: 'string',
-              description: 'Topic to search for (e.g., "lists", "notes", "records", "attributes", "webhooks"). Use "all" for full index, "categories" for groupings.'
-            }
-          },
-          required: ['topic']
-        }
-      },
-      {
-        name: 'test_connection',
-        description: 'Test connection to Attio API and show server info',
-        inputSchema: {
-          type: 'object',
-          properties: {}
-        }
-      }
-    ];
-  }
-
-  private async executeTool(name: string, args: any): Promise<any> {
-    switch (name) {
-      case 'search': {
-        if (!args.code) throw new Error('code is required');
-        const result = await executeInSandbox(args.code, { spec: this.spec });
-        if (result.error) {
-          return { error: result.error, logs: result.logs };
-        }
-        return {
-          result: result.result,
-          logs: result.logs.length > 0 ? result.logs : undefined
-        };
-      }
-
-      case 'execute': {
-        if (!args.code) throw new Error('code is required');
-
-        const controller = new AbortController();
-        const api = createApiWrapper(this.client, controller.signal);
-
-        const result = await executeInSandbox(args.code, { api }, {
-          onTimeout: () => controller.abort()
-        });
-        if (result.error) {
-          return { error: result.error, logs: result.logs };
-        }
-        return {
-          result: result.result,
-          logs: result.logs.length > 0 ? result.logs : undefined
-        };
-      }
-
-      case 'context': {
-        const topic = args.topic || 'all';
-        if (topic === 'all') {
-          return { docs: getAllDocs(), count: getAllDocs().length };
-        }
-        if (topic === 'categories') {
-          return { categories: getCategories() };
-        }
-        const results = searchDocs(topic);
-        return {
-          query: topic,
-          results,
-          count: results.length,
-          hint: results.length === 0 ? 'Try broader terms or use "all" to see everything' : undefined
-        };
-      }
-
-      case 'test_connection': {
-        const connected = await this.client.testConnection();
-        return {
-          connected,
-          message: connected ? 'Successfully connected to Attio CRM' : 'Connection failed — check ATTIO_API_KEY',
-          server: SERVER_NAME,
-          version: SERVER_VERSION,
-          mode: 'code-mode',
-          spec: {
-            apiVersion: this.spec.info.version,
-            endpoints: this.spec.pathCount,
-            operations: this.spec.operationCount,
-            schemas: this.spec.schemaCount
-          }
-        };
-      }
-
-      default:
-        throw new Error(`Unknown tool: ${name}. Available: search, execute, context, test_connection`);
     }
-  }
+  );
 
-  async start() {
-    const transport = new StdioServerTransport();
-    await this.server.connect(transport);
-  }
-}
-
-function formatToolContent(value: unknown): string {
-  const text = typeof value === 'string'
-    ? value
-    : safeJsonStringify(value);
-
-  return truncate(text);
+  registerTools(server, deps);
+  registerResources(server, deps);
+  registerPrompts(server, deps);
+  return server;
 }
