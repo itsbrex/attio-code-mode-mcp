@@ -52,6 +52,13 @@ export function normalizeForGeneration(original) {
   return spec;
 }
 
+// The package is native ESM, where a relative import must name the file. The generator
+// writes './shared'; emit './shared.js' so the output compiles under NodeNext resolution.
+export function withImportExtension(line) {
+  return line.replace(/(\bfrom\s+["'])(\.{1,2}\/[^"']+)(["'])/, (match, open, specifier, close) =>
+    /\.(?:[cm]?js|json)$/.test(specifier) ? match : open + specifier + '.js' + close);
+}
+
 async function readOptional(path) {
   try {
     return await readFile(path);
@@ -127,15 +134,15 @@ async function runGenerator({ root, specPath, generatedDir, config }) {
       if (line === '// 🔒 ' + markerText + ' START') inCustomCode = true;
       if (line === '// 🔒 ' + markerText + ' END') inCustomCode = false;
       if (inCustomCode) return line;
-      return line.replace(/[ \t]+$/, '').replace(/^[ \t]+/, indent => indent.replace(/\t/g, '  '));
+      return withImportExtension(line.replace(/[ \t]+$/, '').replace(/^[ \t]+/, indent => indent.replace(/\t/g, '  ')));
     }).join('\n');
     if (code !== normalized) await writeFile(path, normalized);
   }
   try {
     await exec(process.execPath, [
-      join(root, 'node_modules/typescript/bin/tsc'), '--noEmit',
-      '--strict', '--skipLibCheck', '--target', 'ES2022', '--module', 'ES2022',
-      '--moduleResolution', 'node', ...generatedFiles
+      join(root, 'node_modules/typescript/bin/tsc'), '--noEmit', '--ignoreConfig',
+      '--strict', '--skipLibCheck', '--target', 'ES2022', '--module', 'NodeNext',
+      '--moduleResolution', 'NodeNext', ...generatedFiles
     ], { cwd: root, maxBuffer: 8 * 1024 * 1024, timeout: 120_000 });
   } catch (error) {
     throw new Error('Generated TypeScript failed validation: ' + (error.stdout || error.message));

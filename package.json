@@ -1,7 +1,7 @@
 {
   "name": "attio-mcp",
-  "version": "1.1.0",
-  "description": "Code Mode MCP server for Attio CRM — 90+ operations through 3 core tools",
+  "version": "2.0.0",
+  "description": "Code Mode MCP server for Attio CRM — 100+ operations through 4 tools",
   "main": "dist/index.js",
   "scripts": {
     "dev": "tsx watch src/index.ts",
@@ -32,14 +32,17 @@
     "node": ">=24.0.0"
   },
   "dependencies": {
-    "@modelcontextprotocol/sdk": "^1.32.1",
-    "axios": "^1.20.0",
-    "dotenv": "^17.4.2"
+    "@modelcontextprotocol/server": "^2.4.0",
+    "acorn": "^8.19.0",
+    "axios": "^1.21.1",
+    "dotenv": "^18.0.10",
+    "zod": "^4.6.7"
   },
   "devDependencies": {
-    "@types/node": "^24.3.0",
-    "openapi-sync": "6.4.2",
-    "tsx": "^4.20.4",
-    "typescript": "^5.9.2"
+    "@modelcontextprotocol/client": "^2.4.0",
+    "@types/node": "^24.19.2",
+    "openapi-sync": "6.6.1",
+    "tsx": "^4.23.15",
+    "typescript": "^7.0.2"
   }
 }

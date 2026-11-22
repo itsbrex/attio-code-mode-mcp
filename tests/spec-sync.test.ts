@@ -4,7 +4,7 @@ import { tmpdir } from 'node:os';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { test, type TestContext } from 'node:test';
-import { normalizeForGeneration, synchronize } from '../scripts/spec-sync.mjs';
+import { normalizeForGeneration, synchronize, withImportExtension } from '../scripts/spec-sync.mjs';
 
 const repo = fileURLToPath(new URL('../', import.meta.url));
 const specPath = 'src/spec/openapi.json';
@@ -169,4 +169,23 @@ test('real generator compiles hyphenated schemas, is deterministic and preserves
   assert.equal(await readFile(join(root, outputPath), 'utf8'), custom);
   await synchronize('check', { root });
   assert.equal(await readFile(join(root, specPath), 'utf8'), JSON.stringify(spec));
+});
+
+test('generated relative imports name the file, as native ESM requires', async t => {
+  assert.equal(withImportExtension('import * as Shared from "./shared";'), 'import * as Shared from "./shared.js";');
+  assert.equal(withImportExtension("export { A } from '../types/index';"), "export { A } from '../types/index.js';");
+  for (const untouched of [
+    'import * as Shared from "./shared.js";',
+    'import data from "./data.json";',
+    'import axios from "axios";',
+    'const from = "./shared";'
+  ]) {
+    assert.equal(withImportExtension(untouched), untouched);
+  }
+  const root = await fixture(t);
+  await symlink(join(repo, 'node_modules'), join(root, 'node_modules'), 'dir');
+  await synchronize('generate', { root });
+  const types = await readFile(join(root, 'src/generated/attio/types/index.ts'), 'utf8');
+  assert.match(types, /from "\.\/shared\.js";/);
+  assert.doesNotMatch(types, /from "\.\/shared";/);
 });
