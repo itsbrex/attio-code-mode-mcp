@@ -32,3 +32,6 @@ Attio Code Mode MCP server. Keep changes scoped to the TypeScript MCP implementa
 - Run `npm test` and `npm run spec:check` after changes to spec loading or generation.
 - Keep `src/spec/openapi.json` as the upstream document. Schema-name normalization belongs only in the temporary generation input in `scripts/spec-sync.mjs`.
 - Run `npm run test:connection` only when credentials and live connectivity are intentionally in scope.
+- After changing `src/executor/sandbox.ts` or `src/api/client.ts`, run `npm test`. Do not relax a sandbox layer (import scan, `codeGeneration`, child process flags, empty environment) or the path check without a test showing the attack it stops is still stopped.
+- The MCP SDK is v2 (`@modelcontextprotocol/server`). Check its type definitions in `node_modules` before using an API from the older `@modelcontextprotocol/sdk` package.
+- Push and open pull requests on the fork only (`itsbrex/attio-code-mode-mcp`); pass `-R itsbrex/attio-code-mode-mcp` to `gh`.

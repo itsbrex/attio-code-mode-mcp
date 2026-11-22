@@ -4,13 +4,13 @@ Project context for AI-assisted development.
 
 ## Project
 
-**attio-mcp** — A "Code Mode" MCP server for [Attio CRM](https://attio.com). Instead of exposing one tool per API endpoint (35+), it exposes 4 tools and lets the LLM write JavaScript to query the OpenAPI spec and call the API directly. This keeps tool-definition token cost fixed (~800 tokens) regardless of how many endpoints Attio adds.
+**attio-mcp** — A "Code Mode" MCP server for [Attio CRM](https://attio.com). Instead of exposing one tool per API endpoint (35+), it exposes 4 tools and lets the LLM write JavaScript to query the OpenAPI spec and call the API directly. This keeps tool-definition token cost fixed (about 1,900 tokens, measured as 7,739 characters) regardless of how many endpoints Attio adds.
 
 - **Author:** Trial and Error Inc (upstream). Fork maintained by itsbrex.
 - **License:** MIT
-- **Runtime:** Node.js (ES2022 modules, TypeScript strict mode)
+- **Runtime:** Node.js 24+ (ES2022 modules, TypeScript 7 strict mode, NodeNext resolution)
 - **Upstream:** `https://github.com/TrialAndErrorAI/attio-mcp.git`
-- **Fork:** `https://github.com/itsbrex/attio-code-mode-mcp.git`
+- **Fork:** `https://github.com/itsbrex/attio-code-mode-mcp.git` (all pushes and PRs go here, never upstream)
 
 ## Setup
 
@@ -23,6 +23,10 @@ npm start
 
 Requires `ATTIO_API_KEY` env var. Get one from [Attio Settings > Developers > API Keys](https://app.attio.com/settings/developers). Optional `DEBUG=true` for verbose stderr logging.
 
+`.env` is read from the working directory and from the package folder. When it holds a secret reference (a 1Password `op://` value), the server must be started through `op run --env-file=.env -- node dist/index.js`; it refuses to start on an unresolved reference.
+
+`dist/` is what registered MCP clients run. After `npm run build`, running clients keep the old code until they restart the server.
+
 ## Scripts (package.json)
 
 | Script | Command | Purpose |
@@ -31,71 +35,106 @@ Requires `ATTIO_API_KEY` env var. Get one from [Attio Settings > Developers > AP
 | `build` | `tsc` + copy spec/context assets to `dist/` | Production build |
 | `start` | `node dist/index.js` | Run built server |
 | `type-check` | `tsc --noEmit` | Type checking only |
-| `test` | `node --import tsx --test tests/*.test.ts` | Offline regression and MCP stdio tests |
+| `test` | `node --import tsx --test tests/*.test.ts` | Offline regression tests (about 5 seconds, no network) |
 | `spec:sync` / `spec:update` | Staged public fetch, generation, and build | Refresh OpenAPI and documentation assets |
 | `spec:validate` | `openapi-sync validate --json` | Validate committed spec/config |
 | `spec:generate` / `spec:check` | Staged generation or drift comparison | Keep generated TypeScript in sync |
 | `spec:upstream-check` | Public fetch and comparison | Detect upstream drift without source edits |
-| `test:connection` | `tsx src/test-connection.ts` | Manual integration smoke test (no assertions) |
+| `test:connection` | `tsx src/test-connection.ts` | Manual integration smoke test (no assertions, live calls) |
 
 ## Architecture
 
 ```
 src/
-├── index.ts                  # Entry point. Suppresses console.*, loads dotenv, starts server.
-├── server/mcp-server.ts      # MCP server. Registers 4 tools: search, execute, context, test_connection.
-├── api/client.ts             # Axios HTTP client with rate-limit handling and pagination.
+├── index.ts                  # Entry point. Suppresses console.*, loads dotenv, checks the key, serves stdio.
+├── server/
+│   ├── mcp-server.ts         # createAttioServer(deps): server info, instructions, cache hints.
+│   ├── tools.ts              # The 4 tools: search, execute, context, test_connection.
+│   ├── resources.ts          # attio://docs/index, attio://openapi/operations, and two templates.
+│   ├── prompts.ts            # explore-api, find-record, add-note, workspace-schema.
+│   └── deps.ts               # ServerDeps (client, spec), SERVER_NAME, SERVER_VERSION.
+├── api/client.ts             # Axios client: path and method checks, rate limits, 429 retry, pagination.
 ├── auth/api-key.ts           # Bearer token auth from ATTIO_API_KEY env var.
-├── executor/sandbox.ts       # Node.js vm sandbox for LLM-generated code execution.
+├── executor/sandbox.ts       # vm context inside a restricted child process for LLM-generated code.
 ├── spec/
-│   ├── openapi.json          # Attio's full OpenAPI spec (~1 MB, embedded; refresh with `npm run spec:update`).
-│   └── loader.ts             # Parses spec, resolves $refs, counts endpoints/schemas.
+│   ├── openapi.json          # Attio's full OpenAPI spec (~1.2 MB, embedded; refresh with `npm run spec:update`).
+│   └── loader.ts             # Builds the compact search shape and keeps components.schemas.
 ├── context/
 │   ├── llms.txt              # Attio documentation index (titles + URLs).
-│   └── loader.ts             # Topic-based doc search against llms.txt.
-├── types/config.ts           # ServerConfig interface (apiKey, debug).
+│   └── loader.ts             # Ranked topic search and categories against llms.txt.
+├── generated/attio/          # Generated by openapi-sync. Never edit outside CUSTOM CODE blocks.
+├── utils/                    # truncate, json, format-error, esm-dirname.
 └── test-connection.ts        # Manual integration smoke test (no assertions).
+
+tests/
+├── helpers.ts                # offlineClient(): AttioClient with a scripted HTTP adapter.
+├── client.test.ts            # Path checks, pagination, retries, errors.
+├── sandbox.test.ts           # Escapes, loops, memory, cancellation, limits.
+├── server.test.ts            # Real server in-process on both protocol eras, scripted Attio.
+├── mcp.test.ts               # Real server over stdio on both protocol eras.
+├── context.test.ts, spec-loader.test.ts, spec-sync.test.ts
 ```
 
-### MCP Tools
+### MCP surface
 
-1. **search(code)** — Write JS to explore the OpenAPI spec object (`spec` global). Find endpoints, check params, discover schemas.
-2. **execute(code)** — Write JS to call the Attio API (`api` global). Auth is injected automatically. Supports chained calls.
-3. **context(topic)** — Look up Attio documentation by keyword. Use `"all"` for full index, `"categories"` for groupings.
-4. **test_connection()** — Verify API key and show server stats. Diagnostic utility.
+Built on the v2 SDK (`@modelcontextprotocol/server`). `serveStdio(factory)` serves protocol revision 2026-07-28 and the 2025 `initialize` handshake from the same registrations; the client's opening message picks the era. The SDK's API differs from the old `@modelcontextprotocol/sdk` package: read `node_modules/@modelcontextprotocol/server/dist/*.d.mts` instead of relying on memory.
+
+1. **search(code)** — Write JS to explore the OpenAPI spec object (`spec` global). `spec.components.schemas` resolves nested `$ref`s. Never calls Attio.
+2. **execute(code)** — Write JS to call the Attio API (`api.request`, `api.paginate`). Auth is injected automatically. Reports progress per API call and stops on cancellation.
+3. **context(topic)** — Look up Attio documentation by keyword, ranked. `"all"` lists titles and paths, `"categories"` lists groupings. Structured output.
+4. **test_connection()** — Verify API key; reports workspace, scopes and the failure reason. Structured output.
+
+Also registered: 2 resources and 2 resource templates, 4 prompts, completions for prompt arguments and template variables, server instructions, tool titles and annotations, cache hints. MCP logging, sampling and roots are deprecated in 2026-07-28 and deliberately not used.
+
+A script that throws returns `isError: true` with `{ error, logs }` as JSON text. A successful one returns `{ result, logs? }`. Keep these shapes and the tool names stable: other repos (GTM_ONTOLOGY) bind to them.
 
 ### Key Design Decisions
 
-- **Code Mode pattern:** LLM writes JS executed in a vm sandbox, rather than one MCP tool per endpoint. Inspired by [Cloudflare's Code Mode](https://blog.cloudflare.com/mcp-code-mode).
+- **Code Mode pattern:** LLM writes JS executed in a sandbox, rather than one MCP tool per endpoint. Inspired by [Cloudflare's Code Mode](https://blog.cloudflare.com/mcp-code-mode).
 - **Console suppression:** `index.ts` replaces all `console.*` methods because MCP uses stdout for JSON-RPC. Application logs go to stderr.
-- **Sandbox isolation:** LLM-generated code runs in Node.js `vm` with no filesystem, network, or env access. Only `spec` and `api` globals are injected.
-- **Output truncation:** Results capped at 40,000 characters (`MAX_TOOL_OUTPUT_CHARS`) to prevent context bloat.
-- **Embedded spec:** The full OpenAPI JSON is bundled in `src/spec/openapi.json` and copied to `dist/` at build time. No runtime fetching. Source of truth is `https://api.attio.com/openapi/api` (docs index: `https://docs.attio.com/llms.txt`); `npm run spec:sync` pulls both. Verified current 2026-09-21 (53 paths, 94 operations, 22 schemas, including emails). Search exposes per-operation security requirements; refreshing the spec does not grant scopes.
-- **Generated surface:** Pinned `openapi-sync` 6.4.2 generates types/endpoints under `src/generated/attio/`. The wrapper stages generation, normalizes hyphenated schema identifiers only in the generation copy, checks TypeScript, preserves custom-code blocks, and normalizes footer whitespace for deterministic drift checks. See `openapi.sync.json` and `scripts/spec-sync.mjs`. Generated runtime validators are disabled.
+- **Sandbox isolation (three layers, see the header of `executor/sandbox.ts`):**
+  1. A vm context created with `vm.constants.DONT_CONTEXTIFY`, so even its global object is its own. Passing `{}` instead puts the outer `Object.prototype` on the global prototype chain, and `constructor.constructor(...)` then runs code in the outer realm. Data crosses as JSON, calls cross as strings through a bridge. Typed arrays, `ArrayBuffer` and `WebAssembly` are deleted because their memory is outside the heap limit.
+  2. `import()` is refused before the run (acorn scan) and the context has `codeGeneration.strings: false`. Without this, `import()` hands the script a promise from the outer realm whose constructor chain reaches `process`.
+  3. A child process per script: empty environment, `--permission` (no fs, no child processes), `--max-old-space-size`, killed on timeout, cancellation or server exit, with a watchdog thread for orphans.
+  The server checks the type and size of every message from the child, and caps bridged calls in flight (`MAX_PENDING_CALLS`, `MAX_PENDING_CHARS`).
+  Do not relax any layer without a test in `tests/sandbox.test.ts` that shows the attack it stops is still stopped.
+- **The key only goes to api.attio.com:** `assertApiPath` rejects anything that is not a path, and the axios instance sets `allowAbsoluteUrls: false` and `maxRedirects: 0`.
+- **Time limits:** 120 s wall clock per script; 15 s of running with no bridged call in flight (catches infinite loops, including after an `await`).
+- **Calls end with the script:** `execute` aborts every request still queued or in flight when the script returns, throws, times out or is cancelled. The rate limiter is shared by all tool calls, and an aborted waiter leaves it without taking a slot.
+- **Output truncation:** Results capped at 40,000 characters (`MAX_OUTPUT_CHARS` in `utils/truncate.ts`). JSON is indented when it fits, compact otherwise.
+- **Pagination:** `paginate()` in `api/client.ts` follows `pagination.next_cursor` where Attio offers cursors and uses `offset` only on the endpoints that have nothing else, walking until an empty page (a short page is not proof of the end). Unpaged endpoints that ignore `offset` (for example `/v2/lists`) are detected by a repeated page.
+- **Embedded spec:** The full OpenAPI JSON is bundled in `src/spec/openapi.json` and copied to `dist/` at build time. No runtime fetching. Source of truth is `https://api.attio.com/openapi/api` (docs index: `https://docs.attio.com/llms.txt`); `npm run spec:sync` pulls both. Verified current 2026-11-22 (57 paths, 108 operations, 31 schemas, including emails, views and the workspace blocklist). Search exposes per-operation security requirements; refreshing the spec does not grant scopes.
+- **Generated surface:** Pinned `openapi-sync` 6.6.1 generates types/endpoints under `src/generated/attio/`. The wrapper stages generation, normalizes hyphenated schema identifiers only in the generation copy, checks TypeScript, preserves custom-code blocks, normalizes footer whitespace for deterministic drift checks, and adds `.js` to generated relative imports (NodeNext). See `openapi.sync.json` and `scripts/spec-sync.mjs`. Generated runtime validators are disabled.
 
 ## Dependencies
 
 | Package | Purpose |
 |---------|---------|
-| `@modelcontextprotocol/sdk` | MCP server framework (stdio transport) |
+| `@modelcontextprotocol/server` | MCP server SDK v2 (stdio entry, both protocol eras) |
+| `zod` | Tool, prompt and output schemas (v4; the SDK requires `^4.2`) |
+| `acorn` | Parses scripts to find the `import` keyword before they run |
 | `axios` | HTTP client for Attio API calls |
 | `dotenv` | Load `.env` file |
-| `tsx` (dev) | TypeScript execution for dev mode |
-| `typescript` (dev) | Compiler |
-| `@types/node` (dev) | Node.js type definitions |
+| `@modelcontextprotocol/client` (dev) | Test client for stdio and in-process tests |
+| `openapi-sync` (dev, pinned) | Type and endpoint generation |
+| `tsx` (dev) | TypeScript execution for dev mode and tests |
+| `typescript` (dev) | Compiler (v7) |
+| `@types/node` (dev) | Node.js type definitions (kept on the Node 24 line) |
 
 ## Known Issues
 
 - `test:connection` remains a manual live smoke script; `npm test` provides offline regression coverage and `.github/workflows/spec-check.yml` runs verification in CI.
-- **22 `any` annotations** across 5 files defeat TypeScript strict mode.
-- **Offset pagination** in `api/client.ts` contradicts `.claude/rules/antipatterns.md`. Should use cursor-based.
-- **Truncation logic duplicated** between `sandbox.ts` and `mcp-server.ts`.
+- **17 `any` annotations**, 16 of them in `spec/loader.ts` where the raw OpenAPI document is walked.
+- **The sandbox is not a hard boundary.** Under Node.js 24 the permission model does not restrict network access or signals, so a script that escaped the vm context could open connections from the child process or signal other processes (it would still have no key and no file access).
+- **Each `search`/`execute` call spawns a process** (about 40 ms, plus about 30 ms to parse the spec for `search`).
+- **No linter or formatter** is configured.
 
-See `debt/tech-debt-register-20260620.md` for the full ranked register.
+`debt/tech-debt-register-20260620.md` is the register from 2026-06-20. Since then: tests and CI exist (TD-01, TD-02), pagination is cursor-first (TD-04), tool definitions are split into `server/` modules (TD-05), and the duplication items (TD-07, TD-08, TD-12, TD-13, TD-15) and the `engines` pin (TD-10) are done.
 
 ## Conventions
 
-- ESM throughout (`"type": "module"` in package.json).
+- ESM throughout (`"type": "module"` in package.json). Relative imports name the `.js` file.
 - TypeScript strict mode. Target ES2022.
 - Anti-patterns to avoid are listed in `.claude/rules/antipatterns.md`.
 - The build step copies `src/spec/openapi.json` and `src/context/llms.txt` into `dist/` — don't forget these if changing the build.
+- Tests are offline. Use `offlineClient()` from `tests/helpers.ts` for anything that would call Attio.
