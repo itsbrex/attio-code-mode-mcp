@@ -7,7 +7,7 @@
 // 🔒 CUSTOM CODE END
 // ============================================================
 
-import * as Shared from "./shared";
+import * as Shared from "./shared.js";
 
 export type IGetV2Objects200Response = {
   "data": Shared.IObject[];
@@ -132,6 +132,171 @@ export type IGetV2Objects$objectViews200Response = {
     };
 };
 export type IGetV2Objects$objectViews404Response = {
+  "status_code": 404;
+  "type": "invalid_request_error";
+  "code": "not_found";
+  "message": string;
+};
+export type IPostV2Objects$objectViewsDTO = {
+  "data": {
+    /**
+ *  The title of the view.
+ */
+  "title": string;
+/**
+ *  How the view shows records.
+ */
+  "type": ("table"|"kanban");
+/**
+ *  The filter of the view. Omitted or `null` to show all records.
+ */
+  "filter"?: (Shared.IViewFilter|null);
+/**
+ *  The sorts, in order. Omitted for no sorts.
+ */
+  "sorts"?: Shared.IViewSort[];
+/**
+ *  The attributes that the view shows, in display order. Omitted for no attributes, as a new view in the app has.
+ */
+  "attributes"?: Shared.IViewAttribute[];
+/**
+ *  The settings of a kanban view. Required for kanban views and not allowed for table views.
+ */
+  "kanban"?: {
+        /**
+ *  The status attribute whose statuses are the columns of the board, on the view's object or on the parent record of a list entry.
+ */
+  "status_attribute": Shared.IViewAttributePath;
+/**
+ *  Whether the board shows a column for the records that have no status. If omitted, the setting of a new kanban view in the app is used: `true`, `icon` and `null`.
+ */
+  "show_no_status_column"?: boolean;
+/**
+ *  How the cards label the attributes that they show: with the attribute icon or with the attribute title. If omitted, the setting of a new kanban view in the app is used: `true`, `icon` and `null`.
+ */
+  "attribute_label_display"?: ("icon"|"text");
+/**
+ *  The calculation that the footer of each column of the board shows. `null` when the board has none. If omitted, the setting of a new kanban view in the app is used: `true`, `icon` and `null`.
+ */
+  "aggregation"?: (Shared.IViewKanbanAggregation|null);
+        };
+    };
+};
+export type IPostV2Objects$objectViews200Response = {
+  "data": Shared.IObjectViewWithDefinition;
+};
+export type IPostV2Objects$objectViews400Response = {
+  "status_code": 400;
+  "type": "invalid_request_error";
+  "code": string;
+  "message": string;
+  "path": (string|number)[];
+};
+export type IPostV2Objects$objectViews403Response = {
+  "status_code": 403;
+  "type": "auth_error";
+  "code": "unauthorized";
+  "message": string;
+};
+export type IPostV2Objects$objectViews404Response = {
+  "status_code": 404;
+  "type": "invalid_request_error";
+  "code": "not_found";
+  "message": string;
+};
+export type IGetV2Objects$objectViews$view_id200Response = {
+  "data": Shared.IObjectViewWithDefinition;
+};
+export type IGetV2Objects$objectViews$view_id404Response = {
+  "status_code": 404;
+  "type": "invalid_request_error";
+  "code": "not_found";
+  "message": string;
+};
+export type IGetV2Objects$objectViews$view_id422Response = {
+  "status_code": 422;
+  "type": "invalid_request_error";
+  "code": "view_not_encodable";
+  "message": string;
+  "view_part": ("filter"|"sorts"|"attributes"|"kanban");
+  "reason": string;
+  "stored_id": (string|null);
+};
+export type IDeleteV2Objects$objectViews$view_id200Response = {[k: string]: any};
+export type IDeleteV2Objects$objectViews$view_id403Response = {
+  "status_code": 403;
+  "type": "auth_error";
+  "code": "unauthorized";
+  "message": string;
+};
+export type IDeleteV2Objects$objectViews$view_id404Response = {
+  "status_code": 404;
+  "type": "invalid_request_error";
+  "code": "not_found";
+  "message": string;
+};
+export type IPatchV2Objects$objectViews$view_idDTO = {
+  "data": {
+    /**
+ *  The title of the view.
+ */
+  "title"?: string;
+/**
+ *  How the view shows records. A change to `kanban` requires `kanban.status_attribute`. A change to `table` removes the kanban settings.
+ */
+  "type"?: ("table"|"kanban");
+/**
+ *  The filter of the view, which replaces the current filter. `null` to show all records.
+ */
+  "filter"?: (Shared.IViewFilter|null);
+/**
+ *  The sorts, in order, which replace the current sorts.
+ */
+  "sorts"?: Shared.IViewSort[];
+/**
+ *  The attributes that the view shows, in display order, which replace the current attributes. A shown attribute with the same attribute and field keeps its column width and display settings, and its aggregation when it omits `aggregation`.
+ */
+  "attributes"?: Shared.IViewAttribute[];
+/**
+ *  The kanban settings to change. A change of the type to kanban requires `status_attribute`. Not allowed for table views.
+ */
+  "kanban"?: {
+        /**
+ *  The status attribute whose statuses are the columns of the board, on the view's object or on the parent record of a list entry.
+ */
+  "status_attribute"?: Shared.IViewAttributePath;
+/**
+ *  Whether the board shows a column for the records that have no status. If omitted, the setting stays as it is.
+ */
+  "show_no_status_column"?: boolean;
+/**
+ *  How the cards label the attributes that they show: with the attribute icon or with the attribute title. If omitted, the setting stays as it is.
+ */
+  "attribute_label_display"?: ("icon"|"text");
+/**
+ *  The calculation that the footer of each column of the board shows. `null` when the board has none. If omitted, the setting stays as it is.
+ */
+  "aggregation"?: (Shared.IViewKanbanAggregation|null);
+        };
+    };
+};
+export type IPatchV2Objects$objectViews$view_id200Response = {
+  "data": Shared.IObjectViewWithDefinition;
+};
+export type IPatchV2Objects$objectViews$view_id400Response = {
+  "status_code": 400;
+  "type": "invalid_request_error";
+  "code": string;
+  "message": string;
+  "path": (string|number)[];
+};
+export type IPatchV2Objects$objectViews$view_id403Response = {
+  "status_code": 403;
+  "type": "auth_error";
+  "code": "unauthorized";
+  "message": string;
+};
+export type IPatchV2Objects$objectViews$view_id404Response = {
   "status_code": 404;
   "type": "invalid_request_error";
   "code": "not_found";
@@ -9810,9 +9975,94 @@ export type IDeleteV2Activities$activityRecords$record_id404Response = {
 };
 export type IPostV2SqlDTO = {
 /**
- *  The SQL query to be executed.
+ *  The SQL query to be executed. Use `$name` placeholders to reference values from `parameters` instead of inlining them into the query.
  */
   "sql": string;
+/**
+ *  Named parameters referenced in the query using `$name` syntax. A maximum of 25 parameters can be provided. Each parameter must declare its type explicitly. Names must start with a letter or underscore, only contain letters, digits and underscores, and be at most 64 characters long. Compare against a list parameter with `= ANY($name)`, not `IN ($name)`, which does not type check. Read a field of a struct parameter with `get_field($name, 'field')`.
+ */
+  "parameters"?: {[k: string]: ({
+/**
+ *  The type of the parameter.
+ */
+  "type": "null";
+}|{
+/**
+ *  The type of the parameter.
+ */
+  "type": "boolean";
+  "value": boolean;
+}|{
+/**
+ *  The type of the parameter.
+ */
+  "type": "integer";
+/**
+ *  An integer between -(2^53 - 1) and 2^53 - 1.
+ */
+  "value": number;
+}|{
+/**
+ *  The type of the parameter.
+ */
+  "type": "double";
+  "value": number;
+}|{
+/**
+ *  The type of the parameter.
+ */
+  "type": "string";
+  "value": string;
+}|{
+/**
+ *  The type of the parameter.
+ */
+  "type": "timestamp";
+/**
+ *  An ISO 8601 timestamp with a time zone, either `Z` or an offset such as `+02:00` or `+0200`, e.g. `2023-01-01T15:00:00.123456Z`. Seconds and fractional seconds are optional. Truncated to microseconds.
+ */
+  "value": string;
+}|{
+/**
+ *  The type of the parameter.
+ */
+  "type": "date";
+/**
+ *  A calendar date in the format YYYY-MM-DD.
+ */
+  "value": string;
+}|{
+/**
+ *  The type of the parameter.
+ */
+  "type": "decimal";
+/**
+ *  A decimal number in plain notation, with at most 29 digits before and 9 digits after the decimal point.
+ */
+  "value": string;
+}|{
+/**
+ *  The type of the parameter.
+ */
+  "type": "list";
+/**
+ *  The type of every item in the list.
+ */
+  "item_type": ("boolean"|"integer"|"double"|"string"|"timestamp"|"date"|"decimal");
+/**
+ *  The items of the list, each a valid value for `item_type`. A maximum of 100 items can be provided.
+ */
+  "value": any[];
+}|{
+/**
+ *  The type of the parameter.
+ */
+  "type": "struct";
+/**
+ *  A map of field names to parameter objects, with at least one and a maximum of 25 fields. Names must start with a letter or underscore, only contain letters, digits and underscores, and be at most 64 characters long. Structs can contain other structs, up to 2 levels of structs in total.
+ */
+  "value": {[k: string]: {[k: string]: any}};
+})};
 };
 export type IPostV2Sql200Response = {
   "data": {
@@ -9953,6 +10203,171 @@ export type IGetV2Lists$listViews200Response = {
     };
 };
 export type IGetV2Lists$listViews404Response = {
+  "status_code": 404;
+  "type": "invalid_request_error";
+  "code": "not_found";
+  "message": string;
+};
+export type IPostV2Lists$listViewsDTO = {
+  "data": {
+    /**
+ *  The title of the view.
+ */
+  "title": string;
+/**
+ *  How the view shows records.
+ */
+  "type": ("table"|"kanban");
+/**
+ *  The filter of the view. Omitted or `null` to show all records.
+ */
+  "filter"?: (Shared.IViewFilter|null);
+/**
+ *  The sorts, in order. Omitted for no sorts.
+ */
+  "sorts"?: Shared.IViewSort[];
+/**
+ *  The attributes that the view shows, in display order. Omitted for no attributes, as a new view in the app has.
+ */
+  "attributes"?: Shared.IViewAttribute[];
+/**
+ *  The settings of a kanban view. Required for kanban views and not allowed for table views.
+ */
+  "kanban"?: {
+        /**
+ *  The status attribute whose statuses are the columns of the board, on the view's object or on the parent record of a list entry.
+ */
+  "status_attribute": Shared.IViewAttributePath;
+/**
+ *  Whether the board shows a column for the records that have no status. If omitted, the setting of a new kanban view in the app is used: `true`, `icon` and `null`.
+ */
+  "show_no_status_column"?: boolean;
+/**
+ *  How the cards label the attributes that they show: with the attribute icon or with the attribute title. If omitted, the setting of a new kanban view in the app is used: `true`, `icon` and `null`.
+ */
+  "attribute_label_display"?: ("icon"|"text");
+/**
+ *  The calculation that the footer of each column of the board shows. `null` when the board has none. If omitted, the setting of a new kanban view in the app is used: `true`, `icon` and `null`.
+ */
+  "aggregation"?: (Shared.IViewKanbanAggregation|null);
+        };
+    };
+};
+export type IPostV2Lists$listViews200Response = {
+  "data": Shared.IListViewWithDefinition;
+};
+export type IPostV2Lists$listViews400Response = {
+  "status_code": 400;
+  "type": "invalid_request_error";
+  "code": string;
+  "message": string;
+  "path": (string|number)[];
+};
+export type IPostV2Lists$listViews403Response = {
+  "status_code": 403;
+  "type": "auth_error";
+  "code": "unauthorized";
+  "message": string;
+};
+export type IPostV2Lists$listViews404Response = {
+  "status_code": 404;
+  "type": "invalid_request_error";
+  "code": "not_found";
+  "message": string;
+};
+export type IGetV2Lists$listViews$view_id200Response = {
+  "data": Shared.IListViewWithDefinition;
+};
+export type IGetV2Lists$listViews$view_id404Response = {
+  "status_code": 404;
+  "type": "invalid_request_error";
+  "code": "not_found";
+  "message": string;
+};
+export type IGetV2Lists$listViews$view_id422Response = {
+  "status_code": 422;
+  "type": "invalid_request_error";
+  "code": "view_not_encodable";
+  "message": string;
+  "view_part": ("filter"|"sorts"|"attributes"|"kanban");
+  "reason": string;
+  "stored_id": (string|null);
+};
+export type IDeleteV2Lists$listViews$view_id200Response = {[k: string]: any};
+export type IDeleteV2Lists$listViews$view_id403Response = {
+  "status_code": 403;
+  "type": "auth_error";
+  "code": "unauthorized";
+  "message": string;
+};
+export type IDeleteV2Lists$listViews$view_id404Response = {
+  "status_code": 404;
+  "type": "invalid_request_error";
+  "code": "not_found";
+  "message": string;
+};
+export type IPatchV2Lists$listViews$view_idDTO = {
+  "data": {
+    /**
+ *  The title of the view.
+ */
+  "title"?: string;
+/**
+ *  How the view shows records. A change to `kanban` requires `kanban.status_attribute`. A change to `table` removes the kanban settings.
+ */
+  "type"?: ("table"|"kanban");
+/**
+ *  The filter of the view, which replaces the current filter. `null` to show all records.
+ */
+  "filter"?: (Shared.IViewFilter|null);
+/**
+ *  The sorts, in order, which replace the current sorts.
+ */
+  "sorts"?: Shared.IViewSort[];
+/**
+ *  The attributes that the view shows, in display order, which replace the current attributes. A shown attribute with the same attribute and field keeps its column width and display settings, and its aggregation when it omits `aggregation`.
+ */
+  "attributes"?: Shared.IViewAttribute[];
+/**
+ *  The kanban settings to change. A change of the type to kanban requires `status_attribute`. Not allowed for table views.
+ */
+  "kanban"?: {
+        /**
+ *  The status attribute whose statuses are the columns of the board, on the view's object or on the parent record of a list entry.
+ */
+  "status_attribute"?: Shared.IViewAttributePath;
+/**
+ *  Whether the board shows a column for the records that have no status. If omitted, the setting stays as it is.
+ */
+  "show_no_status_column"?: boolean;
+/**
+ *  How the cards label the attributes that they show: with the attribute icon or with the attribute title. If omitted, the setting stays as it is.
+ */
+  "attribute_label_display"?: ("icon"|"text");
+/**
+ *  The calculation that the footer of each column of the board shows. `null` when the board has none. If omitted, the setting stays as it is.
+ */
+  "aggregation"?: (Shared.IViewKanbanAggregation|null);
+        };
+    };
+};
+export type IPatchV2Lists$listViews$view_id200Response = {
+  "data": Shared.IListViewWithDefinition;
+};
+export type IPatchV2Lists$listViews$view_id400Response = {
+  "status_code": 400;
+  "type": "invalid_request_error";
+  "code": string;
+  "message": string;
+  "path": (string|number)[];
+};
+export type IPatchV2Lists$listViews$view_id403Response = {
+  "status_code": 403;
+  "type": "auth_error";
+  "code": "unauthorized";
+  "message": string;
+};
+export type IPatchV2Lists$listViews$view_id404Response = {
   "status_code": 404;
   "type": "invalid_request_error";
   "code": "not_found";
@@ -15615,6 +16030,119 @@ export type IPostV2SequencesUnsubscribed_emails400Response = {
   "code": "validation_type";
   "message": string;
 };
+export type IGetV2Workspace_blocklist_addressesQuery = {
+  "limit"?: number;
+  "cursor"?: string;
+};
+export type IGetV2Workspace_blocklist_addresses200Response = {
+  "data": {
+/**
+ *  The normalized email address or domain. It is the address's key on the workspace blocklist.
+ */
+  "address": string;
+/**
+ *  Whether the address is an email address or a domain.
+ */
+  "address_type": ("email_address"|"domain");
+/**
+ *  `protected`: emails and calendar events are hidden unless at least one participant is not on the workspace blocklist. `blocked`: they are hidden even when other participants are included.
+ */
+  "enforcement_level": ("protected"|"blocked");
+/**
+ *  When the address was given its current enforcement level.
+ */
+  "created_at": string;
+}[];
+  "pagination": {
+      "next_cursor": (string|null);
+    };
+};
+export type IGetV2Workspace_blocklist_addresses400Response = {
+  "status_code": 400;
+  "type": "invalid_request_error";
+  "code": "validation_type";
+  "message": string;
+};
+export type IGetV2Workspace_blocklist_addresses403Response = {
+  "status_code": 403;
+  "type": "auth_error";
+  "code": "unauthorized";
+  "message": string;
+};
+export type IPutV2Workspace_blocklist_addressesDTO = {
+  "data": {
+    /**
+ *  The addresses to set and the enforcement level each should have. A maximum of 500 addresses can be provided per request. The same address may not appear with two different enforcement levels.
+ */
+  "addresses": {
+/**
+ *  An email address or a domain. Attio works out which one it is. Email addresses are trimmed and lowercased, and their host must be a valid domain. Domains are trimmed and lowercased, a URL is reduced to its hostname, and a leading `www.` is removed; subdomains are kept. Single labels (`acme`), bare public suffixes (`com`), unknown suffixes, IP addresses, wildcards and values over 253 characters are rejected.
+ */
+  "address": string;
+/**
+ *  `protected`: emails and calendar events are hidden unless at least one participant is not on the workspace blocklist. `blocked`: they are hidden even when other participants are included.
+ */
+  "enforcement_level": ("protected"|"blocked");
+}[];
+    };
+};
+export type IPutV2Workspace_blocklist_addresses200Response = {
+  "data": {
+/**
+ *  The normalized email address or domain. It is the address's key on the workspace blocklist.
+ */
+  "address": string;
+/**
+ *  Whether the address is an email address or a domain.
+ */
+  "address_type": ("email_address"|"domain");
+/**
+ *  `protected`: emails and calendar events are hidden unless at least one participant is not on the workspace blocklist. `blocked`: they are hidden even when other participants are included.
+ */
+  "enforcement_level": ("protected"|"blocked");
+/**
+ *  When the address was given its current enforcement level.
+ */
+  "created_at": string;
+}[];
+};
+export type IPutV2Workspace_blocklist_addresses400Response = {
+  "status_code": 400;
+  "type": "invalid_request_error";
+  "code": "validation_type";
+  "message": string;
+};
+export type IPutV2Workspace_blocklist_addresses403Response = {
+  "status_code": 403;
+  "type": "auth_error";
+  "code": ("unauthorized"|"billing_error");
+  "message": string;
+};
+export type IPutV2Workspace_blocklist_addresses409Response = {
+  "status_code": 409;
+  "type": "invalid_request_error";
+  "code": "uniqueness_conflict";
+  "message": string;
+};
+export type IDeleteV2Workspace_blocklist_addresses$address200Response = {[k: string]: any};
+export type IDeleteV2Workspace_blocklist_addresses$address400Response = {
+  "status_code": 400;
+  "type": "invalid_request_error";
+  "code": "validation_type";
+  "message": string;
+};
+export type IDeleteV2Workspace_blocklist_addresses$address403Response = {
+  "status_code": 403;
+  "type": "auth_error";
+  "code": "unauthorized";
+  "message": string;
+};
+export type IDeleteV2Workspace_blocklist_addresses$address404Response = {
+  "status_code": 404;
+  "type": "invalid_request_error";
+  "code": "not_found";
+  "message": string;
+};
 export type IGetV2MeetingsQuery = {
   "limit"?: number;
   "cursor"?: string;
@@ -15867,10 +16395,9 @@ export type IPostV2Meetings$meeting_idCall_recordingsDTO = {
  */
   "video_url"?: string;
 /**
- *  The call recording's transcript.
- *  This field is technically optional for backwards compatibility, but you should always provide it — a call recording created without a transcript will be missing summaries and other transcript-derived features. This field will become required in a future version of this endpoint.
+ *  The call recording's transcript. It must contain at least one transcript segment.
  */
-  "transcript"?: {
+  "transcript": {
 /**
  *  The spoken text for this segment of the transcript.
  */
@@ -16651,7 +17178,7 @@ export type IGetV2Self200Response = ({
  */
   "iat": number;
 /**
- *  Since Bearer tokens grant Workspace-level permissions, this property contains the workspace_id.
+ *  The subject of the token. For a workspace-level token, this is the workspace ID. For a user-level token, this is an opaque value that identifies the workspace member. Do not parse this value. To get the workspace ID, use workspace_id. To get the workspace member ID, use authorized_by_workspace_member_id.
  */
   "sub": string;
 /**

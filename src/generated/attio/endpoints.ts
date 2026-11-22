@@ -205,7 +205,7 @@ Required scopes: `object_configuration:read`.
 Supported token levels: `workspace`, `user`.
  * **Method**: `GET`
  * **Summary**: List views for object
- * **Tags**: [Objects]
+ * **Tags**: [Views]
  * **OperationId**:
  * **Path**:
 ```typescript
@@ -235,6 +235,217 @@ Supported token levels: `workspace`, `user`.
 
  */
 export const GetV2Objects$objectViews = (object:string)=> `/v2/objects/${object}/views`;
+/**
+* Creates a view of an object with a filter, sorts, shown attributes and kanban settings. Attributes, objects, options and statuses can be referenced by slug, ID or title; the response references them by ID, as the get view endpoint does.
+
+This endpoint is in beta. We will aim to avoid breaking changes, but small updates may be made as we roll out to more users.
+
+Required scopes: `view:read-write`, `object_configuration:read`.
+
+Supported token levels: `workspace`, `user`.
+ * **Method**: `POST`
+ * **Summary**: Create an object view
+ * **Tags**: [Views]
+ * **OperationId**:
+ * **Path**:
+```typescript
+    {
+      "object": string;
+    }
+```
+ * **DTO**:
+```typescript
+    {
+      "data": {
+        // The title of the view.
+      "title": string;
+    // How the view shows records.
+      "type": ("table"|"kanban");
+    // The filter of the view. Omitted or `null` to show all records.
+      "filter"?: (Shared.IViewFilter|null);
+    // The sorts, in order. Omitted for no sorts.
+      "sorts"?: Shared.IViewSort[];
+    // The attributes that the view shows, in display order. Omitted for no attributes, as a new view in the app has.
+      "attributes"?: Shared.IViewAttribute[];
+    // The settings of a kanban view. Required for kanban views and not allowed for table views.
+      "kanban"?: {
+            // The status attribute whose statuses are the columns of the board, on the view's object or on the parent record of a list entry.
+      "status_attribute": Shared.IViewAttributePath;
+    // Whether the board shows a column for the records that have no status. If omitted, the setting of a new kanban view in the app is used: `true`, `icon` and `null`.
+      "show_no_status_column"?: boolean;
+    // How the cards label the attributes that they show: with the attribute icon or with the attribute title. If omitted, the setting of a new kanban view in the app is used: `true`, `icon` and `null`.
+      "attribute_label_display"?: ("icon"|"text");
+    // The calculation that the footer of each column of the board shows. `null` when the board has none. If omitted, the setting of a new kanban view in the app is used: `true`, `icon` and `null`.
+      "aggregation"?: (Shared.IViewKanbanAggregation|null);
+            };
+        };
+    }
+```
+ * **Response**:
+    - **200**:
+```typescript
+      IPostV2Objects$objectViews200Response
+```
+    - **400**:
+```typescript
+      IPostV2Objects$objectViews400Response
+```
+    - **403**:
+```typescript
+      IPostV2Objects$objectViews403Response
+```
+    - **404**:
+```typescript
+      IPostV2Objects$objectViews404Response
+```
+ * **Security**:
+    - **oauth2**: [view:read-write, object_configuration:read]
+
+ */
+export const PostV2Objects$objectViews = (object:string)=> `/v2/objects/${object}/views`;
+/**
+* Gets a view of an object with its filter, sorts, shown attributes and kanban settings. Attributes, objects, options, statuses and teams are referenced by ID; `metadata` has their titles and slugs.
+
+This endpoint is in beta. We will aim to avoid breaking changes, but small updates may be made as we roll out to more users.
+
+Required scopes: `view:read`, `object_configuration:read`.
+
+Supported token levels: `workspace`, `user`.
+ * **Method**: `GET`
+ * **Summary**: Get an object view
+ * **Tags**: [Views]
+ * **OperationId**:
+ * **Path**:
+```typescript
+    {
+      "object": string;
+      "view_id": string;
+    }
+```
+ * **Response**:
+    - **200**:
+```typescript
+      IGetV2Objects$objectViews$view_id200Response
+```
+    - **404**:
+```typescript
+      IGetV2Objects$objectViews$view_id404Response
+```
+    - **422**:
+```typescript
+      IGetV2Objects$objectViews$view_id422Response
+```
+ * **Security**:
+    - **oauth2**: [view:read, object_configuration:read]
+
+ */
+export const GetV2Objects$objectViews$view_id = (object:string,view_id:string)=> `/v2/objects/${object}/views/${view_id}`;
+/**
+* Deletes a view of an object, including an archived view. Records are not changed.
+
+This endpoint is in beta. We will aim to avoid breaking changes, but small updates may be made as we roll out to more users.
+
+Required scopes: `view:read-write`, `object_configuration:read`.
+
+Supported token levels: `workspace`, `user`.
+ * **Method**: `DELETE`
+ * **Summary**: Delete an object view
+ * **Tags**: [Views]
+ * **OperationId**:
+ * **Path**:
+```typescript
+    {
+      "object": string;
+      "view_id": string;
+    }
+```
+ * **Response**:
+    - **200**:
+```typescript
+      IDeleteV2Objects$objectViews$view_id200Response
+```
+    - **403**:
+```typescript
+      IDeleteV2Objects$objectViews$view_id403Response
+```
+    - **404**:
+```typescript
+      IDeleteV2Objects$objectViews$view_id404Response
+```
+ * **Security**:
+    - **oauth2**: [view:read-write, object_configuration:read]
+
+ */
+export const DeleteV2Objects$objectViews$view_id = (object:string,view_id:string)=> `/v2/objects/${object}/views/${view_id}`;
+/**
+* Updates the title, type, filter, sorts, shown attributes or kanban settings of a view of an object. Each given field replaces that part of the view, and an omitted field stays as it is. Attributes, objects, options and statuses can be referenced by slug, ID or title; the response references them by ID, as the get view endpoint does.
+
+This endpoint is in beta. We will aim to avoid breaking changes, but small updates may be made as we roll out to more users.
+
+Required scopes: `view:read-write`, `object_configuration:read`.
+
+Supported token levels: `workspace`, `user`.
+ * **Method**: `PATCH`
+ * **Summary**: Update an object view
+ * **Tags**: [Views]
+ * **OperationId**:
+ * **Path**:
+```typescript
+    {
+      "object": string;
+      "view_id": string;
+    }
+```
+ * **DTO**:
+```typescript
+    {
+      "data": {
+        // The title of the view.
+      "title"?: string;
+    // How the view shows records. A change to `kanban` requires `kanban.status_attribute`. A change to `table` removes the kanban settings.
+      "type"?: ("table"|"kanban");
+    // The filter of the view, which replaces the current filter. `null` to show all records.
+      "filter"?: (Shared.IViewFilter|null);
+    // The sorts, in order, which replace the current sorts.
+      "sorts"?: Shared.IViewSort[];
+    // The attributes that the view shows, in display order, which replace the current attributes. A shown attribute with the same attribute and field keeps its column width and display settings, and its aggregation when it omits `aggregation`.
+      "attributes"?: Shared.IViewAttribute[];
+    // The kanban settings to change. A change of the type to kanban requires `status_attribute`. Not allowed for table views.
+      "kanban"?: {
+            // The status attribute whose statuses are the columns of the board, on the view's object or on the parent record of a list entry.
+      "status_attribute"?: Shared.IViewAttributePath;
+    // Whether the board shows a column for the records that have no status. If omitted, the setting stays as it is.
+      "show_no_status_column"?: boolean;
+    // How the cards label the attributes that they show: with the attribute icon or with the attribute title. If omitted, the setting stays as it is.
+      "attribute_label_display"?: ("icon"|"text");
+    // The calculation that the footer of each column of the board shows. `null` when the board has none. If omitted, the setting stays as it is.
+      "aggregation"?: (Shared.IViewKanbanAggregation|null);
+            };
+        };
+    }
+```
+ * **Response**:
+    - **200**:
+```typescript
+      IPatchV2Objects$objectViews$view_id200Response
+```
+    - **400**:
+```typescript
+      IPatchV2Objects$objectViews$view_id400Response
+```
+    - **403**:
+```typescript
+      IPatchV2Objects$objectViews$view_id403Response
+```
+    - **404**:
+```typescript
+      IPatchV2Objects$objectViews$view_id404Response
+```
+ * **Security**:
+    - **oauth2**: [view:read-write, object_configuration:read]
+
+ */
+export const PatchV2Objects$objectViews$view_id = (object:string,view_id:string)=> `/v2/objects/${object}/views/${view_id}`;
 /**
 * Lists all system-defined and user-defined activities in your workspace.
 
@@ -1965,8 +2176,57 @@ Supported token levels: `workspace`, `user`.
  * **DTO**:
 ```typescript
     {
-    // The SQL query to be executed.
+    // The SQL query to be executed. Use `$name` placeholders to reference values from `parameters` instead of inlining them into the query.
       "sql": string;
+    // Named parameters referenced in the query using `$name` syntax. A maximum of 25 parameters can be provided. Each parameter must declare its type explicitly. Names must start with a letter or underscore, only contain letters, digits and underscores, and be at most 64 characters long. Compare against a list parameter with `= ANY($name)`, not `IN ($name)`, which does not type check. Read a field of a struct parameter with `get_field($name, 'field')`.
+      "parameters"?: {[k: string]: ({
+    // The type of the parameter.
+      "type": "null";
+    }|{
+    // The type of the parameter.
+      "type": "boolean";
+      "value": boolean;
+    }|{
+    // The type of the parameter.
+      "type": "integer";
+    // An integer between -(2^53 - 1) and 2^53 - 1.
+      "value": number;
+    }|{
+    // The type of the parameter.
+      "type": "double";
+      "value": number;
+    }|{
+    // The type of the parameter.
+      "type": "string";
+      "value": string;
+    }|{
+    // The type of the parameter.
+      "type": "timestamp";
+    // An ISO 8601 timestamp with a time zone, either `Z` or an offset such as `+02:00` or `+0200`, e.g. `2023-01-01T15:00:00.123456Z`. Seconds and fractional seconds are optional. Truncated to microseconds.
+      "value": string;
+    }|{
+    // The type of the parameter.
+      "type": "date";
+    // A calendar date in the format YYYY-MM-DD.
+      "value": string;
+    }|{
+    // The type of the parameter.
+      "type": "decimal";
+    // A decimal number in plain notation, with at most 29 digits before and 9 digits after the decimal point.
+      "value": string;
+    }|{
+    // The type of the parameter.
+      "type": "list";
+    // The type of every item in the list.
+      "item_type": ("boolean"|"integer"|"double"|"string"|"timestamp"|"date"|"decimal");
+    // The items of the list, each a valid value for `item_type`. A maximum of 100 items can be provided.
+      "value": any[];
+    }|{
+    // The type of the parameter.
+      "type": "struct";
+    // A map of field names to parameter objects, with at least one and a maximum of 25 fields. Names must start with a letter or underscore, only contain letters, digits and underscores, and be at most 64 characters long. Structs can contain other structs, up to 2 levels of structs in total.
+      "value": {[k: string]: {[k: string]: any}};
+    })};
     }
 ```
  * **Response**:
@@ -2159,7 +2419,7 @@ Required scopes: `list_configuration:read`.
 Supported token levels: `workspace`, `user`.
  * **Method**: `GET`
  * **Summary**: List views for list
- * **Tags**: [Lists]
+ * **Tags**: [Views]
  * **OperationId**:
  * **Path**:
 ```typescript
@@ -2189,6 +2449,217 @@ Supported token levels: `workspace`, `user`.
 
  */
 export const GetV2Lists$listViews = (list:string)=> `/v2/lists/${list}/views`;
+/**
+* Creates a view of a list with a filter, sorts, shown attributes and kanban settings. Attributes, objects, options and statuses can be referenced by slug, ID or title; the response references them by ID, as the get view endpoint does.
+
+This endpoint is in beta. We will aim to avoid breaking changes, but small updates may be made as we roll out to more users.
+
+Required scopes: `view:read-write`, `list_configuration:read`.
+
+Supported token levels: `workspace`, `user`.
+ * **Method**: `POST`
+ * **Summary**: Create a list view
+ * **Tags**: [Views]
+ * **OperationId**:
+ * **Path**:
+```typescript
+    {
+      "list": string;
+    }
+```
+ * **DTO**:
+```typescript
+    {
+      "data": {
+        // The title of the view.
+      "title": string;
+    // How the view shows records.
+      "type": ("table"|"kanban");
+    // The filter of the view. Omitted or `null` to show all records.
+      "filter"?: (Shared.IViewFilter|null);
+    // The sorts, in order. Omitted for no sorts.
+      "sorts"?: Shared.IViewSort[];
+    // The attributes that the view shows, in display order. Omitted for no attributes, as a new view in the app has.
+      "attributes"?: Shared.IViewAttribute[];
+    // The settings of a kanban view. Required for kanban views and not allowed for table views.
+      "kanban"?: {
+            // The status attribute whose statuses are the columns of the board, on the view's object or on the parent record of a list entry.
+      "status_attribute": Shared.IViewAttributePath;
+    // Whether the board shows a column for the records that have no status. If omitted, the setting of a new kanban view in the app is used: `true`, `icon` and `null`.
+      "show_no_status_column"?: boolean;
+    // How the cards label the attributes that they show: with the attribute icon or with the attribute title. If omitted, the setting of a new kanban view in the app is used: `true`, `icon` and `null`.
+      "attribute_label_display"?: ("icon"|"text");
+    // The calculation that the footer of each column of the board shows. `null` when the board has none. If omitted, the setting of a new kanban view in the app is used: `true`, `icon` and `null`.
+      "aggregation"?: (Shared.IViewKanbanAggregation|null);
+            };
+        };
+    }
+```
+ * **Response**:
+    - **200**:
+```typescript
+      IPostV2Lists$listViews200Response
+```
+    - **400**:
+```typescript
+      IPostV2Lists$listViews400Response
+```
+    - **403**:
+```typescript
+      IPostV2Lists$listViews403Response
+```
+    - **404**:
+```typescript
+      IPostV2Lists$listViews404Response
+```
+ * **Security**:
+    - **oauth2**: [view:read-write, list_configuration:read]
+
+ */
+export const PostV2Lists$listViews = (list:string)=> `/v2/lists/${list}/views`;
+/**
+* Gets a view of a list with its filter, sorts, shown attributes and kanban settings. Attributes, objects, options, statuses and teams are referenced by ID; `metadata` has their titles and slugs.
+
+This endpoint is in beta. We will aim to avoid breaking changes, but small updates may be made as we roll out to more users.
+
+Required scopes: `view:read`, `list_configuration:read`.
+
+Supported token levels: `workspace`, `user`.
+ * **Method**: `GET`
+ * **Summary**: Get a list view
+ * **Tags**: [Views]
+ * **OperationId**:
+ * **Path**:
+```typescript
+    {
+      "list": string;
+      "view_id": string;
+    }
+```
+ * **Response**:
+    - **200**:
+```typescript
+      IGetV2Lists$listViews$view_id200Response
+```
+    - **404**:
+```typescript
+      IGetV2Lists$listViews$view_id404Response
+```
+    - **422**:
+```typescript
+      IGetV2Lists$listViews$view_id422Response
+```
+ * **Security**:
+    - **oauth2**: [view:read, list_configuration:read]
+
+ */
+export const GetV2Lists$listViews$view_id = (list:string,view_id:string)=> `/v2/lists/${list}/views/${view_id}`;
+/**
+* Deletes a view of a list, including an archived view. Entries are not changed.
+
+This endpoint is in beta. We will aim to avoid breaking changes, but small updates may be made as we roll out to more users.
+
+Required scopes: `view:read-write`, `list_configuration:read`.
+
+Supported token levels: `workspace`, `user`.
+ * **Method**: `DELETE`
+ * **Summary**: Delete a list view
+ * **Tags**: [Views]
+ * **OperationId**:
+ * **Path**:
+```typescript
+    {
+      "list": string;
+      "view_id": string;
+    }
+```
+ * **Response**:
+    - **200**:
+```typescript
+      IDeleteV2Lists$listViews$view_id200Response
+```
+    - **403**:
+```typescript
+      IDeleteV2Lists$listViews$view_id403Response
+```
+    - **404**:
+```typescript
+      IDeleteV2Lists$listViews$view_id404Response
+```
+ * **Security**:
+    - **oauth2**: [view:read-write, list_configuration:read]
+
+ */
+export const DeleteV2Lists$listViews$view_id = (list:string,view_id:string)=> `/v2/lists/${list}/views/${view_id}`;
+/**
+* Updates the title, type, filter, sorts, shown attributes or kanban settings of a view of a list. Each given field replaces that part of the view, and an omitted field stays as it is. Attributes, objects, options and statuses can be referenced by slug, ID or title; the response references them by ID, as the get view endpoint does.
+
+This endpoint is in beta. We will aim to avoid breaking changes, but small updates may be made as we roll out to more users.
+
+Required scopes: `view:read-write`, `list_configuration:read`.
+
+Supported token levels: `workspace`, `user`.
+ * **Method**: `PATCH`
+ * **Summary**: Update a list view
+ * **Tags**: [Views]
+ * **OperationId**:
+ * **Path**:
+```typescript
+    {
+      "list": string;
+      "view_id": string;
+    }
+```
+ * **DTO**:
+```typescript
+    {
+      "data": {
+        // The title of the view.
+      "title"?: string;
+    // How the view shows records. A change to `kanban` requires `kanban.status_attribute`. A change to `table` removes the kanban settings.
+      "type"?: ("table"|"kanban");
+    // The filter of the view, which replaces the current filter. `null` to show all records.
+      "filter"?: (Shared.IViewFilter|null);
+    // The sorts, in order, which replace the current sorts.
+      "sorts"?: Shared.IViewSort[];
+    // The attributes that the view shows, in display order, which replace the current attributes. A shown attribute with the same attribute and field keeps its column width and display settings, and its aggregation when it omits `aggregation`.
+      "attributes"?: Shared.IViewAttribute[];
+    // The kanban settings to change. A change of the type to kanban requires `status_attribute`. Not allowed for table views.
+      "kanban"?: {
+            // The status attribute whose statuses are the columns of the board, on the view's object or on the parent record of a list entry.
+      "status_attribute"?: Shared.IViewAttributePath;
+    // Whether the board shows a column for the records that have no status. If omitted, the setting stays as it is.
+      "show_no_status_column"?: boolean;
+    // How the cards label the attributes that they show: with the attribute icon or with the attribute title. If omitted, the setting stays as it is.
+      "attribute_label_display"?: ("icon"|"text");
+    // The calculation that the footer of each column of the board shows. `null` when the board has none. If omitted, the setting stays as it is.
+      "aggregation"?: (Shared.IViewKanbanAggregation|null);
+            };
+        };
+    }
+```
+ * **Response**:
+    - **200**:
+```typescript
+      IPatchV2Lists$listViews$view_id200Response
+```
+    - **400**:
+```typescript
+      IPatchV2Lists$listViews$view_id400Response
+```
+    - **403**:
+```typescript
+      IPatchV2Lists$listViews$view_id403Response
+```
+    - **404**:
+```typescript
+      IPatchV2Lists$listViews$view_id404Response
+```
+ * **Security**:
+    - **oauth2**: [view:read-write, list_configuration:read]
+
+ */
+export const PatchV2Lists$listViews$view_id = (list:string,view_id:string)=> `/v2/lists/${list}/views/${view_id}`;
 /**
 * Lists entries in a given list, with the option to filter and sort results.
 
@@ -3455,6 +3926,157 @@ Supported token levels: `workspace`, `user`.
  */
 export const PostV2SequencesUnsubscribed_emails = "/v2/sequences/unsubscribed_emails";
 /**
+* An address is an email address (jane@acme.com) or a domain (acme.com).
+
+Lists every address on the workspace blocklist, at both enforcement levels. Email addresses come first, then domains, each in alphabetical order.
+
+A user-level access token can only call this endpoint if the workspace member it acts for is a workspace admin.
+
+This endpoint is in alpha and may be subject to breaking changes as we gather feedback.
+
+Required scopes: `email_calendar_blocklist:read`.
+
+Supported token levels: `workspace`, `user`.
+ * **Method**: `GET`
+ * **Summary**: List workspace blocklist addresses
+ * **Tags**: [Workspace blocklist]
+ * **OperationId**:
+ * **Query**:
+```typescript
+    {
+      "limit"?: number;
+      "cursor"?: string;
+    }
+```
+ * **Response**:
+    - **200**:
+```typescript
+      IGetV2Workspace_blocklist_addresses200Response
+```
+    - **400**:
+```typescript
+      IGetV2Workspace_blocklist_addresses400Response
+```
+    - **403**:
+```typescript
+      IGetV2Workspace_blocklist_addresses403Response
+```
+ * **Security**:
+    - **oauth2**: [email_calendar_blocklist:read]
+
+ */
+export const GetV2Workspace_blocklist_addresses = "/v2/workspace_blocklist_addresses";
+/**
+* An address is an email address (jane@acme.com) or a domain (acme.com).
+
+Sets each address in the request to the given enforcement level on the workspace blocklist. The address itself is its key: there is no separate ID.
+
+An address that isn't on the workspace blocklist is added. An address already at the requested level is left unchanged, so this endpoint is safe to retry. An address at the other level is moved to the requested level.
+
+This endpoint only adds and updates the addresses in the request. Addresses on the workspace blocklist that aren't in the request are left alone; it never replaces the whole list.
+
+Addresses are normalized: email addresses and domains are trimmed and lowercased, a URL is reduced to its hostname, and a leading `www.` is removed. The response returns the normalized value, which is the key for the address. Duplicate addresses are collapsed, and a request that gives the same address two different enforcement levels is rejected.
+
+The request is applied all or nothing. Protected changes take effect immediately. Blocked changes take effect once each connected mailbox has re-synced, which may take a few minutes.
+
+A user-level access token can only call this endpoint if the workspace member it acts for is a workspace admin.
+
+This endpoint is in alpha and may be subject to breaking changes as we gather feedback.
+
+Required scopes: `email_calendar_blocklist:read-write`.
+
+Supported token levels: `workspace`, `user`.
+ * **Method**: `PUT`
+ * **Summary**: Add or update workspace blocklist addresses
+ * **Tags**: [Workspace blocklist]
+ * **OperationId**:
+ * **DTO**:
+```typescript
+    {
+      "data": {
+        // The addresses to set and the enforcement level each should have. A maximum of 500 addresses can be provided per request. The same address may not appear with two different enforcement levels.
+      "addresses": {
+    // An email address or a domain. Attio works out which one it is. Email addresses are trimmed and lowercased, and their host must be a valid domain. Domains are trimmed and lowercased, a URL is reduced to its hostname, and a leading `www.` is removed; subdomains are kept. Single labels (`acme`), bare public suffixes (`com`), unknown suffixes, IP addresses, wildcards and values over 253 characters are rejected.
+      "address": string;
+    // `protected`: emails and calendar events are hidden unless at least one participant is not on the workspace blocklist. `blocked`: they are hidden even when other participants are included.
+      "enforcement_level": ("protected"|"blocked");
+    }[];
+        };
+    }
+```
+ * **Response**:
+    - **200**:
+```typescript
+      IPutV2Workspace_blocklist_addresses200Response
+```
+    - **400**:
+```typescript
+      IPutV2Workspace_blocklist_addresses400Response
+```
+    - **403**:
+```typescript
+      IPutV2Workspace_blocklist_addresses403Response
+```
+    - **409**:
+```typescript
+      IPutV2Workspace_blocklist_addresses409Response
+```
+ * **Security**:
+    - **oauth2**: [email_calendar_blocklist:read-write]
+
+ */
+export const PutV2Workspace_blocklist_addresses = "/v2/workspace_blocklist_addresses";
+/**
+* An address is an email address (jane@acme.com) or a domain (acme.com).
+
+Removes an address from the workspace blocklist, whatever its enforcement level. The address itself is its key: there is no separate ID.
+
+The address is normalized as when it is added: email addresses and domains are trimmed and lowercased, a URL is reduced to its hostname, and a leading `www.` is removed. So the address is found whatever form it was added in. A URL, or any other value with reserved characters, must be percent-encoded in the path.
+
+An address that isn't on the workspace blocklist returns a `404`. A client retrying a request can treat a `404` as done.
+
+Removing a protected address takes effect immediately. Removing a blocked address takes effect once each connected mailbox has re-synced, which may take a few minutes.
+
+A user-level access token can only call this endpoint if the workspace member it acts for is a workspace admin.
+
+This endpoint is in alpha and may be subject to breaking changes as we gather feedback.
+
+Required scopes: `email_calendar_blocklist:read-write`.
+
+Supported token levels: `workspace`, `user`.
+ * **Method**: `DELETE`
+ * **Summary**: Delete a workspace blocklist address
+ * **Tags**: [Workspace blocklist]
+ * **OperationId**:
+ * **Path**:
+```typescript
+    {
+      "address": string;
+    }
+```
+ * **Response**:
+    - **200**:
+```typescript
+      IDeleteV2Workspace_blocklist_addresses$address200Response
+```
+    - **400**:
+```typescript
+      IDeleteV2Workspace_blocklist_addresses$address400Response
+```
+    - **403**:
+```typescript
+      IDeleteV2Workspace_blocklist_addresses$address403Response
+```
+    - **404**:
+```typescript
+      IDeleteV2Workspace_blocklist_addresses$address404Response
+```
+ * **Security**:
+    - **oauth2**: [email_calendar_blocklist:read-write]
+
+ */
+export const DeleteV2Workspace_blocklist_addresses$address = (address:string)=> `/v2/workspace_blocklist_addresses/${address}`;
+/**
 * Lists all meetings in the workspace using a deterministic sort order. When both the `participants` and `linked_record_id` filters are supplied, they are combined with OR: meetings that match either filter are returned.
 
 This endpoint is in beta. We will aim to avoid breaking changes, but small updates may be made as we roll out to more users.
@@ -3776,7 +4398,7 @@ export const GetV2Meetings$meeting_idCall_recordings = (meeting_id:string)=> `/v
 /**
 * Create a call recording for a meeting. This endpoint is rate limited to 1 request per second.
 
-A `transcript` should always be provided — it is technically optional for backwards compatibility, but a call recording created without one will be missing summaries and other transcript-derived features. `video_url` is optional, and a transcript-only call recording (with no video) is fully supported.
+A `transcript` is required. `video_url` is optional, and a transcript-only call recording (with no video) is fully supported.
 
 This endpoint is in beta. We will aim to avoid breaking changes, but small updates may be made as we roll out to more users.
 
@@ -3805,9 +4427,8 @@ Supported token levels: `workspace`, `user`.
     // - **File size:** The file must not exceed 1GB in size.
     // - **Accessibility:** For the request to be accepted, the URL must be publicly accessible. Attio will make a `HEAD` request to the URL to verify its accessibility and retrieve file metadata. The response to this request must include a `Content-Length` header.
       "video_url"?: string;
-    // The call recording's transcript.
-    // This field is technically optional for backwards compatibility, but you should always provide it — a call recording created without a transcript will be missing summaries and other transcript-derived features. This field will become required in a future version of this endpoint.
-      "transcript"?: {
+    // The call recording's transcript. It must contain at least one transcript segment.
+      "transcript": {
     // The spoken text for this segment of the transcript.
       "speech": string;
     // The start time of this speech segment in seconds.
